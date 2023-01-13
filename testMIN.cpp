@@ -3,6 +3,8 @@
 #include <algorithm>
 
 #include "LinearConstrainSystem.hpp"
+#include "simplex_functions.hpp"
+#include "print_functions.hpp"
 
 int main() {
     // creo una nuova istanza di LinearConstrainSystem<double>

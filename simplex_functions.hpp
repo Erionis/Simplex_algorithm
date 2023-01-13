@@ -1,7 +1,6 @@
 #ifndef __simplex_functions_hpp__
 #define __simplex_functions_hpp__
 
-#include "LinearConstrainSystem.hpp"
 
 /// @brief metodo per aggiungere i vincoli al Tableau
 /// @tparam T generico
@@ -67,6 +66,37 @@ LinearConstrainSystem<T>& LinearConstrainSystem<T>::add_constrain(const std::vec
         }
     }
     return *this;
+}
+
+
+/// @brief  Metodo per aggiungere una riga al Tableau contenete le informazioni del vincolo
+/// @tparam T generico
+/// @param a vettore dei coefficienti delle variabili decisionali
+/// @param b termine noto del vincolo
+/// @param current_row intero corrispondente all'indice della riga del Tableau che si sta aggiungendo
+template<typename T>
+void LinearConstrainSystem<T>::add_row_tableau(const std::vector<T>& a, const T& b, int current_row){
+
+    // Il numero totale di righe che avrà il Tableau è uguale al numero totale di variabili artificiali del problema
+    int tot_rows = artificial_variables;
+
+    // per tutte le variabili artificiali        
+    for (int row_index = 0; row_index < tot_rows; ++row_index) {
+
+        // se l'indice della variabile artificiale è uguale all'indice della riga corrente
+        if (row_index == current_row) {
+            // assegno coefficiente 1 alla variabile artificiale
+            tableau[current_row][current_row] = 1;
+            // inserisco i coefficienti del vettore a e il termine noto b nella posizione corretta
+            for (size_t i = 0; i < num_variables; ++i)  {
+
+                tableau[current_row][artificial_variables + i] = a[i];
+                tableau[current_row].back() = b;
+            }
+        } 
+    }            
+    // aggiorno gli elementi in base
+    base.emplace_back(current_row);
 }
 
 
@@ -114,72 +144,6 @@ void LinearConstrainSystem<T>::add_ObjFunc_Tableau(std::vector<T>& c, const Opti
     print_tableau();
     std::cout << "Base iniziale: " << std::endl;
     print_base();
-}
-
-/// @brief metodo per aggiungere i vincoli al Tableau
-/// @tparam T generico
-/// @param a vettore dei coefficienti delle variabili decisionali
-/// @param b termine noto del vincolo
-/// @param type Tipo di ottimizzazione
-/// @return oggetto di tipo LinearConstrainSystem
-template <typename T>
-LinearConstrainSystem<T>& LinearConstrainSystem<T>::add_constrain(const std::vector<T>& a, const T& b, const ConstrainType type) {
-
-    // Eccezioni:
-    // Verifico che il numero di coefficienti di a sia uguale al numero di variabili decisionali
-    if (a.size() != num_variables) {
-        throw std::invalid_argument("Wrong number of variables in constrain");
-    }
-    // Verifico che il tipo di vincolo sia valido
-    if (type != ConstrainType::LE && type != ConstrainType::GE && type != ConstrainType::EQ) {
-        throw std::invalid_argument("Invalid type of constraint");
-    }
-
-    // creo un vettore con i coefficienti cambiati di segno di a
-    std::vector<T> a_neg(a.size());
-    std::transform(a.begin(), a.end(), a_neg.begin(), std::negate<T>()); 
-
-    // numero totale di colonne che avrà il Tableau
-    int tot_columns = num_constrains + num_variables + EQ_cases + 1;
-              
-    // creo una riga nel Tableau
-    tableau.emplace_back(tot_columns, 0);
-
-    // contatore per memorizzare in che riga siamo 
-    int current_row = tableau.size() - 1;    
-
-    switch (type) {
-
-        // Nel caso di vincolo "LE" mi basta aggiungere una variabile artificiale con coeff 1, 
-        // i coefficienti delle variabili decisionali e il termine noto, nella riga corrente
-        case ConstrainType::LE: {
-
-            add_row_tableau(a, b, current_row);
-            break;
-        }
-
-        // Nel caso di vincolo "GE" mi basta aggiungere una variabile artificiale con coeff 1, 
-        // i coefficienti delle variabili decisionali e il termine noto ma cambiati di segno
-        case ConstrainType::GE: {
-
-            add_row_tableau( a_neg, b*(-1), current_row);
-            break;
-        }
-
-        // Nel caso di vincolo "EQ" aggiungo 2 righe al Tableau: la prima considera il vincolo come se fosse LE 
-        // mentre la seconda considera il vicnolo come se fosse GE
-        case ConstrainType::EQ: {
-
-            add_row_tableau(a, b, current_row);
-
-            tableau.emplace_back(tot_columns, 0);
-            
-            add_row_tableau(a_neg, b*(-1), current_row + 1);
-
-            break;
-        }
-    }
-    return *this;
 }
 
 

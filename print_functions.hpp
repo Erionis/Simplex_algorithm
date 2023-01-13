@@ -1,7 +1,7 @@
 #ifndef __print_functions_hpp__
 #define __print_functions_hpp__
 
-#include "LinearConstrainSystem.hpp"
+
 
 /// @brief metodo per stampare gli elementi in base
 /// @tparam T generico

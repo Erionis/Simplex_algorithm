@@ -3,11 +3,13 @@
 #include <algorithm>
 
 #include "LinearConstrainSystem.hpp"
+#include "simplex_functions.hpp"
+#include "print_functions.hpp"
 
 
 int main() {
     // creo una nuova istanza di LinearConstrainSystem<double>
-    LinearConstrainSystem<double> lcs(2,3,0);
+    LinearConstrainSystem<double> lcs(2,2,0);
 
     // aggiungo i seguenti vincoli al sistema:
 

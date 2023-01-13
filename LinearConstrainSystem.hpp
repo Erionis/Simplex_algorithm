@@ -1,5 +1,5 @@
-#ifndef __LinearCosntrainSystem_hpp__
-#define __LinearCosntrainSystem_hpp__
+#ifndef __LinearConstrainSystem_hpp__
+#define __LinearConstrainSystem_hpp__
 
 #include <algorithm>
 #include <iostream>
@@ -80,4 +80,4 @@ struct LinearConstrainSystem {
     void pivot(int pivot_row, int pivot_column);
 };
 
-#endif //__LinearCosntrainSystem_hpp__
+#endif //__LinearConstrainSystem_hpp__
