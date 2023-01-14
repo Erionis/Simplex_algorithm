@@ -1,12 +1,11 @@
+
+#include <algorithm>
 #include <iostream>
 #include <vector>
-#include <algorithm>
 
-#include "LinearConstrainSystem.hpp"
-#include "simplex_functions.hpp"
-#include "print_functions.hpp"
-
-
+#include "include/LinearConstrainSystem.hpp"
+#include "include/print_functions.hpp"
+#include "include/simplex_functions.hpp"
 
 int main() {
 
@@ -27,10 +26,10 @@ int main() {
     // vettore per la soluzione ottima
     std::vector<double> solution;
 
-    // esegue l'ottimizzazione del sistema di vincoli con la funzione obiettivo c*x
+    // eseguo l'ottimizzazione del sistema di vincoli con la funzione obiettivo c*x
     LinearConstrainSystem<double>::SolutionType result = lcs.optimize(solution, c, LinearConstrainSystem<double>::OptimizationType::MAX);
 
-    // stampa il risultato dell'ottimizzazione
+    // stampo il risultato dell'ottimizzazione
     lcs.print_result(result, solution);
 
     return 0;

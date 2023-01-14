@@ -1,13 +1,11 @@
-cmake_minimum_required(VERSION 3.24)
+cmake_minimum_required(VERSION 3.17)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_C_COMPILER "C:/MinGW/bin/gcc.exe")
+set(CMAKE_CXX_COMPILER "C:/MinGW/bin/g++.exe")
 
-project(Simplex_algorithm)
+project(esame)
 
-add_executable(main main.cpp)
-add_executable(testEQ testEQ.cpp)
-add_executable(TestINFEASIBLE TestINFEASIBLE.cpp)
-add_executable(testMIN testMIN.cpp)
-add_executable(testOUNB testOUNB.cpp)
+add_executable(esame main.cpp)
+add_executable(mainEQ include/mainEQ.cpp)
 
-
+target_include_directories(esame PRIVATE include)

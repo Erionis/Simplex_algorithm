@@ -1,10 +1,11 @@
+
+#include <algorithm>
 #include <iostream>
 #include <vector>
-#include <algorithm>
 
-#include "LinearConstrainSystem.hpp"
-#include "simplex_functions.hpp"
-#include "print_functions.hpp"
+#include "include/LinearConstrainSystem.hpp"
+#include "include/print_functions.hpp"
+#include "include/simplex_functions.hpp"
 
 int main() {
     // creo una nuova istanza di LinearConstrainSystem<double>

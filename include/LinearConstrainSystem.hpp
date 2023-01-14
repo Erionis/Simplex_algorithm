@@ -1,10 +1,5 @@
-#ifndef __LinearConstrainSystem_hpp__
-#define __LinearConstrainSystem_hpp__
-
-#include <algorithm>
-#include <iostream>
-#include <vector>
-
+#ifndef LINEARCONSTRAINSYSTEM_HPP
+#define LINEARCONSTRAINSYSTEM_HPP
 
 template<typename T>
 struct LinearConstrainSystem {
@@ -80,4 +75,4 @@ struct LinearConstrainSystem {
     void pivot(int pivot_row, int pivot_column);
 };
 
-#endif //__LinearConstrainSystem_hpp__
+#endif

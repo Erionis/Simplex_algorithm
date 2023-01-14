@@ -1,7 +1,9 @@
-#ifndef __print_functions_hpp__
-#define __print_functions_hpp__
+#ifndef PRINT_FUNCTIONS_HPP
+#define PRINT_FUNCTIONS_HPP
 
+#include <vector>
 
+#include "LinearConstrainSystem.hpp"
 
 /// @brief metodo per stampare gli elementi in base
 /// @tparam T generico
@@ -15,7 +17,6 @@ void LinearConstrainSystem<T>::print_base() const {
     std::cout << std::endl;    
     std::cout << std::endl;  
 }
-
 
 /// @brief metodo per stampare il Tableau
 /// @tparam T generico
@@ -31,7 +32,6 @@ void LinearConstrainSystem<T>::print_tableau() const {
     }
     std::cout << std::endl;    
 }
-
 
 /// @brief metodo per stampare la soluzione ottima della funzione obiettivo
 /// @tparam T generico
@@ -66,4 +66,4 @@ void LinearConstrainSystem<T>::print_result(SolutionType type, std::vector<T>& s
     }
 }
 
-#endif // __print_functions_hpp__
+#endif

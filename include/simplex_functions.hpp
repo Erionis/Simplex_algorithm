@@ -1,6 +1,85 @@
-#ifndef __simplex_functions_hpp__
-#define __simplex_functions_hpp__
+#ifndef SIMPLEX_FUNCTIONS_HPP
+#define SIMPLEX_FUNCTIONS_HPP
 
+#include <vector>
+
+#include "LinearConstrainSystem.hpp"
+
+/// @brief  Metodo per aggiungere una riga al Tableau contenete le informazioni del vincolo
+/// @tparam T generico
+/// @param a vettore dei coefficienti delle variabili decisionali
+/// @param b termine noto del vincolo
+/// @param current_row intero corrispondente all'indice della riga del Tableau che si sta aggiungendo
+template<typename T>
+void LinearConstrainSystem<T>::add_row_tableau(const std::vector<T>& a, const T& b, int current_row){
+
+    // Il numero totale di righe che avrà il Tableau è uguale al numero totale di variabili artificiali del problema
+    int tot_rows = artificial_variables;
+
+    // per tutte le variabili artificiali        
+    for (int row_index = 0; row_index < tot_rows; ++row_index) {
+
+        // se l'indice della variabile artificiale è uguale all'indice della riga corrente
+        if (row_index == current_row) {
+            // assegno coefficiente 1 alla variabile artificiale
+            tableau[current_row][current_row] = 1;
+            // inserisco i coefficienti del vettore a e il termine noto b nella posizione corretta
+            for (size_t i = 0; i < num_variables; ++i)  {
+
+                tableau[current_row][artificial_variables + i] = a[i];
+                tableau[current_row].back() = b;
+            }
+        } 
+    }            
+    // aggiorno gli elementi in base
+    base.emplace_back(current_row);
+}
+
+/// @brief metodo per aggiungere la riga della funzione obiettivo al Tableau
+/// @tparam T generico
+/// @param c vettore dei coefficienti della funzione obiettivo
+/// @param type Tipo di ottimizzazione
+template<typename T>
+void LinearConstrainSystem<T>::add_ObjFunc_Tableau(std::vector<T>& c, const OptimizationType type) {
+
+    // Numero di colonne totali del Tableau
+    int tot_columns = num_constrains + num_variables + EQ_cases + 1;
+    // Indice di riga della funzione obiettivo
+    int ObjFunc_row = artificial_variables;
+    // creo una nuova riga nel Tableau            
+    tableau.emplace_back(tot_columns, 0);
+
+    switch (type) {
+
+        // Caso di MINIMIZZAZIONE
+        case OptimizationType::MIN: {
+            // Aggiungo nella nuova riga i coefficienti della funzione obiettivo nella posizione corretta
+            for (size_t i = 0; i < num_variables; ++i)  {
+
+                tableau[ObjFunc_row][ObjFunc_row + i] = c[i];
+            }
+            break;
+        }
+
+        // Caso di MASSIMIZZAZIONE
+        case OptimizationType::MAX: {
+            // Aggiungo nella nuova riga i coefficienti della funzione obiettivo cambiati di segno
+            for (size_t i = 0; i < num_variables; ++i)  {
+                
+                tableau[ObjFunc_row][ObjFunc_row + i] = c[i]*(-1);
+            }
+            break;
+        }
+    }
+    // Aggiungo il termine noto uguale a 0 della funzione obiettivo
+    tableau[ObjFunc_row].back()= 0;
+
+    std::cout << "---Start Simplex---" << std::endl;
+    std::cout << "Tableau iniziale: " << std::endl;
+    print_tableau();
+    std::cout << "Base iniziale: " << std::endl;
+    print_base();
+}
 
 /// @brief metodo per aggiungere i vincoli al Tableau
 /// @tparam T generico
@@ -68,85 +147,6 @@ LinearConstrainSystem<T>& LinearConstrainSystem<T>::add_constrain(const std::vec
     return *this;
 }
 
-
-/// @brief  Metodo per aggiungere una riga al Tableau contenete le informazioni del vincolo
-/// @tparam T generico
-/// @param a vettore dei coefficienti delle variabili decisionali
-/// @param b termine noto del vincolo
-/// @param current_row intero corrispondente all'indice della riga del Tableau che si sta aggiungendo
-template<typename T>
-void LinearConstrainSystem<T>::add_row_tableau(const std::vector<T>& a, const T& b, int current_row){
-
-    // Il numero totale di righe che avrà il Tableau è uguale al numero totale di variabili artificiali del problema
-    int tot_rows = artificial_variables;
-
-    // per tutte le variabili artificiali        
-    for (int row_index = 0; row_index < tot_rows; ++row_index) {
-
-        // se l'indice della variabile artificiale è uguale all'indice della riga corrente
-        if (row_index == current_row) {
-            // assegno coefficiente 1 alla variabile artificiale
-            tableau[current_row][current_row] = 1;
-            // inserisco i coefficienti del vettore a e il termine noto b nella posizione corretta
-            for (size_t i = 0; i < num_variables; ++i)  {
-
-                tableau[current_row][artificial_variables + i] = a[i];
-                tableau[current_row].back() = b;
-            }
-        } 
-    }            
-    // aggiorno gli elementi in base
-    base.emplace_back(current_row);
-}
-
-
-/// @brief metodo per aggiungere la riga della funzione obiettivo al Tableau
-/// @tparam T generico
-/// @param c vettore dei coefficienti della funzione obiettivo
-/// @param type Tipo di ottimizzazione
-template<typename T>
-void LinearConstrainSystem<T>::add_ObjFunc_Tableau(std::vector<T>& c, const OptimizationType type) {
-
-    // Numero di colonne totali del Tableau
-    int tot_columns = num_constrains + num_variables + EQ_cases + 1;
-    // Indice di riga della funzione obiettivo
-    int ObjFunc_row = artificial_variables;
-    // creo una nuova riga nel Tableau            
-    tableau.emplace_back(tot_columns, 0);
-
-    switch (type) {
-
-        // Caso di MINIMIZZAZIONE
-        case OptimizationType::MIN: {
-            // Aggiungo nella nuova riga i coefficienti della funzione obiettivo nella posizione corretta
-            for (size_t i = 0; i < num_variables; ++i)  {
-
-                tableau[ObjFunc_row][ObjFunc_row + i] = c[i];
-            }
-            break;
-        }
-
-        // Caso di MASSIMIZZAZIONE
-        case OptimizationType::MAX: {
-            // Aggiungo nella nuova riga i coefficienti della funzione obiettivo cambiati di segno
-            for (size_t i = 0; i < num_variables; ++i)  {
-                
-                tableau[ObjFunc_row][ObjFunc_row + i] = c[i]*(-1);
-            }
-            break;
-        }
-    }
-    // Aggiungo il termine noto uguale a 0 della funzione obiettivo
-    tableau[ObjFunc_row].back()= 0;
-
-    std::cout << "---Start Simplex---" << std::endl;
-    std::cout << "Tableau iniziale: " << std::endl;
-    print_tableau();
-    std::cout << "Base iniziale: " << std::endl;
-    print_base();
-}
-
-
 /// @brief metodo per valutare se il sistema di vincoli è Infeasible
 /// @tparam T generico
 /// @return vero o falso
@@ -194,7 +194,6 @@ bool LinearConstrainSystem<T>::is_feasible() {
     return true;  
 }
 
-
 /// @brief metodo che appliuca la fase "pivot" dell'algoritmo del simplesso
 /// @tparam T generico
 /// @param pivot_row indice di riga della variabile uscente
@@ -234,7 +233,6 @@ void LinearConstrainSystem<T>::pivot(int pivot_row, int pivot_column) {
     }
     print_tableau();
 }
-
 
 /// @brief metodo che otimizza c*x applicando "pivot" al Tableau
 /// @tparam T generico
@@ -312,7 +310,6 @@ typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimi
     return SolutionType::BOUNDED;
 }
 
-
 /// @brief metodo per trovare l'indice della variabile entrante
 /// @tparam T generico
 /// @param c vettore dei coefficienti della funzione obiettivo
@@ -347,7 +344,6 @@ int LinearConstrainSystem<T>::find_pivot_column( std::vector<T>& c) {
 
     return pivot_column;
 }
-
 
 /// @brief metodo per individuare l'inidice della variabile in uscita dalla base
 /// @tparam T generico
@@ -388,5 +384,4 @@ int LinearConstrainSystem<T>::find_pivot_row(int pivot_column) {
     return pivot_row;
 }
 
-
-#endif // __simplex_functions_hpp__
+#endif
