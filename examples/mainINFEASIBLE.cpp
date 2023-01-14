@@ -3,9 +3,9 @@
 #include <iostream>
 #include <vector>
 
-#include "include/LinearConstrainSystem.hpp"
-#include "include/print_functions.hpp"
-#include "include/simplex_functions.hpp"
+#include "../include/LinearConstrainSystem.hpp"
+#include "../include/print_functions.hpp"
+#include "../include/simplex_functions.hpp"
 
 int main() {
     // crea una nuova istanza di LinearConstrainSystem<double>
