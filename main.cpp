@@ -3,14 +3,15 @@
 #include <iostream>
 #include <vector>
 
-#include "include/LinearConstrainSystem.hpp"
-#include "include/print_functions.hpp"
-#include "include/simplex_functions.hpp"
+#include "LinearConstrainSystem.hpp"
+#include "Tableau.hpp"
+
+
 
 int main() {
 
     // creo una nuova istanza di LinearConstrainSystem<double>
-    LinearConstrainSystem<double> lcs(3,4,0);
+    LinearConstrainSystem<double> lcs;
 
     // aggiungo i seguenti vincoli al sistema:
 
@@ -18,10 +19,14 @@ int main() {
     lcs.add_constrain({ 2, 2, 1, -4 }, 4, LinearConstrainSystem<double>::ConstrainType::LE);
     lcs.add_constrain({ 1, -1, 2, 0 }, 2, LinearConstrainSystem<double>::ConstrainType::LE);
 
-    lcs.print_tableau();
+    lcs.update();
+
+    lcs.tab.print_tableau();
+
+    //lcs.is_feasible();
 
     // vettore di coefficienti della funzione obiettivo
-    std::vector<double> c = { 2, 3, -1, -3 };
+    std::vector<double> c = {  2, 3, -1, -3 };
 
     // vettore per la soluzione ottima
     std::vector<double> solution;
