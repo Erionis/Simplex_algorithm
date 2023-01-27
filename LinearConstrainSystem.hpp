@@ -57,11 +57,11 @@ struct LinearConstrainSystem {
     SolutionType optimize(std::vector<T>& solution, std::vector<T>& c, const OptimizationType type);
     // metodo per stampare i risultati ottenuti
     void print_result(SolutionType type, std::vector<T>& solution) const;
-    // metodo per controllare che i dati messi in input sono corretti
+
     void check_valid_constrains();
 
   private:
-    // metodo per aggiornare le informazioni sul tableau
+
     void update_tableau_info();
 
 };
@@ -194,7 +194,7 @@ typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimi
 
     // Fase di preparazione del Tableau:
     // aggiungo la riga della funzione obiettivo al Tableau
-    tab.add_ObjFunc_Tableau(c, type);
+    tab.add_objFunc_tableau(c, type);
 
     // Fase dell'algoritmo del Simplesso:
     // Eseguo il metodo pivot fintanto che non viene interrotto

@@ -1,10 +1,11 @@
-#ifndef SIMPLEX_FUNCTIONS_HPP
-#define SIMPLEX_FUNCTIONS_HPP
+#ifndef TABLEAU_HPP
+#define TABLEAU_HPP
 
 
 #include <algorithm>
 #include <iostream>
 #include <vector>
+#include <limits>
 
 
 template<typename T>
@@ -80,7 +81,7 @@ void Tableau<T>::create_initial_tableau(std::vector<typename LinearConstrainSyst
             case LinearConstrainSystem<T>::ConstrainType::LE: {
 
                 add_row_tableau(constrain.a, constrain.b, current_row);
-
+                //current_row++;
                 break;
             }
 
@@ -93,7 +94,7 @@ void Tableau<T>::create_initial_tableau(std::vector<typename LinearConstrainSyst
                 std::transform(constrain.a.begin(), constrain.a.end(), a_neg.begin(), std::negate<T>()); 
 
                 add_row_tableau( a_neg, constrain.b*(-1), current_row);
-
+                //current_row++;
                 break;
             }
 
@@ -109,6 +110,7 @@ void Tableau<T>::create_initial_tableau(std::vector<typename LinearConstrainSyst
                 std::vector<T> a_neg(constrain.a.size());
                 std::transform(constrain.a.begin(), constrain.a.end(), a_neg.begin(), std::negate<T>()); 
                 add_row_tableau(a_neg, constrain.b*(-1), current_row);
+                //current_row++;
 
                 break;
             }
@@ -272,7 +274,7 @@ int Tableau<T>::find_pivot_row(int pivot_column) {
     // Inizializzo l'indice della variabile di base scelta a -1 per gestire i casi particolari
     int pivot_row = -1;
     // imposto un valore molto alto per il rapporto tra coefficienti, che mi servirà per individuare il più piccolo tra i rapporti
-    T min_ratio = 10000;
+    T min_ratio = std::numeric_limits<T>::max();
     // riga della funzone obiettivo
     size_t ObjFunc_row = artificial_variables;
 

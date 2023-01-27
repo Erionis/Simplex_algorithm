@@ -3,21 +3,23 @@
 #include <iostream>
 #include <vector>
 
-#include "../include/LinearConstrainSystem.hpp"
-#include "../include/print_functions.hpp"
-#include "../include/simplex_functions.hpp"
+
+#include "LinearConstrainSystem.hpp"
+#include "Tableau.hpp"
+
 
 int main() {
     // crea una nuova istanza di LinearConstrainSystem<double>
-    LinearConstrainSystem<double> lcs(2,2,0);
+    LinearConstrainSystem<double> lcs;
 
     // aggiunge i seguenti vincoli al sistema:
 
     lcs.add_constrain({ 1, 1 }, 2, LinearConstrainSystem<double>::ConstrainType::LE);
     lcs.add_constrain({ 1, -3 }, 3, LinearConstrainSystem<double>::ConstrainType::GE);
+    lcs.update();
 
+    lcs.tab.print_tableau();
 
-    lcs.print_tableau();
 
     // crea un vettore di coefficienti della funzione obiettivo
     std::vector<double> c = { -2, -1 };
