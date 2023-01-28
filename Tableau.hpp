@@ -364,7 +364,7 @@ void Tableau<T>::pivot(int pivot_row, int pivot_column) {
     print_base();
 
     // Numero di righe del tableau;
-    size_t tot_rows = tableau.size();
+    int tot_rows = tableau.size();
     // elemento pivot
     T pivot_element = tableau[pivot_row][pivot_column];
 
@@ -375,7 +375,7 @@ void Tableau<T>::pivot(int pivot_row, int pivot_column) {
     }
 
     // Sostituidco le righe che non sono la riga pivot, sottraendo ad esse un opportuno multiplo della riga pivot
-    for (size_t row_index = 0; row_index < tot_rows; ++row_index) {
+    for (int row_index = 0; row_index < tot_rows; ++row_index) {
         // se non mi trovo sulla pivot row
         if (row_index != pivot_row) {
 
