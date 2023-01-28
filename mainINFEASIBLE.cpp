@@ -15,7 +15,8 @@ int main() {
     // aggiunge i seguenti vincoli al sistema:
 
     lcs.add_constrain({ 1, 1 }, 2, LinearConstrainSystem<double>::ConstrainType::LE);
-    lcs.add_constrain({ 1, -3 }, 3, LinearConstrainSystem<double>::ConstrainType::GE);
+    //lcs.add_constrain({ 1, -3 }, 3, LinearConstrainSystem<double>::ConstrainType::GE);
+    lcs.add_constrain({ 2, 2 }, 3, LinearConstrainSystem<double>::ConstrainType::GE);
     lcs.update();
 
     lcs.tab.print_tableau();
