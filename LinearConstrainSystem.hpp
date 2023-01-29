@@ -3,8 +3,11 @@
 
 #include "Tableau.hpp"
 
-/// @brief 
-/// @tparam T 
+/**
+ * @brief Struct che rappresenta un sistema lineare di vincoli
+ * 
+ * @tparam T generico
+ */
 template<typename T>
 struct LinearConstrainSystem {
 
@@ -34,11 +37,8 @@ struct LinearConstrainSystem {
 
     // vettore di variabili di tipo constrain
     std::vector<Constrain> constrains;
-
     // crea un oggetto Tableau
     Tableau<T> tab; 
-/////////////////////////////////////////////////
-
 
     // costruttore vuoto
     LinearConstrainSystem() {}
@@ -65,14 +65,15 @@ struct LinearConstrainSystem {
     void check_valid_constrains();
     // metodo per controllare che i dati messi in input sono corretti
     void check_valid_objFunc(std::vector<T>& c, const OptimizationType type);
-
-
 };
 
 
 
-/// @brief 
-/// @tparam T 
+/**
+ * @brief metodo per aggiornare le informazioni ricevute in input nel tableau
+ * 
+ * @tparam T generico
+ */
 template<typename T>
 void LinearConstrainSystem<T>::update_tableau_info(){
 
@@ -102,8 +103,11 @@ void LinearConstrainSystem<T>::update_tableau_info(){
 }
 
 
-/// @brief 
-/// @tparam T generico
+/**
+ * @brief metodo per aggiornare e aggiungere i vincoli al tableau
+ * 
+ * @tparam T generico
+ */
 template<typename T>
 void LinearConstrainSystem<T>::update() {
     // controlo i dati forniti dall'utente
@@ -115,8 +119,11 @@ void LinearConstrainSystem<T>::update() {
 }
 
 
-/// @brief 
-/// @tparam T /
+/**
+ * @brief metodo per controllare se i vincoli dati in input sono accettabili
+ * 
+ * @tparam T 
+ */
 template <typename T>
 void LinearConstrainSystem<T>::check_valid_constrains() {
     // guardo alla lunghezza del primo vincolo come elemnto di paragone
@@ -139,8 +146,13 @@ void LinearConstrainSystem<T>::check_valid_constrains() {
 }
 
 
-/// @brief 
-/// @tparam T /
+/**
+ * @brief metodo per controllare se i coefficienti della funzione obiettivo e il tipo di ottimizzazione sono accettabili 
+ * 
+ * @tparam T generico
+ * @param c vettore dei coefficienti della funzione obiettivo
+ * @param type tipo di ottimizzazione
+ */
 template <typename T>
 void LinearConstrainSystem<T>::check_valid_objFunc(std::vector<T>& c, const OptimizationType type) {
     // Eccezioni:
@@ -153,63 +165,59 @@ void LinearConstrainSystem<T>::check_valid_objFunc(std::vector<T>& c, const Opti
         throw std::invalid_argument("Invalid optimization type");
     }
 }
-/*
 
+/*
 /// @brief metodo per valutare se il sistema di vincoli è Infeasible
 /// @tparam T generico
 /// @return vero o falso
 template <typename T>
 bool LinearConstrainSystem<T>::is_feasible() {
 
-    // Una volta ottenuto il tableau finale, controllo se ci sono righe del tableau con coefficienti 
-    // delle variabili decisionali tutti uguali a 0 e il valore nella colonna dei termini noti  positivo
+    // creo una copia del tableau costruito finora
+    Tableau<T> tab_copy(tab);
 
-    // Numero totale di righe del Tableau
-    const unsigned int num_articial_vars = artificial_variables;
-    // per tutte le righe tranne quella della funzione obiettivo
-    for (int row_index = 0; row_index < num_articial_vars; ++row_index) {
+    // 1. Crea una nuova variabile di decisione chiamata "dummy"
+    DecisionVariable<T> dummy;
+    dummy.name = "dummy";
+    decision_variables.push_back(dummy);
 
-        // Recupero l'indice della variabile decisionale corrente dal vettore di base
-        int variable = base[row_index];
-        // le variabili artificiali, per come è stato costruito il Tableau all'inizio avranno 
-        // indici minori del numero di righe del Tableau!
-        // Se la variabile decisionale corrente è una variabile artificiale, ignoro la riga
-        if (variable < num_articial_vars) continue;
+    // 2. Aggiungi una nuova riga al tableau per la variabile dummy
+    ConstrainRow<T> dummy_row;
+    dummy_row.coefficients.resize(decision_variables.size(), 0);
+    dummy_row.coefficients[decision_variables.size()-1] = 1;
+    dummy_row.relation = ConstrainRelation::EQ;
+    dummy_row.value = 0;
+    tableau.push_back(dummy_row);
 
-        bool has_decision_variables = true;
-        // controllo se ci sono altri coefficienti delle variabili decisionali diversi da zero nella riga corrente
-        for (int j = 0; j < num_variables; ++j) {
-            // se ci sono altri coefficienti delle variabili decisionali diversi da zero
-            if (j != variable - num_articial_vars && tableau[row_index][num_articial_vars + j] != 0) {
-                has_decision_variables = true;
-                break;
-            }
-        }
-        // Se non ci sono altri coefficienti diversi da zero e il valore nella colonna dei termini noti è positivo, il sistema è infeasible
-        if (!has_decision_variables && tableau[row_index].back() > 0) {
-            return false;
-        }
+    // 3. Modifica la funzione obiettivo per includere la variabile dummy
+    objective_function.coefficients.resize(decision_variables.size(), 0);
+    objective_function.coefficients[decision_variables.size()-1] = 1;
+
+    // 4. Lancia il metodo optimize() sulla funzione obiettivo modificata
+    OptimizationType opt_type = OptimizationType::MINIMIZE;
+    std::vector<T> variable_values;
+    std::vector<T> objective_values;
+    SolutionType solution = optimize(variable_values, objective_values, opt_type);
+
+    // 5. Se la soluzione ottenuta ha un valore zero per la variabile dummy, il sistema è feasible
+    if (variable_values[variable_values.size()-1] == 0) {
+        return true;
+    } else {
+        return false;
     }
-
-    // Se esiste una riga del Tableau con il termine noto negativo, il sistema è infeasible
-    for (const auto& row : tableau) {
-        if (row.back() < 0) {
-
-            return false;
-        }
-    }
-    // altrimenti il sistema è feasible
-    return true;  
 }
 */
 
 
-/// @brief metodo che otimizza c*x applicando "pivot" al Tableau
-/// @tparam T generico
-/// @param solution vettore che conterrà la soluzione
-/// @param c vettore dei coefficienti della funzione obiettivo
-/// @param type tipo di ottimizzazione
-/// @return oggetto di tipo SolutionType
+/**
+ * @brief metodo che otimizza c*x applicando "pivot" al Tableau
+ * 
+ * @tparam T generico
+ * @param solution vettore che conterrà la soluzione
+ * @param c vettore dei coefficienti della funzione obiettivo
+ * @param type tipo di ottimizzazione
+ * @return LinearConstrainSystem<T>::SolutionType 
+ */
 template<typename T>
 typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimize(std::vector<T>& solution,   std::vector<T>& c, const OptimizationType type) {
     // constrollo che i dati inseriti in input siano corretti
@@ -231,7 +239,7 @@ typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimi
         if (pivot_column == -1 ) {            
             std::cout << "----End Simplex----" << std::endl;
             hasSimplexFinished = true; 
-            break;  // NON RIESCO A TROVARE UN MODO DI FALROSENZA IL BREAK!
+            break;  // NON RIESCO A TROVARE UN MODO DI FALRO SENZA IL BREAK!
         }
 
         // ottengo l'indice della variabile in uscita
@@ -268,8 +276,13 @@ typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimi
 }
 
 
-/// @brief metodo per stampare la soluzione ottima della funzione obiettivo
-/// @tparam T generico
+/**
+ * @brief metodo per stampare la soluzione ottima del problema di ottimizzazione
+ * 
+ * @tparam T generico
+ * @param type tipo di ottimizzazione
+ * @param solution vettore che contenente la soluzione
+ */
 template<typename T>  // SISTEMARE STAMPANDO ANCHE I VINCOLI E LA F OBIETTIVO
 void LinearConstrainSystem<T>::print_result(SolutionType type, std::vector<T>& solution) const {
 

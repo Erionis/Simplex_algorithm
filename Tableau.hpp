@@ -11,7 +11,11 @@
 template<typename T>
 struct LinearConstrainSystem;
 
-
+/**
+ * @brief Struct rappresentante il Tableau e tutte le funzioni ad essso collegate
+ * 
+ * @tparam T generico
+ */
 template<typename T>
 struct Tableau {
     
@@ -19,8 +23,6 @@ struct Tableau {
     std::vector<std::vector<T>> tableau;
     // indici delle variabili di base
     std::vector<size_t> base;
-    // indici (i,j) della posizone delle variabili artificiali nel tableau
-    std::vector<std::pair<size_t, size_t>> artificial_var_indices;
     // Numero di incognite
     size_t num_variables{0};
     // Numero di vincoli
@@ -31,16 +33,17 @@ struct Tableau {
     size_t surplus_variables{0};   
     // Numero di variabili artificiali
     size_t artificial_variables{0};   
-    // definisco Big-M come un valore molto grande
-    double BIG_M = 1e9; // CAPIRE MEGLIO COME DEFINIRLO
 
-    enum class OptimizationType { MIN, MAX }; // CONSTROLLARE SE SERVE
 
     // costruttore vuoto
     Tableau() {}
     // costruttore di copia
     Tableau(const Tableau<T>& other);
 
+    // metodo per ottenere il numero di colonne del tableau
+    inline size_t get_total_columns() { return num_variables + slack_variables + surplus_variables + artificial_variables + 1; }
+    // metodo per ottenere l'indice delle colonne dedicate alle variabili decisionali
+    inline size_t get_decVars_index(){ return slack_variables + surplus_variables + artificial_variables; }
     // metodo per inizializzare il tableau nella forma canonica
     void create_initial_tableau(std::vector<typename LinearConstrainSystem<T>::Constrain>& constrains);
     // metodo per aggiungere la funzione obiettivo al Tableau
@@ -48,33 +51,34 @@ struct Tableau {
     // metodo per stampare il Tableau
     void print_tableau() const;
     // stampa i valori in base
-    void print_base() const;
-
- // private: // SCEGLIERE DOVE METTERE PRIVATE
-
-    // metodo per ottenere il numero di colonne del tableau
-    inline size_t get_total_columns() {
-        return num_variables + slack_variables + surplus_variables + artificial_variables + 1;}
-    // metodo per ottenere l'indice delle colonne dedicate alle variabili decisionali
-    inline size_t get_decVars_index(){
-        return slack_variables + surplus_variables + artificial_variables;}
+    void print_base() const;    
     // metodo per aggiungere una riga al Tableau nel caso LE
-    void add_LE_row_tableau(const std::vector<T>& a, const T& b, int current_row);
+    void add_LE_row_tableau(const std::vector<T>& a, const T& b, size_t current_row);
     // metodo per aggiungere una riga al Tableau nel caso GE
-    void add_GE_row_tableau(const std::vector<T>& a, const T& b, int current_row);  
+    void add_GE_row_tableau(const std::vector<T>& a, const T& b, size_t current_row);  
     // metodo per aggiungere una riga al Tableau nel caso EQ
-    void add_EQ_row_tableau(const std::vector<T>& a, const T& b, int current_row);      
+    void add_EQ_row_tableau(const std::vector<T>& a, const T& b, size_t current_row);      
     // metodo per individuare la variabile entrante
-    int find_pivot_column();
+    int find_pivot_column();  // CAPIRE QUANDO SI DEVE METTERE CONST
     // metodo per individuare la variabile uscente
     int find_pivot_row(int pivot_column);
     // metodo per effettuare un pivot
     void pivot(int pivot_row, int pivot_column);
+
+ private: // SCEGLIERE DOVE METTERE PRIVATE
+
+    // definisco Big-M come un valore molto grande
+    double BIG_M = 1e9; // CAPIRE MEGLIO COME DEFINIRLO
+    // indici (i,j) della posizone delle variabili artificiali nel tableau
+    std::vector<std::pair<size_t, size_t>> artificial_var_indices;
 };
 
-/// @brief costruttore di copia
-/// @tparam T 
-/// @param orig 
+/**
+ * @brief Costruttore di copia
+ * 
+ * @tparam T generico
+ * @param orig oggetto originale che viene copiato
+ */
 template<typename T>
 Tableau<T>::Tableau(const Tableau<T>& orig) {
     tableau = orig.tableau;
@@ -89,9 +93,12 @@ Tableau<T>::Tableau(const Tableau<T>& orig) {
 }
 
 
-/// @brief 
-/// @tparam T 
-/// @param constrains 
+/**
+ * @brief metodo per inserire i vincoli del sistema nel Tableau
+ * 
+ * @tparam T generico
+ * @param constrains vettore di oggetti di tipo Constrain rappresentanti i vincoli del sistema 
+ */
 template<typename T>
 void Tableau<T>::create_initial_tableau(std::vector<typename LinearConstrainSystem<T>::Constrain>& constrains) {
 
@@ -160,13 +167,16 @@ void Tableau<T>::create_initial_tableau(std::vector<typename LinearConstrainSyst
 }
 
 
-/// @brief  Metodo per aggiungere una riga al Tableau contenete le informazioni del vincolo
-/// @tparam T generico
-/// @param a vettore dei coefficienti delle variabili decisionali
-/// @param b termine noto del vincolo
-/// @param current_row intero corrispondente all'indice della riga del Tableau che si sta aggiungendo
+/**
+ * @brief metodo per aggiungere un vincolo di tipo "minore o uguale" in una riga del Tableau
+ * 
+ * @tparam T generico
+ * @param a vettore dei coefficienti delle variabili decisionali del vincolo
+ * @param b termine noto del vincolo
+ * @param current_row indice di riga corrente del tableau
+ */
 template<typename T>
-void Tableau<T>::add_LE_row_tableau(const std::vector<T>& a, const T& b, int current_row){
+void Tableau<T>::add_LE_row_tableau(const std::vector<T>& a, const T& b, size_t current_row){
     // se non mi trovo nella prima riga
     if(current_row>0){
         // per tutte le colonne dedicate alle variabili aggiuntive
@@ -204,13 +214,16 @@ void Tableau<T>::add_LE_row_tableau(const std::vector<T>& a, const T& b, int cur
 }
 
 
-/// @brief  Metodo per aggiungere una riga al Tableau contenete le informazioni del vincolo
-/// @tparam T generico
-/// @param a vettore dei coefficienti delle variabili decisionali
-/// @param b termine noto del vincolo
-/// @param current_row intero corrispondente all'indice della riga del Tableau che si sta aggiungendo
+/**
+ * @brief metodo per aggiungere un vincolo di tipo "maggiore o uguale" in una riga del Tableau
+ * 
+ * @tparam T generico
+ * @param a vettore dei coefficienti delle variabili decisionali del vincolo
+ * @param b termine noto del vincolo
+ * @param current_row indice di riga corrente del tableau
+ */
 template<typename T>
-void Tableau<T>::add_GE_row_tableau(const std::vector<T>& a, const T& b, int current_row){
+void Tableau<T>::add_GE_row_tableau(const std::vector<T>& a, const T& b, size_t current_row){
 
     if(current_row>0){
 
@@ -247,13 +260,16 @@ void Tableau<T>::add_GE_row_tableau(const std::vector<T>& a, const T& b, int cur
 }
 
 
-/// @brief  Metodo per aggiungere una riga al Tableau contenete le informazioni del vincolo
-/// @tparam T generico
-/// @param a vettore dei coefficienti delle variabili decisionali
-/// @param b termine noto del vincolo
-/// @param current_row intero corrispondente all'indice della riga del Tableau che si sta aggiungendo
+/**
+ * @brief metodo per aggiungere un vincolo di tipo "maggiore o uguale" in una riga del Tableau
+ * 
+ * @tparam T generico
+ * @param a vettore dei coefficienti delle variabili decisionali del vincolo
+ * @param b termine noto del vincolo
+ * @param current_row indice di riga corrente del tableau
+ */
 template<typename T>
-void Tableau<T>::add_EQ_row_tableau(const std::vector<T>& a, const T& b, int current_row){
+void Tableau<T>::add_EQ_row_tableau(const std::vector<T>& a, const T& b, size_t current_row){
 
 
     if(current_row>0){
@@ -289,10 +305,13 @@ void Tableau<T>::add_EQ_row_tableau(const std::vector<T>& a, const T& b, int cur
 }
 
 
-/// @brief metodo per aggiungere la riga della funzione obiettivo al Tableau
-/// @tparam T generico
-/// @param c vettore dei coefficienti della funzione obiettivo
-/// @param type Tipo di ottimizzazione
+/**
+ * @brief metodo per aggiungere la riga della funzione obiettivo nel Tableau col "Big-M method"
+ * 
+ * @tparam T generico
+ * @param c vettore dei coefficienti della funzione obiettivo
+ * @param type tipo di ottimizzazione
+ */
 template<typename T>
 void Tableau<T>::add_objFunc_tableau(std::vector<T>& c, const typename LinearConstrainSystem<T>::OptimizationType type) {
 
@@ -352,10 +371,13 @@ void Tableau<T>::add_objFunc_tableau(std::vector<T>& c, const typename LinearCon
 }
 
 
-/// @brief metodo che appliuca la fase "pivot" dell'algoritmo del simplesso
-/// @tparam T generico
-/// @param pivot_row indice di riga della variabile uscente
-/// @param pivot_column indice di colonna della variabile entrante
+/**
+ * @brief metodo che implementa la fase "pivot" dell'algoritmo del simplesso
+ * 
+ * @tparam T generico
+ * @param pivot_row indice di riga della variabile uscente
+ * @param pivot_column indice di colonna della variabile entrante
+ */
 template <typename T>
 void Tableau<T>::pivot(int pivot_row, int pivot_column) {
 
@@ -392,10 +414,12 @@ void Tableau<T>::pivot(int pivot_row, int pivot_column) {
 }
 
 
-/// @brief metodo per trovare l'indice della variabile entrante
-/// @tparam T generico
-/// @param c vettore dei coefficienti della funzione obiettivo
-/// @return L'indice della colonna associata alla variabile entrante (int)
+/**
+ * @brief metodo per individuare l'indice di colonna della variabile entrante
+ * 
+ * @tparam T generico
+ * @return int indice della colonna associata alla variabile entrante
+ */
 template <typename T>
 int Tableau<T>::find_pivot_column() {
 
@@ -427,10 +451,13 @@ int Tableau<T>::find_pivot_column() {
 }
 
 
-/// @brief metodo per individuare l'inidice della variabile in uscita dalla base
-/// @tparam T generico
-/// @param pivot_column indice della variabile entrante in base
-/// @return ritorna l'indice della riga associata alla variabile uscente
+/**
+ * @brief metodo per individuare l'inidice della variabile in uscita dalla base
+ * 
+ * @tparam T generico
+ * @param pivot_column indice della variabile entrante in base
+ * @return int indice della riga associata alla variabile uscente
+ */
 template <typename T>
 int Tableau<T>::find_pivot_row(int pivot_column) {
 
@@ -467,8 +494,11 @@ int Tableau<T>::find_pivot_row(int pivot_column) {
 }
 
 
-/// @brief metodo per stampare gli elementi in base
-/// @tparam T generico
+/**
+ * @brief metodo per stampare gli elementi in base
+ * 
+ * @tparam T generico
+ */
 template<typename T>
 void Tableau<T>::print_base() const {
 
@@ -481,8 +511,11 @@ void Tableau<T>::print_base() const {
 }
 
 
-/// @brief metodo per stampare il Tableau
-/// @tparam T generico
+/**
+ * @brief metodo per stampare il Tableau
+ * 
+ * @tparam T generico
+ */
 template<typename T>
 void Tableau<T>::print_tableau() const {
 
