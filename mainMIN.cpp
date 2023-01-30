@@ -17,11 +17,10 @@ int main() {
     lcs.add_constrain({ 2, 1 }, 8, LinearConstrainSystem<double>::ConstrainType::LE);
     lcs.add_constrain({ 1, 2 }, 9, LinearConstrainSystem<double>::ConstrainType::LE);
     lcs.add_constrain({ 1, 1 }, 5, LinearConstrainSystem<double>::ConstrainType::LE);
-    lcs.update();
-
-    lcs.tab.print_tableau();
-
-
+    
+    // controllo che il sistema sia ammissibile
+    lcs.is_feasible();
+    
     // vettore di coefficienti della funzione obiettivo
     std::vector<double> c = { -5, -7 };
 

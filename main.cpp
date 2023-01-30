@@ -14,16 +14,12 @@ int main() {
     LinearConstrainSystem<double> lcs;
 
     // aggiungo i seguenti vincoli al sistema:
-
     lcs.add_constrain({ 1, -1, 2, -1 }, -2, LinearConstrainSystem<double>::ConstrainType::GE);
     lcs.add_constrain({ 2, 2, 1, -4 }, 4, LinearConstrainSystem<double>::ConstrainType::LE);
     lcs.add_constrain({ 1, -1, 2, 0 }, 2, LinearConstrainSystem<double>::ConstrainType::LE);
 
-    lcs.update();
-
-    lcs.tab.print_tableau();
-
-    //lcs.is_feasible();
+    // controllo che il sistema sia ammissibile
+    lcs.is_feasible();  /// mettere booleano
 
     // vettore di coefficienti della funzione obiettivo
     std::vector<double> c = {  2, 3, -1, -3 };

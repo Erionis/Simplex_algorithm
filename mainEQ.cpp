@@ -16,10 +16,9 @@ int main() {
 
     lcs.add_constrain({ 2, 0, 3 }, 1, LinearConstrainSystem<double>::ConstrainType::EQ);
     lcs.add_constrain({ 3, 2, -1 }, 5, LinearConstrainSystem<double>::ConstrainType::EQ);
-    lcs.update();
-
-    lcs.tab.print_tableau();
-
+    
+    // controllo che il sistema sia ammissibile
+    lcs.is_feasible();
 
     // vettore di coefficienti della funzione obiettivo
     std::vector<double> c = { 1, -2, 0 };
@@ -29,10 +28,9 @@ int main() {
 
     // esegue l'ottimizzazione del sistema di vincoli con la funzione obiettivo c*x
     LinearConstrainSystem<double>::SolutionType result = lcs.optimize(solution, c, LinearConstrainSystem<double>::OptimizationType::MIN);
+    
     lcs.print_result(result, solution);
-    // // // esegue l'ottimizzazione del sistema di vincoli con la funzione obiettivo c*x
-    // LinearConstrainSystem<double>::SolutionType result2 = lcs.optimize(solution, c, LinearConstrainSystem<double>::OptimizationType::MIN);
-    // lcs.print_result(result2, solution);
+
 
     return 0;
 }

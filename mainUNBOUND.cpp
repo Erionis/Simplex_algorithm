@@ -17,9 +17,9 @@ int main() {
     lcs.add_constrain({ 1, -4 }, 8, LinearConstrainSystem<double>::ConstrainType::LE);
     lcs.add_constrain({ -1, 1 }, 6, LinearConstrainSystem<double>::ConstrainType::LE);
     lcs.add_constrain({ -3, 2 }, 5, LinearConstrainSystem<double>::ConstrainType::LE);
-    lcs.update();
 
-    lcs.tab.print_tableau();
+
+    lcs.is_feasible();
 
     // vettore di coefficienti della funzione obiettivo
     std::vector<double> c = { 2, 5 };

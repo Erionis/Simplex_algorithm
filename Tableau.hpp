@@ -27,24 +27,23 @@ struct Tableau {
     size_t num_variables{0};
     // Numero di vincoli
     size_t num_constrains{0};
-    // Numero di variabili artificiali
+    // Numero di variabili di slack
     size_t slack_variables{0};   
-    // Numero di variabili artificiali
+    // Numero di variabili di surplus
     size_t surplus_variables{0};   
     // Numero di variabili artificiali
     size_t artificial_variables{0};   
 
-
     // costruttore vuoto
     Tableau() {}
     // costruttore di copia
-    Tableau(const Tableau<T>& other);
+    Tableau(const Tableau<T>& orig);
 
     // metodo per ottenere il numero di colonne del tableau
     inline size_t get_total_columns() { return num_variables + slack_variables + surplus_variables + artificial_variables + 1; }
     // metodo per ottenere l'indice delle colonne dedicate alle variabili decisionali
-    inline size_t get_decVars_index(){ return slack_variables + surplus_variables + artificial_variables; }
-    // metodo per inizializzare il tableau nella forma canonica
+    inline size_t get_decVars_index() { return slack_variables + surplus_variables + artificial_variables; }
+    // metodo per aggiungere i vincoli del sistema al tableau
     void create_initial_tableau(std::vector<typename LinearConstrainSystem<T>::Constrain>& constrains);
     // metodo per aggiungere la funzione obiettivo al Tableau
     void add_objFunc_tableau(std::vector<T>& c, const typename LinearConstrainSystem<T>::OptimizationType type);
@@ -59,8 +58,8 @@ struct Tableau {
     // metodo per aggiungere una riga al Tableau nel caso EQ
     void add_EQ_row_tableau(const std::vector<T>& a, const T& b, size_t current_row);      
     // metodo per individuare la variabile entrante
-    int find_pivot_column();  // CAPIRE QUANDO SI DEVE METTERE CONST
-    // metodo per individuare la variabile uscente
+    int find_pivot_column(); 
+    // metodo per individuare la variabile uscente   // crere metdo simplesso? 
     int find_pivot_row(int pivot_column);
     // metodo per effettuare un pivot
     void pivot(int pivot_row, int pivot_column);
@@ -68,10 +67,11 @@ struct Tableau {
  private: // SCEGLIERE DOVE METTERE PRIVATE
 
     // definisco Big-M come un valore molto grande
-    double BIG_M = 1e9; // CAPIRE MEGLIO COME DEFINIRLO
+    double BIG_M = 1e9; // CAPIRE MEGLIO COME DEFINIRLO  
     // indici (i,j) della posizone delle variabili artificiali nel tableau
     std::vector<std::pair<size_t, size_t>> artificial_var_indices;
 };
+
 
 /**
  * @brief Costruttore di copia
@@ -112,15 +112,13 @@ void Tableau<T>::create_initial_tableau(std::vector<typename LinearConstrainSyst
 
         switch (constrain.type) {
 
-            // Nel caso di vincolo "LE" mi basta aggiungere una variabile artificiale con coeff 1, 
-            // i coefficienti delle variabili decisionali e il termine noto, nella riga corrente
             case LinearConstrainSystem<T>::ConstrainType::LE: {
-
+                // se il termine noto è negativo 
                 if (constrain.b < 0){
                     // creo un vettore con i coefficienti cambiati di segno di a
                     std::vector<T> a_neg(constrain.a.size());
                     std::transform(constrain.a.begin(), constrain.a.end(), a_neg.begin(), std::negate<T>()); 
-                
+                    // considero il caso come de fosse GE
                     add_GE_row_tableau(a_neg, constrain.b*(-1), current_row);    
                 } else {
                     add_LE_row_tableau(constrain.a, constrain.b, current_row);
@@ -129,15 +127,13 @@ void Tableau<T>::create_initial_tableau(std::vector<typename LinearConstrainSyst
                 break;
             }
 
-            // Nel caso di vincolo "GE" mi basta aggiungere una variabile artificiale con coeff 1, 
-            // i coefficienti delle variabili decisionali e il termine noto ma cambiati di segno
             case LinearConstrainSystem<T>::ConstrainType::GE: {
-
+                // se il termine noto è negativo 
                 if (constrain.b < 0){
                     // creo un vettore con i coefficienti cambiati di segno di a
                     std::vector<T> a_neg(constrain.a.size());
                     std::transform(constrain.a.begin(), constrain.a.end(), a_neg.begin(), std::negate<T>()); 
-
+                    // considero il caso come de fosse LE
                     add_LE_row_tableau(a_neg, constrain.b*(-1), current_row);    
                 } else {
                     add_GE_row_tableau(constrain.a, constrain.b, current_row);
@@ -146,10 +142,8 @@ void Tableau<T>::create_initial_tableau(std::vector<typename LinearConstrainSyst
                 break;
             }
 
-            // Nel caso di vincolo "EQ" aggiungo 2 righe al Tableau: la prima considera il vincolo come se fosse LE 
-            // mentre la seconda considera il vicnolo come se fosse GE
             case LinearConstrainSystem<T>::ConstrainType::EQ: {
-
+                // se il termine noto è negativo 
                 if (constrain.b < 0){
                     // creo un vettore con i coefficienti cambiati di segno di a
                     std::vector<T> a_neg(constrain.a.size());
@@ -177,18 +171,19 @@ void Tableau<T>::create_initial_tableau(std::vector<typename LinearConstrainSyst
  */
 template<typename T>
 void Tableau<T>::add_LE_row_tableau(const std::vector<T>& a, const T& b, size_t current_row){
+
     // se non mi trovo nella prima riga
     if(current_row>0){
-        // per tutte le colonne dedicate alle variabili aggiuntive
+        // per tutte le colonne dedicate alle variabili aggiuntive (la parte sinistra del tableau)
         for (size_t i = 0; i < get_decVars_index(); ++i) {
-            // nel caso in cui nella riga precedente c'è un elemento -1
+            // nel caso in cui nella riga precedente ci sia un elemento -1
             if (tableau[current_row-1][i] == 1 && tableau[current_row-1][i+1] == -1) {
                 // aggiungo il coefficiente della variabile di slack
                 tableau[current_row][i+2] = 1;
                 // inserisco la variabile in base
                 base.emplace_back(i+2);
                 break;
-            // nel caso in cui nella riga precedente c'è un elemento 1
+            // nel caso in cui nella riga precedente ci sia solo un elemento +1
             }else if(tableau[current_row-1][i] == 1) {
                 // aggiungo il coefficiente della variabile di slack                
                 tableau[current_row][i+1] = 1;
@@ -225,14 +220,16 @@ void Tableau<T>::add_LE_row_tableau(const std::vector<T>& a, const T& b, size_t 
 template<typename T>
 void Tableau<T>::add_GE_row_tableau(const std::vector<T>& a, const T& b, size_t current_row){
 
+    // se non mi trovo nella prima riga
     if(current_row>0){
-
+        // per tutte le colonne dedicate alle variabili aggiuntive (la parte sinistra del tableau)
         for (size_t i = 0; i < get_decVars_index(); ++i) {
-
+            // nel caso in cui nella riga precedente ci sia un elemento -1
             if (tableau[current_row-1][i] == 1 && tableau[current_row-1][i+1] == -1) {
-                tableau[current_row][i+2] = 1;
-                tableau[current_row][i+3] = -1;
-                base.emplace_back(i+2);
+                tableau[current_row][i+2] = 1;  // aggiungo la variabile artificiale
+                tableau[current_row][i+3] = -1;  // aggiungo la variabile di surplus
+                base.emplace_back(i+2);    // aggiorno la base
+                // salvo la posizione della variabile artificiale 
                 artificial_var_indices.emplace_back(std::make_pair(current_row, i+2));
                 break;
             }else if(tableau[current_row-1][i] == 1) {
@@ -243,14 +240,14 @@ void Tableau<T>::add_GE_row_tableau(const std::vector<T>& a, const T& b, size_t 
                 break;
             }
         }
+    // se mi trovo nella prima riga
     }else{
         tableau[current_row][0] = 1;
         tableau[current_row][1] = -1;
         base.emplace_back(0);
         artificial_var_indices.emplace_back(std::make_pair(current_row, 0));
     }
-
-    // inserisco i coefficienti del vettore a e il termine noto b nella posizione corretta
+    // inserisco i coefficienti del vettore a nella posizione corretta
     for (size_t i = 0; i < num_variables; ++i)  {
 
         tableau[current_row][get_decVars_index() + i] = a[i];
@@ -271,11 +268,11 @@ void Tableau<T>::add_GE_row_tableau(const std::vector<T>& a, const T& b, size_t 
 template<typename T>
 void Tableau<T>::add_EQ_row_tableau(const std::vector<T>& a, const T& b, size_t current_row){
 
-
+    // se non mi trovo nella prima riga
     if(current_row>0){
-
+        // per tutte le colonne dedicate alle variabili aggiuntive (la parte sinistra del tableau)
         for (size_t i = 0; i < get_decVars_index(); ++i) {
-
+            // nel caso in cui nella riga precedente ci sia un elemento -1
             if (tableau[current_row-1][i] == 1 && tableau[current_row-1][i+1] == -1) {
                 tableau[current_row][i+2] = 1;
                 base.emplace_back(i+2);
@@ -288,12 +285,12 @@ void Tableau<T>::add_EQ_row_tableau(const std::vector<T>& a, const T& b, size_t 
                 break;
             }
         }
+    // se mi trovo nella prima riga
     }else{
         tableau[current_row][0] = 1;
         base.emplace_back(0);
                 artificial_var_indices.emplace_back(std::make_pair(current_row, 0));
     }
-
 
     // inserisco i coefficienti del vettore a nella posizione corretta
     for (size_t i = 0; i < num_variables; ++i)  {
@@ -319,7 +316,6 @@ void Tableau<T>::add_objFunc_tableau(std::vector<T>& c, const typename LinearCon
     size_t ObjFunc_row = num_constrains;
     // creo una nuova riga nel Tableau            
     tableau.emplace_back(get_total_columns(), 0);
-    // metto i valori Big-M corrsipondenti alle variabili artificiali nella riga della funzione obiettivo
 
     switch (type) {
 
@@ -332,7 +328,6 @@ void Tableau<T>::add_objFunc_tableau(std::vector<T>& c, const typename LinearCon
             }
             break;
         }
-
         // Caso di MASSIMIZZAZIONE
         case LinearConstrainSystem<T>::OptimizationType::MAX: {
             // Aggiungo nella nuova riga i coefficienti della funzione obiettivo cambiati di segno
@@ -346,22 +341,21 @@ void Tableau<T>::add_objFunc_tableau(std::vector<T>& c, const typename LinearCon
     // Aggiungo il termine noto uguale a 0 della funzione obiettivo
     tableau[ObjFunc_row].back()= 0;
 
-    // Fase del "Big-M method"
+    // Fase del "Big-M method":
 
-    // aggiungo il valore alle variabili artificiali nella riga della funziona obiettivo
+    // aggiungo il valore M alle variabili artificiali nella riga della funziona obiettivo
     for (const auto& indeces : artificial_var_indices) {
         tableau[ObjFunc_row][indeces.second] = BIG_M;
     }
     print_tableau();
-    // e gli elimino facendo le opportune combinazioni lineari sulla funziona obiettivo
+    // e li elimino facendo le opportune combinazioni lineari sulla funziona obiettivo
     for (const auto& indeces : artificial_var_indices) {
         T factor = tableau[ObjFunc_row][indeces.second];
         for (size_t col_index = 0; col_index < get_total_columns(); ++col_index) {
-            // eseguo la combinazione lineare delle rgihe per portare gli altri elemnti della pivot column a 0
+            // eseguo la combinazione lineare delle righe per portare gli altri elemnti della colonna pivot a 0
             tableau[ObjFunc_row][col_index] -= factor * tableau[indeces.first][col_index];
         }        
     }
-
     // da questo punto può partire l'algorimto del simplesso
     std::cout << "---Start Simplex---" << std::endl;
     std::cout << "Tableau iniziale: " << std::endl;
@@ -384,13 +378,12 @@ void Tableau<T>::pivot(int pivot_row, int pivot_column) {
     // Aggiorno gli indici delle variabili di base
     base[pivot_row] = pivot_column;
     print_base();
-
     // Numero di righe del tableau;
     int tot_rows = tableau.size();
     // elemento pivot
     T pivot_element = tableau[pivot_row][pivot_column];
-
     // Divido tutti gli elementi della riga pivot per l'elemento pivot
+
     for (auto& element : tableau[pivot_row]) {
 
         element /= pivot_element;
@@ -427,7 +420,6 @@ int Tableau<T>::find_pivot_column() {
     int pivot_column = -1;
     // pivot_value mi serve come elemento di confronto per trovare il minimo valore negativo nella riga della funzione obiettivo 
     T pivot_value = 0; 
-
     // indice di riga della funzone obiettivo
     size_t ObjFunc_row = num_constrains;
 
@@ -446,7 +438,6 @@ int Tableau<T>::find_pivot_column() {
     }
 
     std::cout<<"Pivot column entrante: "<< pivot_column<< std::endl;
-
     return pivot_column;
 }
 
