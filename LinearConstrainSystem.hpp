@@ -1,5 +1,5 @@
-#ifndef LINEARCONSTRAINSYSTEM_HPP
-#define LINEARCONSTRAINSYSTEM_HPP
+#ifndef __LINEARCONSTRAINSYSTEM_HPP__
+#define __LINEARCONSTRAINSYSTEM_HPP__
 
 #include "Tableau.hpp"
 
@@ -61,9 +61,11 @@ struct LinearConstrainSystem {
     // ottimizza c*x rispetto al sistema di vincoli con x 
     SolutionType optimize(std::vector<T>& solution, const std::vector<T>& c, const OptimizationType type);
     // metodo per stampare i risultati ottenuti
+    #ifdef PRINT
     void print_result(SolutionType type, std::vector<T>& solution) const;
     // metodo per stampare il problema di ottimizzazione ricevuto in input
     void print_Lcs(const std::vector<T>& c, const OptimizationType type) const;
+    #endif // PRINT
 
   private:
     // metodo per aggiornare le informazioni utili per la costruzione del tableau
@@ -214,8 +216,10 @@ bool LinearConstrainSystem<T>::is_feasible() {   /// METTI BOOLEANO
         // ottengo l'indice della variabile entrante
         int pivot_column = copy.tab.find_pivot_column();
         // Se è uguale a -1 non esistono più variabili da introdurre in base e interrompo il ciclo
-        if (pivot_column == -1 ) {            
+        if (pivot_column == -1 ) {    
+            #ifdef PRINT        
             std::cout << "----End Simplex----" << std::endl<<std::endl;
+            #endif // PRINT
             hasSimplexFinished = true; 
         }
         if (hasSimplexFinished == false) {
@@ -225,8 +229,9 @@ bool LinearConstrainSystem<T>::is_feasible() {   /// METTI BOOLEANO
             copy.tab.pivot(pivot_row, pivot_column);
         }
     }
-     
+    #ifdef PRINT 
     std::cout<< "FEASIBILITY TEST: "<< std::endl<<std::endl;  
+    #endif // PRINT
 
     T solution = copy.tab.tableau[copy.tab.num_constrains].back();
     // se z<0 allora il sistema non è ammissibile
@@ -235,7 +240,9 @@ bool LinearConstrainSystem<T>::is_feasible() {   /// METTI BOOLEANO
         return false;
     // altrimenti è ammissibile
     } else {
+        #ifdef PRINT
         std::cout<< "The system is FEASIBLE!"<< std::endl<<std::endl;
+        #endif // PRINT
         // aggiorno la flag del test di ammissibilità
         feasibility_test = true;
         return true;
@@ -255,6 +262,7 @@ bool LinearConstrainSystem<T>::is_feasible() {   /// METTI BOOLEANO
 template<typename T>
 typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimize(std::vector<T>& solution, const  std::vector<T>& c, const OptimizationType type) {
 
+    LinearConstrainSystem<T>::SolutionType sol_type; // variabile that will be returned
     // se l'utente non ha ancora eseguito isfeasible() lo eseguo
     if (feasibility_test == false) {
         is_feasible();
@@ -277,7 +285,9 @@ typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimi
         int pivot_column = copy.tab.find_pivot_column();
         // Se è uguale a -1 non esistono più variabili da introdurre in base e interrompo il ciclo
         if (pivot_column == -1 ) {            
+            #ifdef PRINT
             std::cout << "----End Simplex----" << std::endl<<std::endl;
+            #endif // PRINT
             hasSimplexFinished = true; 
         }
         if (hasSimplexFinished == false) {
@@ -285,7 +295,12 @@ typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimi
             int pivot_row = copy.tab.find_pivot_row(pivot_column);
             // Se la riga pivot è uguale a -1 allora il sistema è illimitato
             if (pivot_row == -1) {
-                return SolutionType::UNBOUNDED;            
+                sol_type = SolutionType::UNBOUNDED; // update and then return the variable
+                #ifdef PRINT
+                print_Lcs(c,type);
+                print_result(sol_type, solution);  
+                #endif // PRINT
+                return sol_type;   
             }
             // Fase di "pivot" dell'algoritmo del simplesso
             copy.tab.pivot(pivot_row, pivot_column);
@@ -310,11 +325,18 @@ typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimi
     // salvo il valore di z alla fine del vettore solution
     solution.emplace_back(copy.tab.tableau[copy.tab.num_constrains].back());
     // stampo il probleam di ottimizzazione
-    print_Lcs(c,type);
 
-    return SolutionType::BOUNDED;
+    sol_type = SolutionType::BOUNDED; // update and then return the variable
+    #ifdef PRINT
+    
+    print_Lcs(c,type);
+    print_result(sol_type, solution);  
+    #endif // PRINT
+
+    return sol_type;
 }
 
+#ifdef PRINT
 
 /**
  * @brief  metodo per stampare il problema di ottimizzazione ricevuto in input
@@ -393,7 +415,7 @@ void LinearConstrainSystem<T>::print_result(SolutionType type, std::vector<T>& s
         std::cout << "UNBOUNDED SOLUTION" << std::endl<< std::endl;
     }
 }
+#endif // PRINT
 
-
-#endif
+#endif // __LINEARCONSTRAINSYSTEM_HPP__
 

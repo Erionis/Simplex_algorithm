@@ -1,5 +1,5 @@
-#ifndef TABLEAU_HPP
-#define TABLEAU_HPP
+#ifndef __TABLEAU_HPP__
+#define __TABLEAU_HPP__
 
 
 #include <algorithm>
@@ -47,10 +47,12 @@ struct Tableau {
     void create_initial_tableau(std::vector<typename LinearConstrainSystem<T>::Constrain>& constrains);
     // metodo per aggiungere la funzione obiettivo al Tableau
     void add_objFunc_tableau(const std::vector<T>& c, const typename LinearConstrainSystem<T>::OptimizationType type);
+    #ifdef PRINT
     // metodo per stampare il Tableau
     void print_tableau() const;
     // stampa i valori in base
     void print_base() const;    
+    #endif // PRINT
     // metodo per aggiungere una riga al Tableau nel caso LE
     void add_LE_row_tableau(const std::vector<T>& a, const T& b, size_t current_row);
     // metodo per aggiungere una riga al Tableau nel caso GE
@@ -347,7 +349,9 @@ void Tableau<T>::add_objFunc_tableau(const std::vector<T>& c, const typename Lin
     for (const auto& indeces : artificial_var_indices) {
         tableau[ObjFunc_row][indeces.second] = BIG_M;
     }
+    #ifdef PRINT
     print_tableau();
+    #endif // PRINT
     // e li elimino facendo le opportune combinazioni lineari sulla funziona obiettivo
     for (const auto& indeces : artificial_var_indices) {
         T factor = tableau[ObjFunc_row][indeces.second];
@@ -357,11 +361,13 @@ void Tableau<T>::add_objFunc_tableau(const std::vector<T>& c, const typename Lin
         }        
     }
     // da questo punto può partire l'algorimto del simplesso
+    #ifdef PRINT
     std::cout << "---Start Simplex---" << std::endl;
     std::cout << "Tableau iniziale: " << std::endl;
     print_tableau();
     std::cout << "Base iniziale: " << std::endl;
     print_base();
+    #endif // PRINT
 }
 
 
@@ -377,7 +383,9 @@ void Tableau<T>::pivot(int pivot_row, int pivot_column) {
 
     // Aggiorno gli indici delle variabili di base
     base[pivot_row] = pivot_column;
+    #ifdef PRINT
     print_base();
+    #endif // PRINT
     // Numero di righe del tableau;
     int tot_rows = tableau.size();
     // elemento pivot
@@ -403,7 +411,9 @@ void Tableau<T>::pivot(int pivot_row, int pivot_column) {
             }
         }
     }
+    #ifdef PRINT
     print_tableau();
+    #endif // PRINT
 }
 
 
@@ -436,8 +446,9 @@ int Tableau<T>::find_pivot_column() {
             pivot_value = tableau[ObjFunc_row][col_index];
         }
     }
-
+    #ifdef PRINT
     std::cout<<"Pivot column entrante: "<< pivot_column<< std::endl;
+    #endif // PRINT
     return pivot_column;
 }
 
@@ -477,13 +488,15 @@ int Tableau<T>::find_pivot_row(int pivot_column) {
             }
         }
     }
-
+    #ifdef PRINT
     std::cout << "Pivot row uscente: " << pivot_row << std::endl;
     std::cout << std::endl;
+    #endif // PRINT
     // Restituisco l'indice della variabile di base scelta
     return pivot_row;
 }
 
+#ifdef PRINT
 
 /**
  * @brief metodo per stampare gli elementi in base
@@ -501,6 +514,9 @@ void Tableau<T>::print_base() const {
     std::cout << std::endl;  
 }
 
+#endif // PRINT
+
+#ifdef PRINT
 
 /**
  * @brief metodo per stampare il Tableau
@@ -519,5 +535,6 @@ void Tableau<T>::print_tableau() const {
     }
     std::cout << std::endl;    
 }
+#endif // PRINT
 
-#endif
+#endif // __TABLEAU_HPP__

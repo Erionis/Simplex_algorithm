@@ -1,3 +1,4 @@
+// #define PRINT
 
 #include <algorithm>
 #include <iostream>
@@ -29,9 +30,6 @@ int main() {
 
     // esegue l'ottimizzazione del sistema di vincoli con la funzione obiettivo c*x
     LinearConstrainSystem<double>::SolutionType result = lcs.optimize(solution, c, LinearConstrainSystem<double>::OptimizationType::MIN);
-
-    // stampo il risultato dell'ottimizzazione
-    lcs.print_result(result, solution);
 
     return 0;
 }
