@@ -61,11 +61,9 @@ struct LinearConstrainSystem {
     // ottimizza c*x rispetto al sistema di vincoli con x 
     SolutionType optimize(std::vector<T>& solution, const std::vector<T>& c, const OptimizationType type);
     // metodo per stampare i risultati ottenuti
-    #ifdef PRINT
     void print_result(SolutionType type, std::vector<T>& solution) const;
     // metodo per stampare il problema di ottimizzazione ricevuto in input
     void print_Lcs(const std::vector<T>& c, const OptimizationType type) const;
-    #endif // PRINT
 
   private:
     // metodo per aggiornare le informazioni utili per la costruzione del tableau
@@ -327,16 +325,13 @@ typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimi
     // stampo il probleam di ottimizzazione
 
     sol_type = SolutionType::BOUNDED; // update and then return the variable
-    #ifdef PRINT
     
     print_Lcs(c,type);
     print_result(sol_type, solution);  
-    #endif // PRINT
 
     return sol_type;
 }
 
-#ifdef PRINT
 
 /**
  * @brief  metodo per stampare il problema di ottimizzazione ricevuto in input
@@ -415,7 +410,6 @@ void LinearConstrainSystem<T>::print_result(SolutionType type, std::vector<T>& s
         std::cout << "UNBOUNDED SOLUTION" << std::endl<< std::endl;
     }
 }
-#endif // PRINT
 
 #endif // __LINEARCONSTRAINSYSTEM_HPP__
 
