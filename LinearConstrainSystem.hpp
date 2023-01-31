@@ -294,10 +294,8 @@ typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimi
             // Se la riga pivot è uguale a -1 allora il sistema è illimitato
             if (pivot_row == -1) {
                 sol_type = SolutionType::UNBOUNDED; // update and then return the variable
-                #ifdef PRINT
                 print_Lcs(c,type);
                 print_result(sol_type, solution);  
-                #endif // PRINT
                 return sol_type;   
             }
             // Fase di "pivot" dell'algoritmo del simplesso
