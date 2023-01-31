@@ -1,3 +1,4 @@
+// #define PRINT
 
 #include <algorithm>
 #include <iostream>
@@ -31,7 +32,9 @@ int main() {
     LinearConstrainSystem<double>::SolutionType result = lcs.optimize(solution, c, LinearConstrainSystem<double>::OptimizationType::MAX);
 
     // stampo il risultato dell'ottimizzazione
-    lcs.print_result(result, solution);
+    #ifdef PRINT
+    // lcs.print_result(result, solution);  
+    #endif
 
 
     return 0;
