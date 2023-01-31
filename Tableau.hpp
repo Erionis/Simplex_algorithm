@@ -46,7 +46,7 @@ struct Tableau {
     // metodo per aggiungere i vincoli del sistema al tableau
     void create_initial_tableau(std::vector<typename LinearConstrainSystem<T>::Constrain>& constrains);
     // metodo per aggiungere la funzione obiettivo al Tableau
-    void add_objFunc_tableau(std::vector<T>& c, const typename LinearConstrainSystem<T>::OptimizationType type);
+    void add_objFunc_tableau(const std::vector<T>& c, const typename LinearConstrainSystem<T>::OptimizationType type);
     // metodo per stampare il Tableau
     void print_tableau() const;
     // stampa i valori in base
@@ -310,7 +310,7 @@ void Tableau<T>::add_EQ_row_tableau(const std::vector<T>& a, const T& b, size_t 
  * @param type tipo di ottimizzazione
  */
 template<typename T>
-void Tableau<T>::add_objFunc_tableau(std::vector<T>& c, const typename LinearConstrainSystem<T>::OptimizationType type) {
+void Tableau<T>::add_objFunc_tableau(const std::vector<T>& c, const typename LinearConstrainSystem<T>::OptimizationType type) {
 
     // Indice di riga della funzione obiettivo
     size_t ObjFunc_row = num_constrains;

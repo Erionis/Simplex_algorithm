@@ -59,9 +59,11 @@ struct LinearConstrainSystem {
     // metodo per vedere se il sistema è ammissibile  // MI TORNA BOOL MA NON LO USO MAI
     bool is_feasible();
     // ottimizza c*x rispetto al sistema di vincoli con x 
-    SolutionType optimize(std::vector<T>& solution, std::vector<T>& c, const OptimizationType type);
+    SolutionType optimize(std::vector<T>& solution, const std::vector<T>& c, const OptimizationType type);
     // metodo per stampare i risultati ottenuti
     void print_result(SolutionType type, std::vector<T>& solution) const;
+    // metodo per stampare il problema di ottimizzazione ricevuto in input
+    void print_Lcs(const std::vector<T>& c, const OptimizationType type) const;
 
   private:
     // metodo per aggiornare le informazioni utili per la costruzione del tableau
@@ -69,8 +71,9 @@ struct LinearConstrainSystem {
     // metodo per controllare che i vincoli in input siano accettabili
     void check_valid_constrains() const;
     // metodo per controllare che la funzione obiettivo in input sia accettabile
-    void check_valid_objFunc(std::vector<T>& c, const OptimizationType type) const;
+    void check_valid_objFunc(const std::vector<T>& c, const OptimizationType type) const;
 };
+
 
 
 /**
@@ -118,9 +121,9 @@ void LinearConstrainSystem<T>::update_tableau_info() {
 
 
 /**
- * @brief metodo per controllare se i vincoli dati in input sono accettabili
+ * @brief metodo per verificare se i vincoli dati in input sono accettabili
  * 
- * @tparam T 
+ * @tparam T generico
  */
 template <typename T>
 void LinearConstrainSystem<T>::check_valid_constrains() const {
@@ -153,7 +156,7 @@ void LinearConstrainSystem<T>::check_valid_constrains() const {
  * @param type tipo di ottimizzazione
  */
 template <typename T>
-void LinearConstrainSystem<T>::check_valid_objFunc(std::vector<T>& c, const OptimizationType type) const {
+void LinearConstrainSystem<T>::check_valid_objFunc(const std::vector<T>& c, const OptimizationType type) const {
 
     // Verifico che il numero di coefficienti delle variabili decisionali sia uguale al numero di variabili decisionali
     if (c.size() != tab.num_variables) {
@@ -250,7 +253,7 @@ bool LinearConstrainSystem<T>::is_feasible() {   /// METTI BOOLEANO
  * @return LinearConstrainSystem<T>::SolutionType 
  */
 template<typename T>
-typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimize(std::vector<T>& solution,   std::vector<T>& c, const OptimizationType type) {
+typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimize(std::vector<T>& solution, const  std::vector<T>& c, const OptimizationType type) {
 
     // se l'utente non ha ancora eseguito isfeasible() lo eseguo
     if (feasibility_test == false) {
@@ -268,7 +271,7 @@ typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimi
     // FASE DELL'ALGORITMO DEL SIMPLESSO:
     // Eseguo il metodo pivot fintanto che non viene interrotto
     bool hasSimplexFinished = false;
-    while (!hasSimplexFinished ) {
+    while (!hasSimplexFinished) {
 
         // ottengo l'indice della variabile entrante
         int pivot_column = copy.tab.find_pivot_column();
@@ -306,10 +309,60 @@ typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimi
     }
     // salvo il valore di z alla fine del vettore solution
     solution.emplace_back(copy.tab.tableau[copy.tab.num_constrains].back());
+    // stampo il probleam di ottimizzazione
+    print_Lcs(c,type);
 
     return SolutionType::BOUNDED;
 }
 
+
+/**
+ * @brief  metodo per stampare il problema di ottimizzazione ricevuto in input
+ * 
+ * @tparam T generico
+ * @param c vettore dei coefficienti della funzione obiettivo
+ * @param type tipo di ottimizzazione
+ */
+template<typename T>
+void LinearConstrainSystem<T>::print_Lcs(const std::vector<T>& c, const OptimizationType type) const {
+
+    std::cout<< "Optimization problem: "<< std::endl<< std::endl;
+
+    std::cout << (type == OptimizationType::MIN ? "Minimize: " : "Maximize: ") << c[0] << "x1";
+    for (size_t i = 1; i < c.size(); ++i) {
+        if (c[i] >= 0) {
+            std::cout << " + " << c[i] << "x" << (i + 1);
+        } else {
+            std::cout << " - " << -c[i] << "x" << (i + 1);
+        }
+    }
+    std::cout << std::endl << "Subject to:" << std::endl;
+
+    for (const auto &constrain : constrains) {
+        std::cout << constrain.a[0]<< "x1";
+        for (size_t i = 1; i < constrain.a.size(); ++i) {
+            if (constrain.a[i] >= 0) {
+                std::cout << " + " << constrain.a[i] << "x" << (i + 1);
+            } else {
+                std::cout << " - " << -constrain.a[i] << "x" << (i + 1);
+            }
+        }
+
+        switch (constrain.type) {
+            case ConstrainType::LE:
+                std::cout << " <= ";
+                break;
+            case ConstrainType::GE:
+                std::cout << " >= ";
+                break;
+            case ConstrainType::EQ:
+                std::cout << " = ";
+                break;
+        }
+        std::cout << constrain.b << std::endl;
+    }
+
+}
 
 /**
  * @brief metodo per stampare la soluzione ottima del problema di ottimizzazione
@@ -321,10 +374,9 @@ typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimi
 template<typename T>  // SISTEMARE STAMPANDO ANCHE I VINCOLI E LA F OBIETTIVO
 void LinearConstrainSystem<T>::print_result(SolutionType type, std::vector<T>& solution) const {
 
-    std::cout << std::endl;
     // Caso BOUNDED
     if (type == LinearConstrainSystem<double>::SolutionType::BOUNDED) {
- 
+        
         std::cout << std::endl;  
         std::cout << "Bounded solution found:" << std::endl;
 
@@ -334,11 +386,11 @@ void LinearConstrainSystem<T>::print_result(SolutionType type, std::vector<T>& s
         }
         std::cout << std::endl; 
 
-        std::cout<< "Optimal value z= "<< solution.back() << std::endl;
+        std::cout<< "Optimal value z= "<< solution.back() << std::endl<< std::endl;
 
     // Caso UNBOUNDED
     } else {
-        std::cout << "UNBOUNDED SOLUTION" << std::endl;
+        std::cout << "UNBOUNDED SOLUTION" << std::endl<< std::endl;
     }
 }
 

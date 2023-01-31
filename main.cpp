@@ -19,7 +19,7 @@ int main() {
     lcs.add_constrain({ 1, -1, 2, 0 }, 2, LinearConstrainSystem<double>::ConstrainType::LE);
 
     // controllo che il sistema sia ammissibile
-    lcs.is_feasible();  /// mettere booleano
+    lcs.is_feasible(); 
 
     // vettore di coefficienti della funzione obiettivo
     std::vector<double> c = {  2, 3, -1, -3 };
@@ -32,6 +32,7 @@ int main() {
 
     // stampo il risultato dell'ottimizzazione
     lcs.print_result(result, solution);
+
 
     return 0;
 }
