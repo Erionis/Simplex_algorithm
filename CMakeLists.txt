@@ -12,15 +12,14 @@ cmake_minimum_required(VERSION 3.17)
 
 # Poi esegui i file come faresti di solito
 
-
 project(esame)
 
+# specify the C++ standard
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-add_executable(esame main.cpp)
-add_executable(esame_print main.cpp)
-
-add_executable(mainEQ mainEQ.cpp)
-add_executable(mainEQ_print mainEQ.cpp)
+add_executable(main main.cpp)
+add_executable(main_print main.cpp)
 
 add_executable(mainINFEASIBLE mainINFEASIBLE.cpp)
 add_executable(mainINFEASIBLE_print mainINFEASIBLE.cpp)
@@ -34,16 +33,9 @@ add_executable(mainTest_print mainTest.cpp)
 add_executable(mainUNBOUND mainUNBOUND.cpp)
 add_executable(mainUNBOUND_print mainUNBOUND.cpp)
 
-add_executable(mainBigM mainBigM.cpp)
-add_executable(mainBigM_print mainBigM.cpp)
 
 target_compile_definitions(esame_print PUBLIC PRINT)
-target_compile_definitions(mainEQ_print PUBLIC PRINT)
 target_compile_definitions(mainINFEASIBLE_print PUBLIC PRINT)
 target_compile_definitions(mainMIN_print PUBLIC PRINT)
 target_compile_definitions(mainTest_print PUBLIC PRINT)
 target_compile_definitions(mainUNBOUND_print PUBLIC PRINT)
-target_compile_definitions(mainBigM_print PUBLIC PRINT)
-
-
-# target_include_directories(esame PRIVATE include) A cosa serve?

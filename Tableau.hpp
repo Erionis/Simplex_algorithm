@@ -344,7 +344,6 @@ void Tableau<T>::add_objFunc_tableau(const std::vector<T>& c, const typename Lin
     tableau[ObjFunc_row].back()= 0;
 
     // Fase del "Big-M method":
-
     // aggiungo il valore M alle variabili artificiali nella riga della funziona obiettivo
     for (const auto& indeces : artificial_var_indices) {
         tableau[ObjFunc_row][indeces.second] = BIG_M;
@@ -466,7 +465,7 @@ int Tableau<T>::find_pivot_row(int pivot_column) {
     // Inizializzo l'indice della variabile di base scelta a -1 per gestire i casi particolari
     int pivot_row = -1;
     // imposto un valore molto alto per il rapporto tra coefficienti, che mi servirà per individuare il più piccolo tra i rapporti
-    T min_ratio = std::numeric_limits<T>::max();
+    double min_ratio = std::numeric_limits<T>::max();
     // riga della funzone obiettivo
     size_t ObjFunc_row = num_constrains;
 
@@ -477,7 +476,7 @@ int Tableau<T>::find_pivot_row(int pivot_column) {
         if (tableau[row_index][pivot_column] > 0) {
 
             // Calcolo il rapporto tra il termine noto e il coefficiente nella riga corrente del tableau
-            T ratio = tableau[row_index].back() / tableau[row_index][pivot_column];
+            double ratio = tableau[row_index].back() / tableau[row_index][pivot_column];
 
             // Se il rapporto è minore del rapporto più piccolo trovato finora
             if (ratio < min_ratio) {

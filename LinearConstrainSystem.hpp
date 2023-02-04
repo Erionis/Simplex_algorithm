@@ -138,13 +138,12 @@ void LinearConstrainSystem<T>::check_valid_constrains() const {
         }
 
         if (constrain.type != ConstrainType::LE && 
-            constrain.type != ConstrainType::EQ &&   // da capire se serve
+            constrain.type != ConstrainType::EQ &&  
             constrain.type != ConstrainType::GE) 
             {
             throw std::invalid_argument("Invalid constrain type");
         }
     }
-    // controllare che gianfry metta dei numeri e non altro!! 
 }
 
 
@@ -177,13 +176,12 @@ void LinearConstrainSystem<T>::check_valid_objFunc(const std::vector<T>& c, cons
  * @return false se il sistema di vincoli non è ammissibile
  */
 template <typename T>
-bool LinearConstrainSystem<T>::is_feasible() {   /// METTI BOOLEANO
+bool LinearConstrainSystem<T>::is_feasible() {  
 
     // controllo che i valori forniti in ingresso siano accettabili
     check_valid_constrains();
     // aggiorno le informazioni ricevute finora dall'utente
     update_tableau_info();
-
     // Creo una copia del LinearConstrainsystem costruito finora
     LinearConstrainSystem<T> copy(*this);
 
@@ -206,7 +204,7 @@ bool LinearConstrainSystem<T>::is_feasible() {   /// METTI BOOLEANO
     std::vector<T> c(copy.tab.num_variables - 1,0);
     c.emplace_back(1);
     // la aggiungo al Tableau
-    copy.tab.add_objFunc_tableau(c, LinearConstrainSystem<double>::OptimizationType::MAX);
+    copy.tab.add_objFunc_tableau(c, LinearConstrainSystem<T>::OptimizationType::MAX);
 
     // Eseguo il metodo pivot del simplesso fintanto che non viene interrotto
     bool hasSimplexFinished = false;
@@ -259,8 +257,8 @@ bool LinearConstrainSystem<T>::is_feasible() {   /// METTI BOOLEANO
  */
 template<typename T>
 typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimize(std::vector<T>& solution, const  std::vector<T>& c, const OptimizationType type) {
-
-    LinearConstrainSystem<T>::SolutionType sol_type; // variabile that will be returned
+    // variable that will be returned
+    LinearConstrainSystem<T>::SolutionType sol_type; 
     // se l'utente non ha ancora eseguito isfeasible() lo eseguo
     if (feasibility_test == false) {
         is_feasible();
@@ -321,9 +319,7 @@ typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimi
     // salvo il valore di z alla fine del vettore solution
     solution.emplace_back(copy.tab.tableau[copy.tab.num_constrains].back());
     // stampo il probleam di ottimizzazione
-
-    sol_type = SolutionType::BOUNDED; // update and then return the variable
-    
+    sol_type = SolutionType::BOUNDED;     
     print_Lcs(c,type);
     print_result(sol_type, solution);  
 
@@ -390,7 +386,7 @@ template<typename T>  // SISTEMARE STAMPANDO ANCHE I VINCOLI E LA F OBIETTIVO
 void LinearConstrainSystem<T>::print_result(SolutionType type, std::vector<T>& solution) const {
 
     // Caso BOUNDED
-    if (type == LinearConstrainSystem<double>::SolutionType::BOUNDED) {
+    if (type == LinearConstrainSystem<T>::SolutionType::BOUNDED) {
         
         std::cout << std::endl;  
         std::cout << "Bounded solution found:" << std::endl;

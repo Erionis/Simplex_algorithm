@@ -14,15 +14,6 @@ int main() {
     LinearConstrainSystem<double> lcs;
 
     // aggiunge i seguenti vincoli al sistema:
-
-    // lcs.add_constrain({ 1, 1 }, 2, LinearConstrainSystem<double>::ConstrainType::EQ);
-    // lcs.add_constrain({ 1, -3 }, 3, LinearConstrainSystem<double>::ConstrainType::GE);
-
-    // lcs.add_constrain({ 2, 3 }, 6, LinearConstrainSystem<double>::ConstrainType::LE);
-    // lcs.add_constrain({ 3, 5 }, 15, LinearConstrainSystem<double>::ConstrainType::GE);
-
-
-    
     lcs.add_constrain({ 2, 3 }, 1200, LinearConstrainSystem<double>::ConstrainType::GE);
     lcs.add_constrain({ 1, 1 }, 400, LinearConstrainSystem<double>::ConstrainType::LE);
     lcs.add_constrain({ 2, 1.5 }, 900, LinearConstrainSystem<double>::ConstrainType::GE);
