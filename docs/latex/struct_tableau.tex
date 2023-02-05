@@ -1,0 +1,291 @@
+\hypertarget{struct_tableau}{}\doxysection{Tableau\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Struct Template Reference}
+\label{struct_tableau}\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+
+
+Struct rappresentante il \mbox{\hyperlink{struct_tableau}{Tableau}} e tutte le funzioni ad essso collegate.  
+
+
+
+
+{\ttfamily \#include $<$Tableau.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_tableau_a189f7ce55a4b926a779b7cfd729d906d}{Tableau}} (const \mbox{\hyperlink{struct_tableau}{Tableau}}$<$ T $>$ \&orig)
+\begin{DoxyCompactList}\small\item\em Costruttore di copia. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_tableau_ac9d7856ca38d459c6a4a1b4d9e2ed3d5}\label{struct_tableau_ac9d7856ca38d459c6a4a1b4d9e2ed3d5}} 
+size\+\_\+t {\bfseries get\+\_\+total\+\_\+columns} ()
+\item 
+\mbox{\Hypertarget{struct_tableau_a97c8c7313894130bf122d7f30121f587}\label{struct_tableau_a97c8c7313894130bf122d7f30121f587}} 
+size\+\_\+t {\bfseries get\+\_\+dec\+Vars\+\_\+index} ()
+\item 
+void \mbox{\hyperlink{struct_tableau_a31635af9fbdb6cb6524ed339889d0cd9}{create\+\_\+initial\+\_\+tableau}} (std\+::vector$<$ typename \mbox{\hyperlink{struct_linear_constrain_system}{Linear\+Constrain\+System}}$<$ T $>$\+::\+Constrain $>$ \&constrains)
+\begin{DoxyCompactList}\small\item\em metodo per inserire i vincoli del sistema nel \mbox{\hyperlink{struct_tableau}{Tableau}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_tableau_a711bf3d7f5f204aa62637fb5d01a3b1d}{add\+\_\+obj\+Func\+\_\+tableau}} (const std\+::vector$<$ T $>$ \&c, const typename \mbox{\hyperlink{struct_linear_constrain_system}{Linear\+Constrain\+System}}$<$ T $>$\+::\+Optimization\+Type type)
+\begin{DoxyCompactList}\small\item\em metodo per aggiungere la riga della funzione obiettivo nel \mbox{\hyperlink{struct_tableau}{Tableau}} col \char`\"{}\+Big-\/\+M method\char`\"{} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_tableau_a7d184636444b5b38c3b7446b99cdd8ff}{add\+\_\+\+LE\+\_\+row\+\_\+tableau}} (const std\+::vector$<$ T $>$ \&a, const T \&b, size\+\_\+t current\+\_\+row)
+\begin{DoxyCompactList}\small\item\em metodo per aggiungere un vincolo di tipo \char`\"{}minore o uguale\char`\"{} in una riga del \mbox{\hyperlink{struct_tableau}{Tableau}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_tableau_abbd316e38d3bc9edf204aa8c228d6a68}{add\+\_\+\+GE\+\_\+row\+\_\+tableau}} (const std\+::vector$<$ T $>$ \&a, const T \&b, size\+\_\+t current\+\_\+row)
+\begin{DoxyCompactList}\small\item\em metodo per aggiungere un vincolo di tipo \char`\"{}maggiore o uguale\char`\"{} in una riga del \mbox{\hyperlink{struct_tableau}{Tableau}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_tableau_a242236b68f4f2ad725fc589ab14e938f}{add\+\_\+\+EQ\+\_\+row\+\_\+tableau}} (const std\+::vector$<$ T $>$ \&a, const T \&b, size\+\_\+t current\+\_\+row)
+\begin{DoxyCompactList}\small\item\em metodo per aggiungere un vincolo di tipo \char`\"{}maggiore o uguale\char`\"{} in una riga del \mbox{\hyperlink{struct_tableau}{Tableau}} \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{struct_tableau_a831676b1f828ba8d291742e5a2310f9d}{find\+\_\+pivot\+\_\+column}} ()
+\begin{DoxyCompactList}\small\item\em metodo per individuare l\textquotesingle{}indice di colonna della variabile entrante \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{struct_tableau_a6cb602c41868f757643841ad843eb63a}{find\+\_\+pivot\+\_\+row}} (int pivot\+\_\+column)
+\begin{DoxyCompactList}\small\item\em metodo per individuare l\textquotesingle{}inidice della variabile in uscita dalla base \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_tableau_a8661b41ff9d43f435a1fcf55a2b8b119}{pivot}} (int pivot\+\_\+row, int pivot\+\_\+column)
+\begin{DoxyCompactList}\small\item\em metodo che implementa la fase \char`\"{}pivot\char`\"{} dell\textquotesingle{}algoritmo del simplesso \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_tableau_a5f317c60030273db98a8c877ad2598e3}\label{struct_tableau_a5f317c60030273db98a8c877ad2598e3}} 
+std\+::vector$<$ std\+::vector$<$ T $>$ $>$ {\bfseries tableau}
+\item 
+\mbox{\Hypertarget{struct_tableau_a349fde89077eb9595fa07cdb44f1d74f}\label{struct_tableau_a349fde89077eb9595fa07cdb44f1d74f}} 
+std\+::vector$<$ size\+\_\+t $>$ {\bfseries base}
+\item 
+\mbox{\Hypertarget{struct_tableau_a030ad3e88d0adf4650d91b0e599ceac7}\label{struct_tableau_a030ad3e88d0adf4650d91b0e599ceac7}} 
+size\+\_\+t {\bfseries num\+\_\+variables} \{0\}
+\item 
+\mbox{\Hypertarget{struct_tableau_aaecf8ef8b646889e3e32cc8f2e2215d6}\label{struct_tableau_aaecf8ef8b646889e3e32cc8f2e2215d6}} 
+size\+\_\+t {\bfseries num\+\_\+constrains} \{0\}
+\item 
+\mbox{\Hypertarget{struct_tableau_a959a9622d29fe6c5d2776e019b868605}\label{struct_tableau_a959a9622d29fe6c5d2776e019b868605}} 
+size\+\_\+t {\bfseries slack\+\_\+variables} \{0\}
+\item 
+\mbox{\Hypertarget{struct_tableau_ab829b9c5f469a23f482f025471794bdd}\label{struct_tableau_ab829b9c5f469a23f482f025471794bdd}} 
+size\+\_\+t {\bfseries surplus\+\_\+variables} \{0\}
+\item 
+\mbox{\Hypertarget{struct_tableau_a9313b4454c8abf8aa581e5fd56bd082b}\label{struct_tableau_a9313b4454c8abf8aa581e5fd56bd082b}} 
+size\+\_\+t {\bfseries artificial\+\_\+variables} \{0\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+struct Tableau$<$ T $>$}
+Struct rappresentante il \mbox{\hyperlink{struct_tableau}{Tableau}} e tutte le funzioni ad essso collegate. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & generico \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{struct_tableau_a189f7ce55a4b926a779b7cfd729d906d}\label{struct_tableau_a189f7ce55a4b926a779b7cfd729d906d}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!Tableau@{Tableau}}
+\index{Tableau@{Tableau}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Tableau()}{Tableau()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{struct_tableau}{Tableau}}$<$ T $>$\mbox{\hyperlink{struct_tableau}{\+::\+Tableau}} (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_tableau}{Tableau}}$<$ T $>$ \&}]{orig }\end{DoxyParamCaption})}
+
+
+
+Costruttore di copia. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & generico \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em orig} & oggetto originale che viene copiato \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{struct_tableau_a242236b68f4f2ad725fc589ab14e938f}\label{struct_tableau_a242236b68f4f2ad725fc589ab14e938f}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!add\_EQ\_row\_tableau@{add\_EQ\_row\_tableau}}
+\index{add\_EQ\_row\_tableau@{add\_EQ\_row\_tableau}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{add\_EQ\_row\_tableau()}{add\_EQ\_row\_tableau()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{struct_tableau}{Tableau}}$<$ T $>$\+::add\+\_\+\+EQ\+\_\+row\+\_\+tableau (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{a,  }\item[{const T \&}]{b,  }\item[{size\+\_\+t}]{current\+\_\+row }\end{DoxyParamCaption})}
+
+
+
+metodo per aggiungere un vincolo di tipo \char`\"{}maggiore o uguale\char`\"{} in una riga del \mbox{\hyperlink{struct_tableau}{Tableau}} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & generico \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em a} & vettore dei coefficienti delle variabili decisionali del vincolo \\
+\hline
+{\em b} & termine noto del vincolo \\
+\hline
+{\em current\+\_\+row} & indice di riga corrente del tableau \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{struct_tableau_abbd316e38d3bc9edf204aa8c228d6a68}\label{struct_tableau_abbd316e38d3bc9edf204aa8c228d6a68}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!add\_GE\_row\_tableau@{add\_GE\_row\_tableau}}
+\index{add\_GE\_row\_tableau@{add\_GE\_row\_tableau}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{add\_GE\_row\_tableau()}{add\_GE\_row\_tableau()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{struct_tableau}{Tableau}}$<$ T $>$\+::add\+\_\+\+GE\+\_\+row\+\_\+tableau (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{a,  }\item[{const T \&}]{b,  }\item[{size\+\_\+t}]{current\+\_\+row }\end{DoxyParamCaption})}
+
+
+
+metodo per aggiungere un vincolo di tipo \char`\"{}maggiore o uguale\char`\"{} in una riga del \mbox{\hyperlink{struct_tableau}{Tableau}} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & generico \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em a} & vettore dei coefficienti delle variabili decisionali del vincolo \\
+\hline
+{\em b} & termine noto del vincolo \\
+\hline
+{\em current\+\_\+row} & indice di riga corrente del tableau \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{struct_tableau_a7d184636444b5b38c3b7446b99cdd8ff}\label{struct_tableau_a7d184636444b5b38c3b7446b99cdd8ff}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!add\_LE\_row\_tableau@{add\_LE\_row\_tableau}}
+\index{add\_LE\_row\_tableau@{add\_LE\_row\_tableau}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{add\_LE\_row\_tableau()}{add\_LE\_row\_tableau()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{struct_tableau}{Tableau}}$<$ T $>$\+::add\+\_\+\+LE\+\_\+row\+\_\+tableau (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{a,  }\item[{const T \&}]{b,  }\item[{size\+\_\+t}]{current\+\_\+row }\end{DoxyParamCaption})}
+
+
+
+metodo per aggiungere un vincolo di tipo \char`\"{}minore o uguale\char`\"{} in una riga del \mbox{\hyperlink{struct_tableau}{Tableau}} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & generico \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em a} & vettore dei coefficienti delle variabili decisionali del vincolo \\
+\hline
+{\em b} & termine noto del vincolo \\
+\hline
+{\em current\+\_\+row} & indice di riga corrente del tableau \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{struct_tableau_a711bf3d7f5f204aa62637fb5d01a3b1d}\label{struct_tableau_a711bf3d7f5f204aa62637fb5d01a3b1d}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!add\_objFunc\_tableau@{add\_objFunc\_tableau}}
+\index{add\_objFunc\_tableau@{add\_objFunc\_tableau}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{add\_objFunc\_tableau()}{add\_objFunc\_tableau()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{struct_tableau}{Tableau}}$<$ T $>$\+::add\+\_\+obj\+Func\+\_\+tableau (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{c,  }\item[{const typename \mbox{\hyperlink{struct_linear_constrain_system}{Linear\+Constrain\+System}}$<$ T $>$\+::\+Optimization\+Type}]{type }\end{DoxyParamCaption})}
+
+
+
+metodo per aggiungere la riga della funzione obiettivo nel \mbox{\hyperlink{struct_tableau}{Tableau}} col \char`\"{}\+Big-\/\+M method\char`\"{} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & generico \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em c} & vettore dei coefficienti della funzione obiettivo \\
+\hline
+{\em type} & tipo di ottimizzazione \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{struct_tableau_a31635af9fbdb6cb6524ed339889d0cd9}\label{struct_tableau_a31635af9fbdb6cb6524ed339889d0cd9}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!create\_initial\_tableau@{create\_initial\_tableau}}
+\index{create\_initial\_tableau@{create\_initial\_tableau}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{create\_initial\_tableau()}{create\_initial\_tableau()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{struct_tableau}{Tableau}}$<$ T $>$\+::create\+\_\+initial\+\_\+tableau (\begin{DoxyParamCaption}\item[{std\+::vector$<$ typename \mbox{\hyperlink{struct_linear_constrain_system}{Linear\+Constrain\+System}}$<$ T $>$\+::\+Constrain $>$ \&}]{constrains }\end{DoxyParamCaption})}
+
+
+
+metodo per inserire i vincoli del sistema nel \mbox{\hyperlink{struct_tableau}{Tableau}} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & generico \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em constrains} & vettore di oggetti di tipo Constrain rappresentanti i vincoli del sistema \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{struct_tableau_a831676b1f828ba8d291742e5a2310f9d}\label{struct_tableau_a831676b1f828ba8d291742e5a2310f9d}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!find\_pivot\_column@{find\_pivot\_column}}
+\index{find\_pivot\_column@{find\_pivot\_column}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{find\_pivot\_column()}{find\_pivot\_column()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \mbox{\hyperlink{struct_tableau}{Tableau}}$<$ T $>$\+::find\+\_\+pivot\+\_\+column}
+
+
+
+metodo per individuare l\textquotesingle{}indice di colonna della variabile entrante 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & generico \\
+\hline
+\end{DoxyTemplParams}
+\begin{DoxyReturn}{Returns}
+int indice della colonna associata alla variabile entrante 
+\end{DoxyReturn}
+\mbox{\Hypertarget{struct_tableau_a6cb602c41868f757643841ad843eb63a}\label{struct_tableau_a6cb602c41868f757643841ad843eb63a}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!find\_pivot\_row@{find\_pivot\_row}}
+\index{find\_pivot\_row@{find\_pivot\_row}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{find\_pivot\_row()}{find\_pivot\_row()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \mbox{\hyperlink{struct_tableau}{Tableau}}$<$ T $>$\+::find\+\_\+pivot\+\_\+row (\begin{DoxyParamCaption}\item[{int}]{pivot\+\_\+column }\end{DoxyParamCaption})}
+
+
+
+metodo per individuare l\textquotesingle{}inidice della variabile in uscita dalla base 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & generico \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em pivot\+\_\+column} & indice della variabile entrante in base \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int indice della riga associata alla variabile uscente 
+\end{DoxyReturn}
+\mbox{\Hypertarget{struct_tableau_a8661b41ff9d43f435a1fcf55a2b8b119}\label{struct_tableau_a8661b41ff9d43f435a1fcf55a2b8b119}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!pivot@{pivot}}
+\index{pivot@{pivot}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{pivot()}{pivot()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{struct_tableau}{Tableau}}$<$ T $>$\+::pivot (\begin{DoxyParamCaption}\item[{int}]{pivot\+\_\+row,  }\item[{int}]{pivot\+\_\+column }\end{DoxyParamCaption})}
+
+
+
+metodo che implementa la fase \char`\"{}pivot\char`\"{} dell\textquotesingle{}algoritmo del simplesso 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & generico \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em pivot\+\_\+row} & indice di riga della variabile uscente \\
+\hline
+{\em pivot\+\_\+column} & indice di colonna della variabile entrante \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Erion/\+Desktop/\+Programmazione/\+Simplex\+\_\+algorithm/Tableau.\+hpp\end{DoxyCompactItemize}
