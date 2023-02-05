@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['tableau_0',['Tableau',['../struct_tableau.html',1,'']]]
+  ['tableau_0',['Tableau',['../class_tableau.html',1,'']]]
 ];

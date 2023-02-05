@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['find_5fpivot_5fcolumn_0',['find_pivot_column',['../struct_tableau.html#a831676b1f828ba8d291742e5a2310f9d',1,'Tableau']]],
-  ['find_5fpivot_5frow_1',['find_pivot_row',['../struct_tableau.html#a6cb602c41868f757643841ad843eb63a',1,'Tableau']]]
+  ['print_5flcs_0',['print_Lcs',['../struct_linear_constrain_system.html#a16399e836932ef4707c9cfc04bd0ee43',1,'LinearConstrainSystem']]],
+  ['print_5fresult_1',['print_result',['../struct_linear_constrain_system.html#aa85b0ac8d4b907a763efa4067a032955',1,'LinearConstrainSystem']]]
 ];

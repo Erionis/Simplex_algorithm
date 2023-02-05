@@ -2,362 +2,363 @@
 \label{_linear_constrain_system_8hpp_source}\index{C:/Users/Erion/Desktop/Programmazione/Simplex\_algorithm/LinearConstrainSystem.hpp@{C:/Users/Erion/Desktop/Programmazione/Simplex\_algorithm/LinearConstrainSystem.hpp}}
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ \_\_LINEARCONSTRAINSYSTEM\_HPP\_\_}}
-\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ \_\_LINEARCONSTRAINSYSTEM\_HPP\_\_}}
-\DoxyCodeLine{00003\ }
-\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}Tableau.hpp"{}}}
-\DoxyCodeLine{00005\ }
-\DoxyCodeLine{00011\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00012\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem}}\ \{}
-\DoxyCodeLine{00013\ }
-\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keyword}{enum\ class}\ SolutionType\ \{}
-\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ BOUNDED,\ \textcolor{comment}{//\ trovata\ una\ soluzione\ ottima}}
-\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ UNBOUNDED\ \textcolor{comment}{//\ l'insieme\ delle\ soluzioni\ non\ è\ limitato\ superiormente}}
-\DoxyCodeLine{00017\ \ \ \ \ \};}
-\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{enum\ class}\ ConstrainType\ \{}
-\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ EQ,\ \textcolor{comment}{//\ ==}}
-\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ LE,\ \textcolor{comment}{//\ <=}}
-\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ GE,\ \textcolor{comment}{//\ >=}}
-\DoxyCodeLine{00022\ \ \ \ \ \};}
-\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{enum\ class}\ OptimizationType\ \{\ MIN,\ MAX\ \};}
-\DoxyCodeLine{00024\ }
-\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_linear_constrain_system_1_1_constrain}{Constrain}}\ \{}
-\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ coefficienti\ del\ vincolo}}
-\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ std::vector<T>\ a;}
-\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ termine\ noto}}
-\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ T\ b;}
-\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ tipo\ di\ vincolo}}
-\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ ConstrainType\ type;}
-\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ costruttore\ vuoto}}
-\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_linear_constrain_system_1_1_constrain}{Constrain}}()\ \{\}}
-\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ costruttore\ di\ inizializzazione}}
-\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_linear_constrain_system_1_1_constrain}{Constrain}}(std::vector<T>\ a,\ T\ b,\ ConstrainType\ type)\ :\ a(a),\ b(b),\ type(type)\ \{\}}
-\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ costruttore\ di\ copia}}
-\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_linear_constrain_system_1_1_constrain}{Constrain}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_linear_constrain_system_1_1_constrain}{Constrain}}\&\ orig)\ :\ a(orig.a),\ b(orig.b),\ type(orig.type)\ \{\}}
-\DoxyCodeLine{00038\ \ \ \ \ \};}
-\DoxyCodeLine{00039\ }
-\DoxyCodeLine{00040\ \ \ \ \ \textcolor{comment}{//\ vettore\ di\ oggetti\ di\ tipo\ Constrain}}
-\DoxyCodeLine{00041\ \ \ \ \ std::vector<Constrain>\ constrains;}
-\DoxyCodeLine{00042\ \ \ \ \ \textcolor{comment}{//\ creo\ un\ oggetto\ di\ tipo\ Tableau}}
-\DoxyCodeLine{00043\ \ \ \ \ \mbox{\hyperlink{struct_tableau}{Tableau<T>}}\ tab;\ }
-\DoxyCodeLine{00044\ \ \ \ \ \textcolor{comment}{//\ flag\ che\ tiene\ conto\ se\ l'utente\ ha\ già\ constollato\ se\ il\ sistema\ è\ ammissibile}}
-\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{bool}\ feasibility\_test\{\textcolor{keyword}{false}\};}
-\DoxyCodeLine{00046\ }
-\DoxyCodeLine{00047\ \ \ \ \ \textcolor{comment}{//\ costruttore\ vuoto}}
-\DoxyCodeLine{00048\ \ \ \ \ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem}}()\ \{\}}
-\DoxyCodeLine{00049\ \ \ \ \ \textcolor{comment}{//\ costruttore\ di\ copia}}
-\DoxyCodeLine{00050\ \ \ \ \ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem}}\&\ orig)\ :\ constrains(orig.constrains),\ tab(orig.tab)\ \{\}}
-\DoxyCodeLine{00051\ }
-\DoxyCodeLine{00052\ \ \ \ \ \textcolor{comment}{//\ Aggiunge\ il\ vincolo\ a*x\ type\ b,\ e.g.,\ a*x\ <=\ b}}
-\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem}}\&\ add\_constrain(\textcolor{keyword}{const}\ std::vector<T>\&\ a,\ \textcolor{keyword}{const}\ T\&\ b,\ \textcolor{keyword}{const}\ ConstrainType\ type)\{\ }
-\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ aggiungo\ il\ vincolo\ al\ vettore\ dei\ vincoli}}
-\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ constrains.emplace\_back(a,\ b,\ type);}
-\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
-\DoxyCodeLine{00057\ \ \ \ \ \}}
-\DoxyCodeLine{00058\ }
-\DoxyCodeLine{00059\ \ \ \ \ \textcolor{comment}{//\ metodo\ per\ vedere\ se\ il\ sistema\ è\ ammissibile\ \ //\ MI\ TORNA\ BOOL\ MA\ NON\ LO\ USO\ MAI}}
-\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{struct_linear_constrain_system_a0e1a6719a7a8d96393da82182ae529d3}{is\_feasible}}();}
-\DoxyCodeLine{00061\ \ \ \ \ \textcolor{comment}{//\ ottimizza\ c*x\ rispetto\ al\ sistema\ di\ vincoli\ con\ x\ }}
-\DoxyCodeLine{00062\ \ \ \ \ SolutionType\ \mbox{\hyperlink{struct_linear_constrain_system_a23534dab9b52fb072e80ac7e906b2568}{optimize}}(std::vector<T>\&\ solution,\ \textcolor{keyword}{const}\ std::vector<T>\&\ c,\ \textcolor{keyword}{const}\ OptimizationType\ type);}
-\DoxyCodeLine{00063\ \ \ \ \ \textcolor{comment}{//\ metodo\ per\ stampare\ i\ risultati\ ottenuti}}
-\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_linear_constrain_system_aa85b0ac8d4b907a763efa4067a032955}{print\_result}}(SolutionType\ type,\ std::vector<T>\&\ solution)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00065\ \ \ \ \ \textcolor{comment}{//\ metodo\ per\ stampare\ il\ problema\ di\ ottimizzazione\ ricevuto\ in\ input}}
-\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_linear_constrain_system_a16399e836932ef4707c9cfc04bd0ee43}{print\_Lcs}}(\textcolor{keyword}{const}\ std::vector<T>\&\ c,\ \textcolor{keyword}{const}\ OptimizationType\ type)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00067\ }
-\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00069\ \ \ \ \ \textcolor{comment}{//\ metodo\ per\ aggiornare\ le\ informazioni\ utili\ per\ la\ costruzione\ del\ tableau}}
-\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordtype}{void}\ update\_tableau\_info();}
-\DoxyCodeLine{00071\ \ \ \ \ \textcolor{comment}{//\ metodo\ per\ controllare\ che\ i\ vincoli\ in\ input\ siano\ accettabili}}
-\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{void}\ check\_valid\_constrains()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00073\ \ \ \ \ \textcolor{comment}{//\ metodo\ per\ controllare\ che\ la\ funzione\ obiettivo\ in\ input\ sia\ accettabile}}
-\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{void}\ check\_valid\_objFunc(\textcolor{keyword}{const}\ std::vector<T>\&\ c,\ \textcolor{keyword}{const}\ OptimizationType\ type)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00075\ \};}
-\DoxyCodeLine{00076\ }
-\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#ifndef\ \_\_LINEARCONSTRAINSYSTEM\_HPP\_\_}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#define\ \_\_LINEARCONSTRAINSYSTEM\_HPP\_\_}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}Tableau.hpp"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00013\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem}}\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keyword}{enum\ class}\ SolutionType\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ BOUNDED,\ \textcolor{comment}{//\ trovata\ una\ soluzione\ ottima}}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ UNBOUNDED\ \textcolor{comment}{//\ l'insieme\ delle\ soluzioni\ non\ è\ limitato\ superiormente}}
+\DoxyCodeLine{00018\ \ \ \ \ \};}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{enum\ class}\ ConstrainType\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ EQ,\ \textcolor{comment}{//\ ==}}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ LE,\ \textcolor{comment}{//\ <=}}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ GE,\ \textcolor{comment}{//\ >=}}
+\DoxyCodeLine{00023\ \ \ \ \ \};}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{enum\ class}\ OptimizationType\ \{\ MIN,\ MAX\ \};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_linear_constrain_system_1_1_constrain}{Constrain}}\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ coefficienti\ del\ vincolo}}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ std::vector<T>\ a;}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ termine\ noto}}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ T\ b;}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ tipo\ di\ vincolo}}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ ConstrainType\ type;}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ costruttore\ vuoto}}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_linear_constrain_system_1_1_constrain}{Constrain}}()\ \{\}}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ costruttore\ di\ inizializzazione}}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_linear_constrain_system_1_1_constrain}{Constrain}}(std::vector<T>\ a,\ T\ b,\ ConstrainType\ type)\ :\ a(a),\ b(b),\ type(type)\ \{\}}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ costruttore\ di\ copia}}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_linear_constrain_system_1_1_constrain}{Constrain}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_linear_constrain_system_1_1_constrain}{Constrain}}\&\ orig)\ :\ a(orig.a),\ b(orig.b),\ type(orig.type)\ \{\}}
+\DoxyCodeLine{00039\ \ \ \ \ \};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{comment}{//\ costruttore\ vuoto}}
+\DoxyCodeLine{00042\ \ \ \ \ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem}}()\ \{\}}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{comment}{//\ costruttore\ di\ copia}}
+\DoxyCodeLine{00044\ \ \ \ \ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem}}\&\ orig)\ :\ constrains(orig.constrains),\ tab(orig.tab)\ \{\}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{comment}{//\ Aggiunge\ il\ vincolo\ a*x\ type\ b,\ e.g.,\ a*x\ <=\ b}}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem}}\&\ add\_constrain(\textcolor{keyword}{const}\ std::vector<T>\&\ a,\ \textcolor{keyword}{const}\ T\&\ b,\ \textcolor{keyword}{const}\ ConstrainType\ type)\{\ }
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ aggiungo\ il\ vincolo\ al\ vettore\ dei\ vincoli}}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ constrains.emplace\_back(a,\ b,\ type);}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00051\ \ \ \ \ \}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{comment}{//\ metodo\ per\ vedere\ se\ il\ sistema\ è\ ammissibile\ \ //\ MI\ TORNA\ BOOL\ MA\ NON\ LO\ USO\ MAI}}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{struct_linear_constrain_system_a0e1a6719a7a8d96393da82182ae529d3}{is\_feasible}}();}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{comment}{//\ ottimizza\ c*x\ rispetto\ al\ sistema\ di\ vincoli\ con\ x\ }}
+\DoxyCodeLine{00056\ \ \ \ \ SolutionType\ \mbox{\hyperlink{struct_linear_constrain_system_a23534dab9b52fb072e80ac7e906b2568}{optimize}}(std::vector<T>\&\ solution,\ \textcolor{keyword}{const}\ std::vector<T>\&\ c,\ \textcolor{keyword}{const}\ OptimizationType\ type);}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{comment}{//\ metodo\ per\ stampare\ i\ risultati\ ottenuti}}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_linear_constrain_system_aa85b0ac8d4b907a763efa4067a032955}{print\_result}}(SolutionType\ type,\ std::vector<T>\&\ solution)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{comment}{//\ metodo\ per\ stampare\ il\ problema\ di\ ottimizzazione\ ricevuto\ in\ input}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_linear_constrain_system_a16399e836932ef4707c9cfc04bd0ee43}{print\_Lcs}}(\textcolor{keyword}{const}\ std::vector<T>\&\ c,\ \textcolor{keyword}{const}\ OptimizationType\ type)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{comment}{//\ metodo\ per\ aggiornare\ le\ informazioni\ utili\ per\ la\ costruzione\ del\ tableau}}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{void}\ update\_tableau\_info();}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{comment}{//\ metodo\ per\ controllare\ che\ i\ vincoli\ in\ input\ siano\ accettabili}}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{void}\ check\_valid\_constrains()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{comment}{//\ metodo\ per\ controllare\ che\ la\ funzione\ obiettivo\ in\ input\ sia\ accettabile}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{void}\ check\_valid\_objFunc(\textcolor{keyword}{const}\ std::vector<T>\&\ c,\ \textcolor{keyword}{const}\ OptimizationType\ type)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{comment}{//\ vettore\ di\ oggetti\ di\ tipo\ Constrain}}
+\DoxyCodeLine{00071\ \ \ \ \ std::vector<Constrain>\ constrains;}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{comment}{//\ creo\ un\ oggetto\ di\ tipo\ Tableau}}
+\DoxyCodeLine{00073\ \ \ \ \ \mbox{\hyperlink{class_tableau}{Tableau<T>}}\ tab;\ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{comment}{//\ flag\ che\ tiene\ conto\ se\ l'utente\ ha\ già\ constollato\ se\ il\ sistema\ è\ ammissibile}}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{bool}\ feasibility\_test\{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{00076\ \ \ \ \ }
+\DoxyCodeLine{00077\ \};}
 \DoxyCodeLine{00078\ }
-\DoxyCodeLine{00084\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00085\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem<T>::update\_tableau\_info}}()\ \{}
-\DoxyCodeLine{00086\ }
-\DoxyCodeLine{00087\ \ \ \ \ \textcolor{comment}{//\ aggiorno\ il\ numero\ di\ vincoli\ nel\ tableau}}
-\DoxyCodeLine{00088\ \ \ \ \ tab.num\_constrains\ =\ constrains.size();}
-\DoxyCodeLine{00089\ \ \ \ \ \textcolor{comment}{//\ aggiorno\ il\ numero\ di\ variabili\ decisionali\ nel\ tableau}}
-\DoxyCodeLine{00090\ \ \ \ \ tab.num\_variables\ =\ constrains[0].a.size();\ }
-\DoxyCodeLine{00091\ \ \ \ \ \textcolor{comment}{//\ aggiorno\ il\ numero\ di\ variabili\ aggiuntive\ del\ sistema}}
-\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ constrain\ :\ constrains)\ \{}
-\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (constrain.type)\ \{}
-\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ ConstrainType::LE:}
-\DoxyCodeLine{00096\ }
-\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (constrain.b\ <\ 0)\{}
-\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tab.surplus\_variables++;}
-\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tab.artificial\_variables++;}
-\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tab.slack\_variables++;}
-\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00103\ }
-\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ ConstrainType::GE:}
-\DoxyCodeLine{00106\ }
-\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (constrain.b\ <\ 0)\{}
-\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tab.slack\_variables++;}
-\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tab.surplus\_variables++;}
-\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tab.artificial\_variables++;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ ConstrainType::EQ:}
-\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ aggiungo\ una\ variabile\ artificiale}}
-\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tab.artificial\_variables++;}
-\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00119\ \ \ \ \ \}}
-\DoxyCodeLine{00120\ \}}
-\DoxyCodeLine{00121\ }
-\DoxyCodeLine{00122\ }
-\DoxyCodeLine{00128\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00129\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem<T>::check\_valid\_constrains}}()\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00130\ \ \ \ \ \textcolor{comment}{//\ guardo\ alla\ lunghezza\ del\ primo\ vincolo\ come\ elemento\ di\ paragone}}
-\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ expected\_num\_variables\ =\ constrains[0].a.size();}
-\DoxyCodeLine{00132\ }
-\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \textcolor{keyword}{const}\&\ constrain\ :\ constrains)\ \{}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00086\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00087\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem<T>::update\_tableau\_info}}()\ \{}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{comment}{//\ aggiorno\ il\ numero\ di\ vincoli\ nel\ tableau}}
+\DoxyCodeLine{00090\ \ \ \ \ tab.num\_constrains\ =\ constrains.size();}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{comment}{//\ aggiorno\ il\ numero\ di\ variabili\ decisionali\ nel\ tableau}}
+\DoxyCodeLine{00092\ \ \ \ \ tab.num\_variables\ =\ constrains[0].a.size();\ }
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{comment}{//\ aggiorno\ il\ numero\ di\ variabili\ aggiuntive\ del\ sistema}}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ constrain\ :\ constrains)\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (constrain.type)\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ ConstrainType::LE:}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (constrain.b\ <\ 0)\{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tab.surplus\_variables++;}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tab.artificial\_variables++;}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tab.slack\_variables++;}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ ConstrainType::GE:}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (constrain.b\ <\ 0)\{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tab.slack\_variables++;}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tab.surplus\_variables++;}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tab.artificial\_variables++;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ ConstrainType::EQ:}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ aggiungo\ una\ variabile\ artificiale}}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tab.artificial\_variables++;}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \ \ \}}
+\DoxyCodeLine{00122\ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00130\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00131\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem<T>::check\_valid\_constrains}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{comment}{//\ guardo\ alla\ lunghezza\ del\ primo\ vincolo\ come\ elemento\ di\ paragone}}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ expected\_num\_variables\ =\ constrains[0].a.size();}
 \DoxyCodeLine{00134\ }
-\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (constrain.a.size()\ !=\ expected\_num\_variables)\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \textcolor{keyword}{const}\&\ constrain\ :\ constrains)\ \{}
 \DoxyCodeLine{00136\ }
-\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}All\ constrains\ must\ have\ the\ same\ number\ of\ variables"{}});}
-\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00139\ }
-\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (constrain.type\ !=\ ConstrainType::LE\ \&\&\ }
-\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ constrain.type\ !=\ ConstrainType::EQ\ \&\&\ \ }
-\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ constrain.type\ !=\ ConstrainType::GE)\ }
-\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}Invalid\ constrain\ type"{}});}
-\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00146\ \ \ \ \ \}}
-\DoxyCodeLine{00147\ \}}
-\DoxyCodeLine{00148\ }
-\DoxyCodeLine{00149\ }
-\DoxyCodeLine{00157\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00158\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem<T>::check\_valid\_objFunc}}(\textcolor{keyword}{const}\ std::vector<T>\&\ c,\ \textcolor{keyword}{const}\ OptimizationType\ type)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00159\ }
-\DoxyCodeLine{00160\ \ \ \ \ \textcolor{comment}{//\ Verifico\ che\ il\ numero\ di\ coefficienti\ delle\ variabili\ decisionali\ sia\ uguale\ al\ numero\ di\ variabili\ decisionali}}
-\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordflow}{if}\ (c.size()\ !=\ tab.num\_variables)\ \{}
-\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}Wrong\ number\ of\ variables\ in\ objective\ function"{}});}
-\DoxyCodeLine{00163\ \ \ \ \ \}}
-\DoxyCodeLine{00164\ \ \ \ \ \textcolor{comment}{//\ Verifico\ che\ il\ tipo\ di\ ottimizzazione\ sia\ corretto}}
-\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keywordflow}{if}\ (type\ !=\ OptimizationType::MAX\ \&\&\ type\ !=\ OptimizationType::MIN)\ \{}
-\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}Invalid\ optimization\ type"{}});}
-\DoxyCodeLine{00167\ \ \ \ \ \}}
-\DoxyCodeLine{00168\ \}}
-\DoxyCodeLine{00169\ }
-\DoxyCodeLine{00170\ }
-\DoxyCodeLine{00178\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00179\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{struct_linear_constrain_system_a0e1a6719a7a8d96393da82182ae529d3}{LinearConstrainSystem<T>::is\_feasible}}()\ \{\ \ }
-\DoxyCodeLine{00180\ }
-\DoxyCodeLine{00181\ \ \ \ \ \textcolor{comment}{//\ controllo\ che\ i\ valori\ forniti\ in\ ingresso\ siano\ accettabili}}
-\DoxyCodeLine{00182\ \ \ \ \ check\_valid\_constrains();}
-\DoxyCodeLine{00183\ \ \ \ \ \textcolor{comment}{//\ aggiorno\ le\ informazioni\ ricevute\ finora\ dall'utente}}
-\DoxyCodeLine{00184\ \ \ \ \ update\_tableau\_info();}
-\DoxyCodeLine{00185\ \ \ \ \ \textcolor{comment}{//\ Creo\ una\ copia\ del\ LinearConstrainsystem\ costruito\ finora}}
-\DoxyCodeLine{00186\ \ \ \ \ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem<T>}}\ copy(*\textcolor{keyword}{this});}
-\DoxyCodeLine{00187\ }
-\DoxyCodeLine{00188\ \ \ \ \ \textcolor{comment}{//\ aggiorno\ la\ dimensione\ dei\ vincoli\ forniti\ finora\ per\ fare\ spazio\ alla\ variabile\ dummy}}
-\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i<\ copy.constrains.size();\ ++i)\ \{\ }
-\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ copy.constrains[i].a.push\_back(0);}
-\DoxyCodeLine{00191\ \ \ \ \ \}}
-\DoxyCodeLine{00192\ \ \ \ \ \textcolor{comment}{//\ creo\ i\ coefficienti\ del\ vicnolo\ che\ si\ riferisce\ alla\ variabile\ dummy}}
-\DoxyCodeLine{00193\ \ \ \ \ std::vector<T>\ a\_dummy(copy.constrains[0].a.size()-\/1,\ 0);}
-\DoxyCodeLine{00194\ \ \ \ \ a\_dummy.emplace\_back(1);}
-\DoxyCodeLine{00195\ \ \ \ \ \textcolor{comment}{//\ aggiungo\ il\ vincolo\ al\ sistema\ di\ vincoli}}
-\DoxyCodeLine{00196\ \ \ \ \ copy.add\_constrain(a\_dummy,\ 0\ ,ConstrainType::EQ);}
-\DoxyCodeLine{00197\ \ \ \ \ \textcolor{comment}{//\ aggiorno\ le\ informazioni\ della\ variabile\ dummy\ nel\ Tableau}}
-\DoxyCodeLine{00198\ \ \ \ \ copy.tab.num\_constrains++;}
-\DoxyCodeLine{00199\ \ \ \ \ copy.tab.num\_variables++;}
-\DoxyCodeLine{00200\ \ \ \ \ copy.tab.artificial\_variables++;}
-\DoxyCodeLine{00201\ \ \ \ \ \textcolor{comment}{//\ creo\ il\ Tableau\ iniziale}}
-\DoxyCodeLine{00202\ \ \ \ \ copy.tab.create\_initial\_tableau(copy.constrains);}
-\DoxyCodeLine{00203\ \ \ \ \ \textcolor{comment}{//\ creo\ la\ funzione\ obiettivo\ dummy}}
-\DoxyCodeLine{00204\ \ \ \ \ std::vector<T>\ c(copy.tab.num\_variables\ -\/\ 1,0);}
-\DoxyCodeLine{00205\ \ \ \ \ c.emplace\_back(1);}
-\DoxyCodeLine{00206\ \ \ \ \ \textcolor{comment}{//\ la\ aggiungo\ al\ Tableau}}
-\DoxyCodeLine{00207\ \ \ \ \ copy.tab.add\_objFunc\_tableau(c,\ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem<T>::OptimizationType::MAX}});}
-\DoxyCodeLine{00208\ }
-\DoxyCodeLine{00209\ \ \ \ \ \textcolor{comment}{//\ Eseguo\ il\ metodo\ pivot\ del\ simplesso\ fintanto\ che\ non\ viene\ interrotto}}
-\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keywordtype}{bool}\ hasSimplexFinished\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keywordflow}{while}\ (!hasSimplexFinished\ )\ \{}
-\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ottengo\ l'indice\ della\ variabile\ entrante}}
-\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ pivot\_column\ =\ copy.tab.find\_pivot\_column();}
-\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Se\ è\ uguale\ a\ -\/1\ non\ esistono\ più\ variabili\ da\ introdurre\ in\ base\ e\ interrompo\ il\ ciclo}}
-\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pivot\_column\ ==\ -\/1\ )\ \{\ \ \ \ }
-\DoxyCodeLine{00216\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \#ifdef\ PRINT\ \ \ \ \ \ \ \ }}
-\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}-\/-\/-\/-\/End\ Simplex-\/-\/-\/-\/"{}}\ <<\ std::endl<<std::endl;}
-\DoxyCodeLine{00218\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \#endif\ }\textcolor{comment}{//\ PRINT}}
-\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ hasSimplexFinished\ =\ \textcolor{keyword}{true};\ }
-\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (hasSimplexFinished\ ==\ \textcolor{keyword}{false})\ \{}
-\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ottengo\ l'indice\ della\ variabile\ in\ uscita}}
-\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ pivot\_row\ =\ copy.tab.find\_pivot\_row(pivot\_column);}
-\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fase\ di\ "{}pivot"{}\ dell'algoritmo\ del\ simplesso}}
-\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ copy.tab.pivot(pivot\_row,\ pivot\_column);}
-\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00227\ \ \ \ \ \}}
-\DoxyCodeLine{00228\ \textcolor{preprocessor}{\ \ \ \ \#ifdef\ PRINT\ }}
-\DoxyCodeLine{00229\ \ \ \ \ std::cout<<\ \textcolor{stringliteral}{"{}FEASIBILITY\ TEST:\ "{}}<<\ std::endl<<std::endl;\ \ }
-\DoxyCodeLine{00230\ \textcolor{preprocessor}{\ \ \ \ \#endif\ }\textcolor{comment}{//\ PRINT}}
-\DoxyCodeLine{00231\ }
-\DoxyCodeLine{00232\ \ \ \ \ T\ solution\ =\ copy.tab.tableau[copy.tab.num\_constrains].back();}
-\DoxyCodeLine{00233\ \ \ \ \ \textcolor{comment}{//\ se\ z<0\ allora\ il\ sistema\ non\ è\ ammissibile}}
-\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keywordflow}{if}\ (solution\ <\ 0)\ \{}
-\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}The\ linear\ constraint\ system\ is\ INFEASIBLE."{}});}
-\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00237\ \ \ \ \ \textcolor{comment}{//\ altrimenti\ è\ ammissibile}}
-\DoxyCodeLine{00238\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00239\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#ifdef\ PRINT}}
-\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ std::cout<<\ \textcolor{stringliteral}{"{}The\ system\ is\ FEASIBLE!"{}}<<\ std::endl<<std::endl;}
-\DoxyCodeLine{00241\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#endif\ }\textcolor{comment}{//\ PRINT}}
-\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ aggiorno\ la\ flag\ del\ test\ di\ ammissibilità}}
-\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ feasibility\_test\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00245\ \ \ \ \ \}}
-\DoxyCodeLine{00246\ \}}
-\DoxyCodeLine{00247\ }
-\DoxyCodeLine{00248\ }
-\DoxyCodeLine{00258\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00259\ \textcolor{keyword}{typename}\ LinearConstrainSystem<T>::SolutionType\ \mbox{\hyperlink{struct_linear_constrain_system_a23534dab9b52fb072e80ac7e906b2568}{LinearConstrainSystem<T>::optimize}}(std::vector<T>\&\ solution,\ \textcolor{keyword}{const}\ \ std::vector<T>\&\ c,\ \textcolor{keyword}{const}\ OptimizationType\ type)\ \{}
-\DoxyCodeLine{00260\ \ \ \ \ \textcolor{comment}{//\ variable\ that\ will\ be\ returned}}
-\DoxyCodeLine{00261\ \ \ \ \ LinearConstrainSystem<T>::SolutionType\ sol\_type;\ }
-\DoxyCodeLine{00262\ \ \ \ \ \textcolor{comment}{//\ se\ l'utente\ non\ ha\ ancora\ eseguito\ isfeasible()\ lo\ eseguo}}
-\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keywordflow}{if}\ (feasibility\_test\ ==\ \textcolor{keyword}{false})\ \{}
-\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ is\_feasible();}
-\DoxyCodeLine{00265\ \ \ \ \ \}}
-\DoxyCodeLine{00266\ \ \ \ \ \textcolor{comment}{//\ constollo\ i\ dati\ in\ ingresso}}
-\DoxyCodeLine{00267\ \ \ \ \ check\_valid\_objFunc(c,\ type);}
-\DoxyCodeLine{00268\ \ \ \ \ \textcolor{comment}{//\ Creo\ una\ copia\ del\ LinearConstrainSystem\ costruito\ finora}}
-\DoxyCodeLine{00269\ \ \ \ \ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem<T>}}\ copy(*\textcolor{keyword}{this});}
-\DoxyCodeLine{00270\ \ \ \ \ \textcolor{comment}{//\ creo\ il\ tableau\ iniziale}}
-\DoxyCodeLine{00271\ \ \ \ \ copy.tab.create\_initial\_tableau(copy.constrains);}
-\DoxyCodeLine{00272\ \ \ \ \ \textcolor{comment}{//\ aggiungo\ la\ riga\ della\ funzione\ obiettivo\ al\ Tableau}}
-\DoxyCodeLine{00273\ \ \ \ \ copy.tab.add\_objFunc\_tableau(c,\ type);}
-\DoxyCodeLine{00274\ }
-\DoxyCodeLine{00275\ \ \ \ \ \textcolor{comment}{//\ FASE\ DELL'ALGORITMO\ DEL\ SIMPLESSO:}}
-\DoxyCodeLine{00276\ \ \ \ \ \textcolor{comment}{//\ Eseguo\ il\ metodo\ pivot\ fintanto\ che\ non\ viene\ interrotto}}
-\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keywordtype}{bool}\ hasSimplexFinished\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00278\ \ \ \ \ \textcolor{keywordflow}{while}\ (!hasSimplexFinished)\ \{}
-\DoxyCodeLine{00279\ }
-\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ottengo\ l'indice\ della\ variabile\ entrante}}
-\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ pivot\_column\ =\ copy.tab.find\_pivot\_column();}
-\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Se\ è\ uguale\ a\ -\/1\ non\ esistono\ più\ variabili\ da\ introdurre\ in\ base\ e\ interrompo\ il\ ciclo}}
-\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pivot\_column\ ==\ -\/1\ )\ \{\ \ \ \ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00284\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \#ifdef\ PRINT}}
-\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}-\/-\/-\/-\/End\ Simplex-\/-\/-\/-\/"{}}\ <<\ std::endl<<std::endl;}
-\DoxyCodeLine{00286\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \#endif\ }\textcolor{comment}{//\ PRINT}}
-\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \ \ \ \ hasSimplexFinished\ =\ \textcolor{keyword}{true};\ }
-\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (hasSimplexFinished\ ==\ \textcolor{keyword}{false})\ \{}
-\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ottengo\ l'indice\ della\ variabile\ in\ uscita}}
-\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ pivot\_row\ =\ copy.tab.find\_pivot\_row(pivot\_column);}
-\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Se\ la\ riga\ pivot\ è\ uguale\ a\ -\/1\ allora\ il\ sistema\ è\ illimitato}}
-\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pivot\_row\ ==\ -\/1)\ \{}
-\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sol\_type\ =\ SolutionType::UNBOUNDED;\ \textcolor{comment}{//\ update\ and\ then\ return\ the\ variable}}
-\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print\_Lcs(c,type);}
-\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print\_result(sol\_type,\ solution);\ \ }
-\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ sol\_type;\ \ \ }
-\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fase\ di\ "{}pivot"{}\ dell'algoritmo\ del\ simplesso}}
-\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \ \ \ \ copy.tab.pivot(pivot\_row,\ pivot\_column);}
-\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00302\ \ \ \ \ \}}
-\DoxyCodeLine{00303\ \ \ \ \ \textcolor{comment}{//\ scrivo\ in\ solution\ le\ soluzioni\ trovate}}
-\DoxyCodeLine{00304\ \ \ \ \ solution.resize(copy.tab.num\_variables);\ }
-\DoxyCodeLine{00305\ }
-\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ copy.tab.num\_variables;\ ++i)\ \{}
-\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ indice\ in\ cui\ si\ trovano\ le\ variabili\ decisionali}}
-\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ decision\_variable\ =\ copy.tab.get\_decVars\_index()\ +\ i;}
-\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ cerco\ nel\ vettore\ di\ base\ gli\ indici\ corrispondenti\ alle\ variabili\ decisionali}}
-\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ index\ =\ std::find(copy.tab.base.begin(),\ copy.tab.base.end(),\ decision\_variable);\ }
-\DoxyCodeLine{00311\ }
-\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (index\ !=\ copy.tab.base.end())\ \{}
-\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ indice\ della\ riga\ del\ tableau\ che\ corrisponde\ alla\ variabile\ di\ base\ trovata.}}
-\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ row\ =\ index\ -\/\ copy.tab.base.begin();}
-\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ prende\ il\ valore\ che\ sta\ all'ultimo\ posto\ della\ riga,\ cioè\ nella\ colonna\ dei\ termini\ noti,\ e\ salvo\ in\ solution}}
-\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ \ \ \ \ solution[i]\ =\ copy.tab.tableau[row].back();}
-\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00318\ \ \ \ \ \}}
-\DoxyCodeLine{00319\ \ \ \ \ \textcolor{comment}{//\ salvo\ il\ valore\ di\ z\ alla\ fine\ del\ vettore\ solution}}
-\DoxyCodeLine{00320\ \ \ \ \ solution.emplace\_back(copy.tab.tableau[copy.tab.num\_constrains].back());}
-\DoxyCodeLine{00321\ \ \ \ \ \textcolor{comment}{//\ stampo\ il\ probleam\ di\ ottimizzazione}}
-\DoxyCodeLine{00322\ \ \ \ \ sol\_type\ =\ SolutionType::BOUNDED;\ \ \ \ \ }
-\DoxyCodeLine{00323\ \ \ \ \ print\_Lcs(c,type);}
-\DoxyCodeLine{00324\ \ \ \ \ print\_result(sol\_type,\ solution);\ \ }
-\DoxyCodeLine{00325\ }
-\DoxyCodeLine{00326\ \ \ \ \ \textcolor{keywordflow}{return}\ sol\_type;}
-\DoxyCodeLine{00327\ \}}
-\DoxyCodeLine{00328\ }
-\DoxyCodeLine{00329\ }
-\DoxyCodeLine{00337\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00338\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_linear_constrain_system_a16399e836932ef4707c9cfc04bd0ee43}{LinearConstrainSystem<T>::print\_Lcs}}(\textcolor{keyword}{const}\ std::vector<T>\&\ c,\ \textcolor{keyword}{const}\ OptimizationType\ type)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00339\ }
-\DoxyCodeLine{00340\ \ \ \ \ std::cout<<\ \textcolor{stringliteral}{"{}Optimization\ problem:\ "{}}<<\ std::endl<<\ std::endl;}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (constrain.a.size()\ !=\ expected\_num\_variables)\ \{}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}All\ constrains\ must\ have\ the\ same\ number\ of\ variables"{}});}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (constrain.type\ !=\ ConstrainType::LE\ \&\&\ }
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ constrain.type\ !=\ ConstrainType::EQ\ \&\&\ \ }
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ constrain.type\ !=\ ConstrainType::GE)\ }
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}Invalid\ constrain\ type"{}});}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \ \ \}}
+\DoxyCodeLine{00149\ \}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00159\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00160\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem<T>::check\_valid\_objFunc}}(\textcolor{keyword}{const}\ std::vector<T>\&\ c,\ \textcolor{keyword}{const}\ OptimizationType\ type)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{comment}{//\ Verifico\ che\ il\ numero\ di\ coefficienti\ delle\ variabili\ decisionali\ sia\ uguale\ al\ numero\ di\ variabili\ decisionali}}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordflow}{if}\ (c.size()\ !=\ tab.num\_variables)\ \{}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}Wrong\ number\ of\ variables\ in\ objective\ function"{}});}
+\DoxyCodeLine{00165\ \ \ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{comment}{//\ Verifico\ che\ il\ tipo\ di\ ottimizzazione\ sia\ corretto}}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{if}\ (type\ !=\ OptimizationType::MAX\ \&\&\ type\ !=\ OptimizationType::MIN)\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}Invalid\ optimization\ type"{}});}
+\DoxyCodeLine{00169\ \ \ \ \ \}}
+\DoxyCodeLine{00170\ \}}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00180\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00181\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{struct_linear_constrain_system_a0e1a6719a7a8d96393da82182ae529d3}{LinearConstrainSystem<T>::is\_feasible}}()\ \{\ \ }
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{comment}{//\ controllo\ che\ i\ valori\ forniti\ in\ ingresso\ siano\ accettabili}}
+\DoxyCodeLine{00184\ \ \ \ \ check\_valid\_constrains();}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{comment}{//\ aggiorno\ le\ informazioni\ ricevute\ finora\ dall'utente}}
+\DoxyCodeLine{00186\ \ \ \ \ update\_tableau\_info();}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{comment}{//\ Creo\ una\ copia\ del\ LinearConstrainsystem\ costruito\ finora}}
+\DoxyCodeLine{00188\ \ \ \ \ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem<T>}}\ copy(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{comment}{//\ aggiorno\ la\ dimensione\ dei\ vincoli\ forniti\ finora\ per\ fare\ spazio\ alla\ variabile\ dummy}}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i<\ copy.constrains.size();\ ++i)\ \{\ }
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ copy.constrains[i].a.push\_back(0);}
+\DoxyCodeLine{00193\ \ \ \ \ \}}
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{comment}{//\ creo\ i\ coefficienti\ del\ vicnolo\ che\ si\ riferisce\ alla\ variabile\ dummy}}
+\DoxyCodeLine{00195\ \ \ \ \ std::vector<T>\ a\_dummy(copy.constrains[0].a.size()-\/1,\ 0);}
+\DoxyCodeLine{00196\ \ \ \ \ a\_dummy.emplace\_back(1);}
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{comment}{//\ aggiungo\ il\ vincolo\ al\ sistema\ di\ vincoli}}
+\DoxyCodeLine{00198\ \ \ \ \ copy.add\_constrain(a\_dummy,\ 0\ ,ConstrainType::EQ);}
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{comment}{//\ aggiorno\ le\ informazioni\ della\ variabile\ dummy\ nel\ Tableau}}
+\DoxyCodeLine{00200\ \ \ \ \ copy.tab.num\_constrains++;}
+\DoxyCodeLine{00201\ \ \ \ \ copy.tab.num\_variables++;}
+\DoxyCodeLine{00202\ \ \ \ \ copy.tab.artificial\_variables++;}
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{comment}{//\ creo\ il\ Tableau\ iniziale}}
+\DoxyCodeLine{00204\ \ \ \ \ copy.tab.create\_initial\_tableau(copy.constrains);}
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{comment}{//\ creo\ la\ funzione\ obiettivo\ dummy}}
+\DoxyCodeLine{00206\ \ \ \ \ std::vector<T>\ c(copy.tab.num\_variables\ -\/\ 1,0);}
+\DoxyCodeLine{00207\ \ \ \ \ c.emplace\_back(1);}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{comment}{//\ la\ aggiungo\ al\ Tableau}}
+\DoxyCodeLine{00209\ \ \ \ \ copy.tab.add\_objFunc\_tableau(c,\ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem<T>::OptimizationType::MAX}});}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{comment}{//\ Eseguo\ il\ metodo\ pivot\ del\ simplesso\ fintanto\ che\ non\ viene\ interrotto}}
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keywordtype}{bool}\ hasSimplexFinished\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00213\ \ \ \ \ \textcolor{keywordflow}{while}\ (!hasSimplexFinished\ )\ \{}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ottengo\ l'indice\ della\ variabile\ entrante}}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ pivot\_column\ =\ copy.tab.find\_pivot\_column();}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Se\ è\ uguale\ a\ -\/1\ non\ esistono\ più\ variabili\ da\ introdurre\ in\ base\ e\ interrompo\ il\ ciclo}}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pivot\_column\ ==\ -\/1\ )\ \{\ \ \ \ }
+\DoxyCodeLine{00218\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \#ifdef\ PRINT\ \ \ \ \ \ \ \ }}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}-\/-\/-\/-\/End\ Simplex-\/-\/-\/-\/"{}}\ <<\ std::endl<<std::endl;}
+\DoxyCodeLine{00220\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \#endif\ }\textcolor{comment}{//\ PRINT}}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ \ hasSimplexFinished\ =\ \textcolor{keyword}{true};\ }
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (hasSimplexFinished\ ==\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ottengo\ l'indice\ della\ variabile\ in\ uscita}}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ pivot\_row\ =\ copy.tab.find\_pivot\_row(pivot\_column);}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fase\ di\ "{}pivot"{}\ dell'algoritmo\ del\ simplesso}}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \ \ \ \ copy.tab.pivot(pivot\_row,\ pivot\_column);}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00229\ \ \ \ \ \}}
+\DoxyCodeLine{00230\ \textcolor{preprocessor}{\ \ \ \ \#ifdef\ PRINT\ }}
+\DoxyCodeLine{00231\ \ \ \ \ std::cout<<\ \textcolor{stringliteral}{"{}FEASIBILITY\ TEST:\ "{}}<<\ std::endl<<std::endl;\ \ }
+\DoxyCodeLine{00232\ \textcolor{preprocessor}{\ \ \ \ \#endif\ }\textcolor{comment}{//\ PRINT}}
+\DoxyCodeLine{00233\ }
+\DoxyCodeLine{00234\ \ \ \ \ T\ solution\ =\ copy.tab.tableau[copy.tab.num\_constrains].back();}
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{comment}{//\ se\ z<0\ allora\ il\ sistema\ non\ è\ ammissibile}}
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{keywordflow}{if}\ (solution\ <\ 0)\ \{}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}The\ linear\ constraint\ system\ is\ INFEASIBLE."{}});}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{comment}{//\ altrimenti\ è\ ammissibile}}
+\DoxyCodeLine{00240\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00241\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#ifdef\ PRINT}}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ std::cout<<\ \textcolor{stringliteral}{"{}The\ system\ is\ FEASIBLE!"{}}<<\ std::endl<<std::endl;}
+\DoxyCodeLine{00243\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#endif\ }\textcolor{comment}{//\ PRINT}}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ aggiorno\ la\ flag\ del\ test\ di\ ammissibilità}}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ feasibility\_test\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00247\ \ \ \ \ \}}
+\DoxyCodeLine{00248\ \}}
+\DoxyCodeLine{00249\ }
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00260\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00261\ \textcolor{keyword}{typename}\ LinearConstrainSystem<T>::SolutionType\ \mbox{\hyperlink{struct_linear_constrain_system_a23534dab9b52fb072e80ac7e906b2568}{LinearConstrainSystem<T>::optimize}}(std::vector<T>\&\ solution,\ \textcolor{keyword}{const}\ \ std::vector<T>\&\ c,\ \textcolor{keyword}{const}\ OptimizationType\ type)\ \{}
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{comment}{//\ variable\ that\ will\ be\ returned}}
+\DoxyCodeLine{00263\ \ \ \ \ LinearConstrainSystem<T>::SolutionType\ sol\_type;\ }
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{comment}{//\ se\ l'utente\ non\ ha\ ancora\ eseguito\ isfeasible()\ lo\ eseguo}}
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{keywordflow}{if}\ (feasibility\_test\ ==\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ is\_feasible();}
+\DoxyCodeLine{00267\ \ \ \ \ \}}
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{comment}{//\ constollo\ i\ dati\ in\ ingresso}}
+\DoxyCodeLine{00269\ \ \ \ \ check\_valid\_objFunc(c,\ type);}
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{comment}{//\ Creo\ una\ copia\ del\ LinearConstrainSystem\ costruito\ finora}}
+\DoxyCodeLine{00271\ \ \ \ \ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem<T>}}\ copy(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{comment}{//\ creo\ il\ tableau\ iniziale}}
+\DoxyCodeLine{00273\ \ \ \ \ copy.tab.create\_initial\_tableau(copy.constrains);}
+\DoxyCodeLine{00274\ \ \ \ \ \textcolor{comment}{//\ aggiungo\ la\ riga\ della\ funzione\ obiettivo\ al\ Tableau}}
+\DoxyCodeLine{00275\ \ \ \ \ copy.tab.add\_objFunc\_tableau(c,\ type);}
+\DoxyCodeLine{00276\ }
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{comment}{//\ FASE\ DELL'ALGORITMO\ DEL\ SIMPLESSO:}}
+\DoxyCodeLine{00278\ \ \ \ \ \textcolor{comment}{//\ Eseguo\ il\ metodo\ pivot\ fintanto\ che\ non\ viene\ interrotto}}
+\DoxyCodeLine{00279\ \ \ \ \ \textcolor{keywordtype}{bool}\ hasSimplexFinished\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00280\ \ \ \ \ \textcolor{keywordflow}{while}\ (!hasSimplexFinished)\ \{}
+\DoxyCodeLine{00281\ }
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ottengo\ l'indice\ della\ variabile\ entrante}}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ pivot\_column\ =\ copy.tab.find\_pivot\_column();}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Se\ è\ uguale\ a\ -\/1\ non\ esistono\ più\ variabili\ da\ introdurre\ in\ base\ e\ interrompo\ il\ ciclo}}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pivot\_column\ ==\ -\/1\ )\ \{\ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00286\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \#ifdef\ PRINT}}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}-\/-\/-\/-\/End\ Simplex-\/-\/-\/-\/"{}}\ <<\ std::endl<<std::endl;}
+\DoxyCodeLine{00288\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \#endif\ }\textcolor{comment}{//\ PRINT}}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \ \ \ \ hasSimplexFinished\ =\ \textcolor{keyword}{true};\ }
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (hasSimplexFinished\ ==\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ottengo\ l'indice\ della\ variabile\ in\ uscita}}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ pivot\_row\ =\ copy.tab.find\_pivot\_row(pivot\_column);}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Se\ la\ riga\ pivot\ è\ uguale\ a\ -\/1\ allora\ il\ sistema\ è\ illimitato}}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pivot\_row\ ==\ -\/1)\ \{}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sol\_type\ =\ SolutionType::UNBOUNDED;\ \textcolor{comment}{//\ update\ and\ then\ return\ the\ variable}}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print\_Lcs(c,type);}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print\_result(sol\_type,\ solution);\ \ }
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ sol\_type;\ \ \ }
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fase\ di\ "{}pivot"{}\ dell'algoritmo\ del\ simplesso}}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ \ \ \ \ copy.tab.pivot(pivot\_row,\ pivot\_column);}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00304\ \ \ \ \ \}}
+\DoxyCodeLine{00305\ \ \ \ \ \textcolor{comment}{//\ scrivo\ in\ solution\ le\ soluzioni\ trovate}}
+\DoxyCodeLine{00306\ \ \ \ \ solution.resize(copy.tab.num\_variables);\ }
+\DoxyCodeLine{00307\ }
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ copy.tab.num\_variables;\ ++i)\ \{}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ indice\ in\ cui\ si\ trovano\ le\ variabili\ decisionali}}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ decision\_variable\ =\ copy.tab.get\_decVars\_index()\ +\ i;}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ cerco\ nel\ vettore\ di\ base\ gli\ indici\ corrispondenti\ alle\ variabili\ decisionali}}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ index\ =\ std::find(copy.tab.base.begin(),\ copy.tab.base.end(),\ decision\_variable);\ }
+\DoxyCodeLine{00313\ }
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (index\ !=\ copy.tab.base.end())\ \{}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ indice\ della\ riga\ del\ tableau\ che\ corrisponde\ alla\ variabile\ di\ base\ trovata.}}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ row\ =\ index\ -\/\ copy.tab.base.begin();}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ prende\ il\ valore\ che\ sta\ all'ultimo\ posto\ della\ riga,\ cioè\ nella\ colonna\ dei\ termini\ noti,\ e\ salvo\ in\ solution}}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \ \ \ \ solution[i]\ =\ copy.tab.tableau[row].back();}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00320\ \ \ \ \ \}}
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{comment}{//\ salvo\ il\ valore\ di\ z\ alla\ fine\ del\ vettore\ solution}}
+\DoxyCodeLine{00322\ \ \ \ \ solution.emplace\_back(copy.tab.tableau[copy.tab.num\_constrains].back());}
+\DoxyCodeLine{00323\ \ \ \ \ \textcolor{comment}{//\ stampo\ il\ probleam\ di\ ottimizzazione}}
+\DoxyCodeLine{00324\ \ \ \ \ sol\_type\ =\ SolutionType::BOUNDED;\ \ \ \ \ }
+\DoxyCodeLine{00325\ \ \ \ \ print\_Lcs(c,type);}
+\DoxyCodeLine{00326\ \ \ \ \ print\_result(sol\_type,\ solution);\ \ }
+\DoxyCodeLine{00327\ }
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keywordflow}{return}\ sol\_type;}
+\DoxyCodeLine{00329\ \}}
+\DoxyCodeLine{00330\ }
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00339\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00340\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_linear_constrain_system_a16399e836932ef4707c9cfc04bd0ee43}{LinearConstrainSystem<T>::print\_Lcs}}(\textcolor{keyword}{const}\ std::vector<T>\&\ c,\ \textcolor{keyword}{const}\ OptimizationType\ type)\textcolor{keyword}{\ const\ }\{}
 \DoxyCodeLine{00341\ }
-\DoxyCodeLine{00342\ \ \ \ \ std::cout\ <<\ (type\ ==\ OptimizationType::MIN\ ?\ \textcolor{stringliteral}{"{}Minimize:\ "{}}\ :\ \textcolor{stringliteral}{"{}Maximize:\ "{}})\ <<\ c[0]\ <<\ \textcolor{stringliteral}{"{}x1"{}};}
-\DoxyCodeLine{00343\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ c.size();\ ++i)\ \{}
-\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (c[i]\ >=\ 0)\ \{}
-\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ +\ "{}}\ <<\ c[i]\ <<\ \textcolor{stringliteral}{"{}x"{}}\ <<\ (i\ +\ 1);}
-\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ -\/\ "{}}\ <<\ -\/c[i]\ <<\ \textcolor{stringliteral}{"{}x"{}}\ <<\ (i\ +\ 1);}
-\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00349\ \ \ \ \ \}}
-\DoxyCodeLine{00350\ \ \ \ \ std::cout\ <<\ std::endl\ <<\ \textcolor{stringliteral}{"{}Subject\ to:"{}}\ <<\ std::endl;}
-\DoxyCodeLine{00351\ }
-\DoxyCodeLine{00352\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ \&constrain\ :\ constrains)\ \{}
-\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ std::cout\ <<\ constrain.a[0]<<\ \textcolor{stringliteral}{"{}x1"{}};}
-\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ constrain.a.size();\ ++i)\ \{}
-\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (constrain.a[i]\ >=\ 0)\ \{}
-\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ +\ "{}}\ <<\ constrain.a[i]\ <<\ \textcolor{stringliteral}{"{}x"{}}\ <<\ (i\ +\ 1);}
-\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ -\/\ "{}}\ <<\ -\/constrain.a[i]\ <<\ \textcolor{stringliteral}{"{}x"{}}\ <<\ (i\ +\ 1);}
-\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00361\ }
-\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (constrain.type)\ \{}
-\DoxyCodeLine{00363\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ ConstrainType::LE:}
-\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ <=\ "{}};}
-\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ ConstrainType::GE:}
-\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ >=\ "{}};}
-\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ ConstrainType::EQ:}
-\DoxyCodeLine{00370\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ =\ "{}};}
-\DoxyCodeLine{00371\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{00372\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ std::cout\ <<\ constrain.b\ <<\ std::endl;}
-\DoxyCodeLine{00374\ \ \ \ \ \}}
-\DoxyCodeLine{00375\ }
-\DoxyCodeLine{00376\ \}}
+\DoxyCodeLine{00342\ \ \ \ \ std::cout<<\ \textcolor{stringliteral}{"{}Optimization\ problem:\ "{}}<<\ std::endl<<\ std::endl;}
+\DoxyCodeLine{00343\ }
+\DoxyCodeLine{00344\ \ \ \ \ std::cout\ <<\ (type\ ==\ OptimizationType::MIN\ ?\ \textcolor{stringliteral}{"{}Minimize:\ "{}}\ :\ \textcolor{stringliteral}{"{}Maximize:\ "{}})\ <<\ c[0]\ <<\ \textcolor{stringliteral}{"{}x1"{}};}
+\DoxyCodeLine{00345\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ c.size();\ ++i)\ \{}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (c[i]\ >=\ 0)\ \{}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ +\ "{}}\ <<\ c[i]\ <<\ \textcolor{stringliteral}{"{}x"{}}\ <<\ (i\ +\ 1);}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ -\/\ "{}}\ <<\ -\/c[i]\ <<\ \textcolor{stringliteral}{"{}x"{}}\ <<\ (i\ +\ 1);}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00351\ \ \ \ \ \}}
+\DoxyCodeLine{00352\ \ \ \ \ std::cout\ <<\ std::endl\ <<\ \textcolor{stringliteral}{"{}Subject\ to:"{}}\ <<\ std::endl;}
+\DoxyCodeLine{00353\ }
+\DoxyCodeLine{00354\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ \&constrain\ :\ constrains)\ \{}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ std::cout\ <<\ constrain.a[0]<<\ \textcolor{stringliteral}{"{}x1"{}};}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ constrain.a.size();\ ++i)\ \{}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (constrain.a[i]\ >=\ 0)\ \{}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ +\ "{}}\ <<\ constrain.a[i]\ <<\ \textcolor{stringliteral}{"{}x"{}}\ <<\ (i\ +\ 1);}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ -\/\ "{}}\ <<\ -\/constrain.a[i]\ <<\ \textcolor{stringliteral}{"{}x"{}}\ <<\ (i\ +\ 1);}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00363\ }
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (constrain.type)\ \{}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ ConstrainType::LE:}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ <=\ "{}};}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ ConstrainType::GE:}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ >=\ "{}};}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ ConstrainType::EQ:}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ =\ "{}};}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \ \ std::cout\ <<\ constrain.b\ <<\ std::endl;}
+\DoxyCodeLine{00376\ \ \ \ \ \}}
 \DoxyCodeLine{00377\ }
-\DoxyCodeLine{00385\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>\ \ \textcolor{comment}{//\ SISTEMARE\ STAMPANDO\ ANCHE\ I\ VINCOLI\ E\ LA\ F\ OBIETTIVO}}
-\DoxyCodeLine{00386\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_linear_constrain_system_aa85b0ac8d4b907a763efa4067a032955}{LinearConstrainSystem<T>::print\_result}}(SolutionType\ type,\ std::vector<T>\&\ solution)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00387\ }
-\DoxyCodeLine{00388\ \ \ \ \ \textcolor{comment}{//\ Caso\ BOUNDED}}
-\DoxyCodeLine{00389\ \ \ \ \ \textcolor{keywordflow}{if}\ (type\ ==\ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem<T>::SolutionType::BOUNDED}})\ \{}
-\DoxyCodeLine{00390\ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ std::cout\ <<\ std::endl;\ \ }
-\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Bounded\ solution\ found:"{}}\ <<\ std::endl;}
-\DoxyCodeLine{00393\ }
-\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ solution.size()-\/1;\ i++)\ \{}
-\DoxyCodeLine{00395\ \ \ \ \ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00396\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}x"{}}\ <<\ i\ +\ 1\ <<\ \textcolor{stringliteral}{"{}\ =\ "{}}\ <<\ solution[i]\ <<\ std::endl;\ \ \ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00397\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00398\ \ \ \ \ \ \ \ \ std::cout\ <<\ std::endl;\ }
-\DoxyCodeLine{00399\ }
-\DoxyCodeLine{00400\ \ \ \ \ \ \ \ \ std::cout<<\ \textcolor{stringliteral}{"{}Optimal\ value\ z=\ "{}}<<\ solution.back()\ <<\ std::endl<<\ std::endl;}
+\DoxyCodeLine{00378\ \}}
+\DoxyCodeLine{00379\ }
+\DoxyCodeLine{00387\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>\ \ \textcolor{comment}{//\ SISTEMARE\ STAMPANDO\ ANCHE\ I\ VINCOLI\ E\ LA\ F\ OBIETTIVO}}
+\DoxyCodeLine{00388\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_linear_constrain_system_aa85b0ac8d4b907a763efa4067a032955}{LinearConstrainSystem<T>::print\_result}}(SolutionType\ type,\ std::vector<T>\&\ solution)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00389\ }
+\DoxyCodeLine{00390\ \ \ \ \ \textcolor{comment}{//\ Caso\ BOUNDED}}
+\DoxyCodeLine{00391\ \ \ \ \ \textcolor{keywordflow}{if}\ (type\ ==\ \mbox{\hyperlink{struct_linear_constrain_system}{LinearConstrainSystem<T>::SolutionType::BOUNDED}})\ \{}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \ \ std::cout\ <<\ std::endl;\ \ }
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Bounded\ solution\ found:"{}}\ <<\ std::endl;}
+\DoxyCodeLine{00395\ }
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ solution.size()-\/1;\ i++)\ \{}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}x"{}}\ <<\ i\ +\ 1\ <<\ \textcolor{stringliteral}{"{}\ =\ "{}}\ <<\ solution[i]\ <<\ std::endl;\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \ \ std::cout\ <<\ std::endl;\ }
 \DoxyCodeLine{00401\ }
-\DoxyCodeLine{00402\ \ \ \ \ \textcolor{comment}{//\ Caso\ UNBOUNDED}}
-\DoxyCodeLine{00403\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00404\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}UNBOUNDED\ SOLUTION"{}}\ <<\ std::endl<<\ std::endl;}
-\DoxyCodeLine{00405\ \ \ \ \ \}}
-\DoxyCodeLine{00406\ \}}
-\DoxyCodeLine{00407\ }
-\DoxyCodeLine{00408\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_\_LINEARCONSTRAINSYSTEM\_HPP\_\_}}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \ \ std::cout<<\ \textcolor{stringliteral}{"{}Optimal\ value\ z=\ "{}}<<\ solution.back()\ <<\ std::endl<<\ std::endl;}
+\DoxyCodeLine{00403\ }
+\DoxyCodeLine{00404\ \ \ \ \ \textcolor{comment}{//\ Caso\ UNBOUNDED}}
+\DoxyCodeLine{00405\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}UNBOUNDED\ SOLUTION"{}}\ <<\ std::endl<<\ std::endl;}
+\DoxyCodeLine{00407\ \ \ \ \ \}}
+\DoxyCodeLine{00408\ \}}
 \DoxyCodeLine{00409\ }
+\DoxyCodeLine{00410\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_\_LINEARCONSTRAINSYSTEM\_HPP\_\_}}
 
 \end{DoxyCode}

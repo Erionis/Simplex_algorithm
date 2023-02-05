@@ -1,12 +1,24 @@
+
+
 cmake_minimum_required(VERSION 3.17)
 
-set(CMAKE_C_COMPILER "C:/MinGW/bin/gcc.exe")
-set(CMAKE_CXX_COMPILER "C:/MinGW/bin/g++.exe")
+# Per mingw...
+
+# set(CMAKE_C_COMPILER "C:/MinGW/bin/gcc.exe")
+# set(CMAKE_CXX_COMPILER "C:/MinGW/bin/g++.exe")
+
+# Se usi ninja, a terminale:
+
+# cmake -G Ninja .
+# ninja
+
+# Poi esegui i file come faresti di solito
 
 project(esame)
 
-add_executable(esame main.cpp)
-add_executable(mainEQ include/mainEQ.cpp)
+# specify the C++ standard
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_executable(main main.cpp)
 add_executable(main_print main.cpp)

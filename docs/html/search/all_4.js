@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['is_5ffeasible_0',['is_feasible',['../struct_linear_constrain_system.html#a0e1a6719a7a8d96393da82182ae529d3',1,'LinearConstrainSystem']]]
+  ['optimize_0',['optimize',['../struct_linear_constrain_system.html#a23534dab9b52fb072e80ac7e906b2568',1,'LinearConstrainSystem']]]
 ];

@@ -45,23 +45,11 @@ enum class {\bfseries Optimization\+Type} \{ {\bfseries MIN}
 bool \mbox{\hyperlink{struct_linear_constrain_system_a0e1a6719a7a8d96393da82182ae529d3}{is\+\_\+feasible}} ()
 \begin{DoxyCompactList}\small\item\em metodo per stabilire se il sistema di vincoli è ammissibile \end{DoxyCompactList}\item 
 Solution\+Type \mbox{\hyperlink{struct_linear_constrain_system_a23534dab9b52fb072e80ac7e906b2568}{optimize}} (std\+::vector$<$ T $>$ \&solution, const std\+::vector$<$ T $>$ \&c, const Optimization\+Type type)
-\begin{DoxyCompactList}\small\item\em metodo che otimizza c$\ast$x applicando \char`\"{}pivot\char`\"{} al \mbox{\hyperlink{struct_tableau}{Tableau}} \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em metodo che otimizza c$\ast$x applicando \char`\"{}pivot\char`\"{} al \mbox{\hyperlink{class_tableau}{Tableau}} \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{struct_linear_constrain_system_aa85b0ac8d4b907a763efa4067a032955}{print\+\_\+result}} (Solution\+Type type, std\+::vector$<$ T $>$ \&solution) const
 \begin{DoxyCompactList}\small\item\em metodo per stampare la soluzione ottima del problema di ottimizzazione \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{struct_linear_constrain_system_a16399e836932ef4707c9cfc04bd0ee43}{print\+\_\+\+Lcs}} (const std\+::vector$<$ T $>$ \&c, const Optimization\+Type type) const
 \begin{DoxyCompactList}\small\item\em metodo per stampare il problema di ottimizzazione ricevuto in input \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Public Attributes}
-\begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{struct_linear_constrain_system_af62d850c29d994bee039475e943fca4c}\label{struct_linear_constrain_system_af62d850c29d994bee039475e943fca4c}} 
-std\+::vector$<$ \mbox{\hyperlink{struct_linear_constrain_system_1_1_constrain}{Constrain}} $>$ {\bfseries constrains}
-\item 
-\mbox{\Hypertarget{struct_linear_constrain_system_adebe0aff6cb8a0331f883c28af9a0048}\label{struct_linear_constrain_system_adebe0aff6cb8a0331f883c28af9a0048}} 
-\mbox{\hyperlink{struct_tableau}{Tableau}}$<$ T $>$ {\bfseries tab}
-\item 
-\mbox{\Hypertarget{struct_linear_constrain_system_a63f1deb9d99dad852af81330a3f310d6}\label{struct_linear_constrain_system_a63f1deb9d99dad852af81330a3f310d6}} 
-bool {\bfseries feasibility\+\_\+test} \{false\}
-\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -107,7 +95,7 @@ false se il sistema di vincoli non è ammissibile
 
 
 
-metodo che otimizza c$\ast$x applicando \char`\"{}pivot\char`\"{} al \mbox{\hyperlink{struct_tableau}{Tableau}} 
+metodo che otimizza c$\ast$x applicando \char`\"{}pivot\char`\"{} al \mbox{\hyperlink{class_tableau}{Tableau}} 
 
 
 \begin{DoxyTemplParams}{Template Parameters}
