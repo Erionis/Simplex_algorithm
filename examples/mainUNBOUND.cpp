@@ -4,26 +4,21 @@
 #include <iostream>
 #include <vector>
 
-#include "include/LinearConstrainSystem.hpp"
-#include "include/Tableau.hpp"
-
-
+#include "../include/LinearConstrainSystem.hpp"
+#include "../include/Tableau.hpp"
 
 int main() {
-
     // creating a new instance of LinearConstrainSystem<double>
     LinearConstrainSystem<double> lcs;
 
     // adding following constrains to system:
-    lcs.add_constrain({ 1, 0, 1}, 5, LinearConstrainSystem<double>::ConstrainType::EQ);
-    lcs.add_constrain({ 0, 1, 1}, 10, LinearConstrainSystem<double>::ConstrainType::GE);
-    lcs.add_constrain({ 1, 1, 0}, 20, LinearConstrainSystem<double>::ConstrainType::LE);
-    
-    // checking if the system is feasible
-    lcs.is_feasible();
+
+    lcs.add_constrain({ 1, -4 }, 8, LinearConstrainSystem<double>::ConstrainType::LE);
+    lcs.add_constrain({ -1, 1 }, 6, LinearConstrainSystem<double>::ConstrainType::LE);
+    lcs.add_constrain({ -3, 2 }, 5, LinearConstrainSystem<double>::ConstrainType::LE);
 
     // vector for objective function coefficients
-    std::vector<double> c = { 1, -1, 3 };
+    std::vector<double> c = { 2, 5 };
 
     // vector for optimal solution
     std::vector<double> solution;

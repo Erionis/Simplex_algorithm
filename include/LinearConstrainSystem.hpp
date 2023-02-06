@@ -1,20 +1,19 @@
-
 #ifndef __LINEARCONSTRAINSYSTEM_HPP__
 #define __LINEARCONSTRAINSYSTEM_HPP__
 
 #include "Tableau.hpp"
 
 /**
- * @brief Struct che rappresenta un sistema lineare di vincoli
+ * @brief Struct to represent a linear constrain system
  * 
- * @tparam T generico
+ * @tparam T  is the parametric type
  */
 template<typename T>
 struct LinearConstrainSystem {
 
     enum class SolutionType {
-        BOUNDED, // trovata una soluzione ottima
-        UNBOUNDED // l'insieme delle soluzioni non è limitato superiormente
+        BOUNDED, // optimal solution found
+        UNBOUNDED // the set of solutions is not bounded 
     };
     enum class ConstrainType {
         EQ, // ==
@@ -23,74 +22,80 @@ struct LinearConstrainSystem {
     };
     enum class OptimizationType { MIN, MAX };
 
+    // derived type to save a constrain
     struct Constrain {
-        // coefficienti del vincolo
+        // constrain coefficients
         std::vector<T> a;
-        // termine noto
+        // known term
         T b;
-        // tipo di vincolo
+        // constrain type
         ConstrainType type;
-        // costruttore vuoto
+        // empty constructor
         Constrain() {}
-        // costruttore di inizializzazione
+        // initialization constructor
         Constrain(std::vector<T> a, T b, ConstrainType type) : a(a), b(b), type(type) {}
-        // costruttore di copia
+        // copy constructor
         Constrain(const Constrain& orig) : a(orig.a), b(orig.b), type(orig.type) {}
     };
 
-    // costruttore vuoto
+    // empty constructor
     LinearConstrainSystem() {}
-    // costruttore di copia
+    // copy constructor
     LinearConstrainSystem(const LinearConstrainSystem& orig) : constrains(orig.constrains), tab(orig.tab) {}
 
-    // Aggiunge il vincolo a*x type b, e.g., a*x <= b
+    // Add constrain a*x type b, e.g., a*x <= b
     inline LinearConstrainSystem& add_constrain(const std::vector<T>& a, const T& b, const ConstrainType type){ 
-        // aggiungo il vincolo al vettore dei vincoli
+        // adding constrain to vector of constrains
         constrains.emplace_back(a, b, type);
         return *this;
     }
 
-    // metodo per vedere se il sistema è ammissibile  // MI TORNA BOOL MA NON LO USO MAI
+    // method to check if the system is feasible
     bool is_feasible();
-    // ottimizza c*x rispetto al sistema di vincoli con x 
+    // method to optimize c*x with respect to the constrain system with x 
     SolutionType optimize(std::vector<T>& solution, const std::vector<T>& c, const OptimizationType type);
-    // metodo per stampare i risultati ottenuti
+    // method to print obtained results
     void print_result(SolutionType type, std::vector<T>& solution) const;
-    // metodo per stampare il problema di ottimizzazione ricevuto in input
+    // method to print the optimization problem given as input
     void print_Lcs(const std::vector<T>& c, const OptimizationType type) const;
 
   private:
-    // metodo per aggiornare le informazioni utili per la costruzione del tableau
-    void update_tableau_info();
-    // metodo per controllare che i vincoli in input siano accettabili
-    void check_valid_constrains() const;
-    // metodo per controllare che la funzione obiettivo in input sia accettabile
-    void check_valid_objFunc(const std::vector<T>& c, const OptimizationType type) const;
 
-    // vettore di oggetti di tipo Constrain
+    // vector containing objects of type Constrain
     std::vector<Constrain> constrains;
-    // creo un oggetto di tipo Tableau
+    // object of the struct Tableau
     Tableau<T> tab; 
-    // flag che tiene conto se l'utente ha già constollato se il sistema è ammissibile
+    // flag to keep track whether the user has already executed the is_feasible method for a constrain system
     bool feasibility_test{false};
     
+    // method to update useful information about Tableau construction
+    void update_tableau_info();
+    // method to check if input constrain are valid
+    void check_valid_constrains() const;
+    // method to check if input objective function is valid
+    inline void check_valid_objFunc(const std::vector<T>& c, const OptimizationType type) const {
+        // verifying that the number of decisional variables coefficients is equal to number of decisional variables
+        if (c.size() != tab.num_variables) {
+            throw std::invalid_argument("Wrong number of variables in objective function");
+        }
+    }
 };
 
 
 
 /**
- * @brief metodo per aggiornare le informazioni ricevute in input nel tableau
+ * @brief method to update input information inside tableau
  * 
- * @tparam T generico
+ * @tparam T 
  */
 template<typename T>
 void LinearConstrainSystem<T>::update_tableau_info() {
 
-    // aggiorno il numero di vincoli nel tableau
+    // updating number of constrains in tableau
     tab.num_constrains = constrains.size();
-    // aggiorno il numero di variabili decisionali nel tableau
+    // updating number of decisional variables in tableau
     tab.num_variables = constrains[0].a.size(); 
-    // aggiorno il numero di variabili aggiuntive del sistema
+    // updating number of added variables in tableau (i.e. slack, surplus, artificial)
     for (const auto& constrain : constrains) {
         
         switch (constrain.type) {
@@ -114,7 +119,7 @@ void LinearConstrainSystem<T>::update_tableau_info() {
                 }
                 break;
             case ConstrainType::EQ:
-                // aggiungo una variabile artificiale
+                // add an artificial variable
                 tab.artificial_variables++;
                 break;
         }
@@ -123,13 +128,13 @@ void LinearConstrainSystem<T>::update_tableau_info() {
 
 
 /**
- * @brief metodo per verificare se i vincoli dati in input sono accettabili
+ * @brief method to check if input contrains are valid
  * 
- * @tparam T generico
+ * @tparam T
  */
 template <typename T>
 void LinearConstrainSystem<T>::check_valid_constrains() const {
-    // guardo alla lunghezza del primo vincolo come elemento di paragone
+    // taking length of first constrain as comparison
     unsigned int expected_num_variables = constrains[0].a.size();
 
     for (auto const& constrain : constrains) {
@@ -138,82 +143,54 @@ void LinearConstrainSystem<T>::check_valid_constrains() const {
 
             throw std::invalid_argument("All constrains must have the same number of variables");
         }
-
-        if (constrain.type != ConstrainType::LE && 
-            constrain.type != ConstrainType::EQ &&  
-            constrain.type != ConstrainType::GE) 
-            {
-            throw std::invalid_argument("Invalid constrain type");
-        }
     }
 }
 
 
 /**
- * @brief metodo per controllare se i coefficienti della funzione obiettivo e il tipo di ottimizzazione sono accettabili 
+ * @brief method to establish if the constrain system is feasible
  * 
- * @tparam T generico
- * @param c vettore dei coefficienti della funzione obiettivo
- * @param type tipo di ottimizzazione
- */
-template <typename T>
-void LinearConstrainSystem<T>::check_valid_objFunc(const std::vector<T>& c, const OptimizationType type) const {
-
-    // Verifico che il numero di coefficienti delle variabili decisionali sia uguale al numero di variabili decisionali
-    if (c.size() != tab.num_variables) {
-        throw std::invalid_argument("Wrong number of variables in objective function");
-    }
-    // Verifico che il tipo di ottimizzazione sia corretto
-    if (type != OptimizationType::MAX && type != OptimizationType::MIN) {
-        throw std::invalid_argument("Invalid optimization type");
-    }
-}
-
-
-/**
- * @brief metodo per stabilire se il sistema di vincoli è ammissibile
- * 
- * @tparam T generico
- * @return true se il sistema di vincoli è ammissibile
- * @return false se il sistema di vincoli non è ammissibile
+ * @tparam T
+ * @return true if the system is feasible
+ * @return false if the system is infeasible
  */
 template <typename T>
 bool LinearConstrainSystem<T>::is_feasible() {  
 
-    // controllo che i valori forniti in ingresso siano accettabili
+    // checking validity of input values
     check_valid_constrains();
-    // aggiorno le informazioni ricevute finora dall'utente
+    // updating input information received so far
     update_tableau_info();
-    // Creo una copia del LinearConstrainsystem costruito finora
+    // creating a copy of the linear constrain system received so far
     LinearConstrainSystem<T> copy(*this);
 
-    // aggiorno la dimensione dei vincoli forniti finora per fare spazio alla variabile dummy
+    // updating dimension of constrains inserted so far to make place for the dummy variable
     for (size_t i=0; i< copy.constrains.size(); ++i) { 
         copy.constrains[i].a.push_back(0);
     }
-    // creo i coefficienti del vicnolo che si riferisce alla variabile dummy
+    // creating constrain coefficients referring to dummy variable
     std::vector<T> a_dummy(copy.constrains[0].a.size()-1, 0);
     a_dummy.emplace_back(1);
-    // aggiungo il vincolo al sistema di vincoli
+    // adding constrain to constrain system
     copy.add_constrain(a_dummy, 0 ,ConstrainType::EQ);
-    // aggiorno le informazioni della variabile dummy nel Tableau
+    // updating dummy variable information inside tableau
     copy.tab.num_constrains++;
     copy.tab.num_variables++;
     copy.tab.artificial_variables++;
-    // creo il Tableau iniziale
+    // creating initial tableau
     copy.tab.create_initial_tableau(copy.constrains);
-    // creo la funzione obiettivo dummy
+    // creating dummy objective variable
     std::vector<T> c(copy.tab.num_variables - 1,0);
     c.emplace_back(1);
-    // la aggiungo al Tableau
+    // adding dummy objective variable to tableau
     copy.tab.add_objFunc_tableau(c, LinearConstrainSystem<T>::OptimizationType::MAX);
 
-    // Eseguo il metodo pivot del simplesso fintanto che non viene interrotto
+    // executing symplex pivot method until it gets interrupted
     bool hasSimplexFinished = false;
     while (!hasSimplexFinished ) {
-        // ottengo l'indice della variabile entrante
+        // obtaining index of base-entering variable
         int pivot_column = copy.tab.find_pivot_column();
-        // Se è uguale a -1 non esistono più variabili da introdurre in base e interrompo il ciclo
+        // if the index is -1 then there are not variables to enter the base anymore: the loop interrupts
         if (pivot_column == -1 ) {    
             #ifdef PRINT        
             std::cout << "----End Simplex----" << std::endl<<std::endl;
@@ -221,9 +198,9 @@ bool LinearConstrainSystem<T>::is_feasible() {
             hasSimplexFinished = true; 
         }
         if (hasSimplexFinished == false) {
-            // ottengo l'indice della variabile in uscita
+            // obtaining index of base-exiting variable
             int pivot_row = copy.tab.find_pivot_row(pivot_column);
-            // Fase di "pivot" dell'algoritmo del simplesso
+            // pivot executes
             copy.tab.pivot(pivot_row, pivot_column);
         }
     }
@@ -232,16 +209,16 @@ bool LinearConstrainSystem<T>::is_feasible() {
     #endif // PRINT
 
     T solution = copy.tab.tableau[copy.tab.num_constrains].back();
-    // se z<0 allora il sistema non è ammissibile
+    // if z<0 then the system is infeasible
     if (solution < 0) {
         throw std::runtime_error("The linear constraint system is INFEASIBLE.");
         return false;
-    // altrimenti è ammissibile
+    // otherwise it is feasible
     } else {
         #ifdef PRINT
         std::cout<< "The system is FEASIBLE!"<< std::endl<<std::endl;
         #endif // PRINT
-        // aggiorno la flag del test di ammissibilità
+        // updating the flag of feasibility_test
         feasibility_test = true;
         return true;
     }
@@ -249,39 +226,39 @@ bool LinearConstrainSystem<T>::is_feasible() {
 
 
 /**
- * @brief metodo che otimizza c*x applicando "pivot" al Tableau
+ * @brief method to optimize c*x executing pivot method on tableau
  * 
- * @tparam T generico
- * @param solution vettore che conterrà la soluzione
- * @param c vettore dei coefficienti della funzione obiettivo
- * @param type tipo di ottimizzazione
+ * @tparam T
+ * @param solution vector containing solution
+ * @param c vector containing objective function coefficients
+ * @param type optimization type
  * @return LinearConstrainSystem<T>::SolutionType 
  */
 template<typename T>
 typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimize(std::vector<T>& solution, const  std::vector<T>& c, const OptimizationType type) {
     // variable that will be returned
     LinearConstrainSystem<T>::SolutionType sol_type; 
-    // se l'utente non ha ancora eseguito isfeasible() lo eseguo
+    // if user has not executed is_feasible then do it
     if (feasibility_test == false) {
         is_feasible();
     }
-    // constollo i dati in ingresso
+    // checking input objective function
     check_valid_objFunc(c, type);
-    // Creo una copia del LinearConstrainSystem costruito finora
+    // creating a copy of the LinearConstrainSystem obtained so far
     LinearConstrainSystem<T> copy(*this);
-    // creo il tableau iniziale
+    // creating initial tableau
     copy.tab.create_initial_tableau(copy.constrains);
-    // aggiungo la riga della funzione obiettivo al Tableau
+    // adding objective function row to tableau
     copy.tab.add_objFunc_tableau(c, type);
 
-    // FASE DELL'ALGORITMO DEL SIMPLESSO:
-    // Eseguo il metodo pivot fintanto che non viene interrotto
+    // SIMPLEX ALGORITHM PROCEDURE:
+    // Executing pivot method until it gets interrupted
     bool hasSimplexFinished = false;
     while (!hasSimplexFinished) {
 
-        // ottengo l'indice della variabile entrante
+        // obtaining base-entering variable index
         int pivot_column = copy.tab.find_pivot_column();
-        // Se è uguale a -1 non esistono più variabili da introdurre in base e interrompo il ciclo
+        // if pivot column is -1 then there are no variable that can be set in base anymore; symplex is interrupted
         if (pivot_column == -1 ) {            
             #ifdef PRINT
             std::cout << "----End Simplex----" << std::endl<<std::endl;
@@ -289,38 +266,38 @@ typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimi
             hasSimplexFinished = true; 
         }
         if (hasSimplexFinished == false) {
-            // ottengo l'indice della variabile in uscita
+            // obtaining base-exiting variable index
             int pivot_row = copy.tab.find_pivot_row(pivot_column);
-            // Se la riga pivot è uguale a -1 allora il sistema è illimitato
+            // if pivot row is -1 then the system is unbounded
             if (pivot_row == -1) {
                 sol_type = SolutionType::UNBOUNDED; // update and then return the variable
                 print_Lcs(c,type);
                 print_result(sol_type, solution);  
                 return sol_type;   
             }
-            // Fase di "pivot" dell'algoritmo del simplesso
+            // performing pivot method
             copy.tab.pivot(pivot_row, pivot_column);
         }
     }
-    // scrivo in solution le soluzioni trovate
+    // writing found solution
     solution.resize(copy.tab.num_variables); 
 
     for (size_t i = 0; i < copy.tab.num_variables; ++i) {
-        // indice in cui si trovano le variabili decisionali
+        // getting indexes of decisional variables
         size_t decision_variable = copy.tab.get_decVars_index() + i;
-        // cerco nel vettore di base gli indici corrispondenti alle variabili decisionali
+        // searching base vector for indexes of decisional variables
         auto index = std::find(copy.tab.base.begin(), copy.tab.base.end(), decision_variable); 
 
         if (index != copy.tab.base.end()) {
-            // indice della riga del tableau che corrisponde alla variabile di base trovata.
+            // tableau row index corresponding to base variable found
             size_t row = index - copy.tab.base.begin();
-            // prende il valore che sta all'ultimo posto della riga, cioè nella colonna dei termini noti, e salvo in solution
+            // taking last value of the row (i.e. the known term) and saving it in solution
             solution[i] = copy.tab.tableau[row].back();
         }
     }
-    // salvo il valore di z alla fine del vettore solution
+    // saving z value at the end of solution vector
     solution.emplace_back(copy.tab.tableau[copy.tab.num_constrains].back());
-    // stampo il probleam di ottimizzazione
+    // printing optimization problem
     sol_type = SolutionType::BOUNDED;     
     print_Lcs(c,type);
     print_result(sol_type, solution);  
@@ -330,11 +307,11 @@ typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimi
 
 
 /**
- * @brief  metodo per stampare il problema di ottimizzazione ricevuto in input
+ * @brief  method to print input optimization problem
  * 
- * @tparam T generico
- * @param c vettore dei coefficienti della funzione obiettivo
- * @param type tipo di ottimizzazione
+ * @tparam T 
+ * @param c coefficients of objective function vector
+ * @param type optimization type
  */
 template<typename T>
 void LinearConstrainSystem<T>::print_Lcs(const std::vector<T>& c, const OptimizationType type) const {
@@ -378,16 +355,16 @@ void LinearConstrainSystem<T>::print_Lcs(const std::vector<T>& c, const Optimiza
 }
 
 /**
- * @brief metodo per stampare la soluzione ottima del problema di ottimizzazione
+ * @brief method to print optimal solution found for the optimization problem
  * 
- * @tparam T generico
- * @param type tipo di ottimizzazione
- * @param solution vettore che contenente la soluzione
+ * @tparam T
+ * @param type optimization type
+ * @param solution vector containing solution
  */
-template<typename T>  // SISTEMARE STAMPANDO ANCHE I VINCOLI E LA F OBIETTIVO
+template<typename T>  
 void LinearConstrainSystem<T>::print_result(SolutionType type, std::vector<T>& solution) const {
 
-    // Caso BOUNDED
+    // BOUNDED case
     if (type == LinearConstrainSystem<T>::SolutionType::BOUNDED) {
         
         std::cout << std::endl;  
@@ -401,7 +378,7 @@ void LinearConstrainSystem<T>::print_result(SolutionType type, std::vector<T>& s
 
         std::cout<< "Optimal value z= "<< solution.back() << std::endl<< std::endl;
 
-    // Caso UNBOUNDED
+    // UNBOUNDED case
     } else {
         std::cout << "UNBOUNDED SOLUTION" << std::endl<< std::endl;
     }

@@ -12,73 +12,73 @@ template<typename T>
 struct LinearConstrainSystem;
 
 /**
- * @brief Struct rappresentante il Tableau e tutte le funzioni ad essso collegate
+ * @brief struct for Tableau and linked functions
  * 
- * @tparam T generico
+ * @tparam T 
  */
 template<typename T>
 class Tableau {
     
-    // campo dati per il tableau
+    // data structure tableau for saving its data
     std::vector<std::vector<T>> tableau;
-    // indici delle variabili di base
+    // vector for base variable index
     std::vector<size_t> base;
-    // Numero di incognite
+    // number of variables
     size_t num_variables{0};
-    // Numero di vincoli
+    // number of constrains
     size_t num_constrains{0};
-    // Numero di variabili di slack
+    // number of slack variables
     size_t slack_variables{0};   
-    // Numero di variabili di surplus
+    // number of surplus variables
     size_t surplus_variables{0};   
-    // Numero di variabili artificiali
+    // number of artificial variables
     size_t artificial_variables{0};
-    // definisco Big-M come un valore molto grande
-    double BIG_M = 1e9; // CAPIRE MEGLIO COME DEFINIRLO  
-    // indici (i,j) della posizone delle variabili artificiali nel tableau
+    // defining Big_M with a very large value
+    double BIG_M = 1e9;
+    // indexes (i,j) for position of artificial variables inside tableau
     std::vector<std::pair<size_t, size_t>> artificial_var_indices;
 
+    // empty constructor
+    Tableau() {}
+    // copy constructor
+    Tableau(const Tableau<T>& orig);
 
-    // metodo per ottenere il numero di colonne del tableau
+    // method to get number of columns in tableau
     inline size_t get_total_columns() { return num_variables + slack_variables + surplus_variables + artificial_variables + 1; }
-    // metodo per ottenere l'indice delle colonne dedicate alle variabili decisionali
+    // method to get index of columns for decisional variables
     inline size_t get_decVars_index() { return slack_variables + surplus_variables + artificial_variables; }
-    // metodo per aggiungere i vincoli del sistema al tableau
+    // method to add system constrains to tableau
     void create_initial_tableau(std::vector<typename LinearConstrainSystem<T>::Constrain>& constrains);
-    // metodo per aggiungere la funzione obiettivo al Tableau
+    // method to add the objective function to tableau
     void add_objFunc_tableau(const std::vector<T>& c, const typename LinearConstrainSystem<T>::OptimizationType type);
     #ifdef PRINT
-    // metodo per stampare il Tableau
+    // method to print tableau
     void print_tableau() const;
-    // stampa i valori in base
+    // method to print base values
     void print_base() const;    
     #endif // PRINT
-    // metodo per aggiungere una riga al Tableau nel caso LE
+    // method to add a row to tableau when the case is LE
     void add_LE_row_tableau(const std::vector<T>& a, const T& b, size_t current_row);
-    // metodo per aggiungere una riga al Tableau nel caso GE
+    // method to add a row to tableau when the case is GE
     void add_GE_row_tableau(const std::vector<T>& a, const T& b, size_t current_row);  
-    // metodo per aggiungere una riga al Tableau nel caso EQ
+    // method to add a row to tableau when the case is EQ
     void add_EQ_row_tableau(const std::vector<T>& a, const T& b, size_t current_row);      
-    // metodo per individuare la variabile entrante
+    // method to identify base entering variable
     int find_pivot_column(); 
-    // metodo per individuare la variabile uscente   // crere metdo simplesso? 
+    // method to identify base exiting variable
     int find_pivot_row(int pivot_column);
-    // metodo per effettuare un pivot
+    // method to perform pivot operation
     void pivot(int pivot_row, int pivot_column);
-    // costruttore vuoto
-    Tableau() {}
-    // costruttore di copia
-    Tableau(const Tableau<T>& orig);
 
     friend struct LinearConstrainSystem<T>;
 };
 
 
 /**
- * @brief Costruttore di copia
+ * @brief Copy constructor
  * 
- * @tparam T generico
- * @param orig oggetto originale che viene copiato
+ * @tparam T 
+ * @param orig original object to be copied
  */
 template<typename T>
 Tableau<T>::Tableau(const Tableau<T>& orig) {
@@ -95,31 +95,31 @@ Tableau<T>::Tableau(const Tableau<T>& orig) {
 
 
 /**
- * @brief metodo per inserire i vincoli del sistema nel Tableau
+ * @brief method to add system constrains in Tableau
  * 
- * @tparam T generico
- * @param constrains vettore di oggetti di tipo Constrain rappresentanti i vincoli del sistema 
+ * @tparam T
+ * @param constrains vector of Constrain objects to represent system constrains
  */
 template<typename T>
 void Tableau<T>::create_initial_tableau(std::vector<typename LinearConstrainSystem<T>::Constrain>& constrains) {
 
-    // per ogni vincolo nel vettore constrains
+    // for every constrain in Constrain vector
     for(auto const &constrain: constrains){
 
-        // creo la riga corrispondente nel Tablau
+        // creating corresponding row in tableau
         tableau.emplace_back(get_total_columns(), 0);
-        // contatore per memorizzare in che riga siamo 
+        // counter to save current row
         size_t current_row = tableau.size() - 1;    
 
         switch (constrain.type) {
 
             case LinearConstrainSystem<T>::ConstrainType::LE: {
-                // se il termine noto è negativo 
+                // if known term is negative
                 if (constrain.b < 0){
-                    // creo un vettore con i coefficienti cambiati di segno di a
+                    // creating a vector with opposite coefficients of a
                     std::vector<T> a_neg(constrain.a.size());
                     std::transform(constrain.a.begin(), constrain.a.end(), a_neg.begin(), std::negate<T>()); 
-                    // considero il caso come de fosse GE
+                    // considering the case as if it was GE
                     add_GE_row_tableau(a_neg, constrain.b*(-1), current_row);    
                 } else {
                     add_LE_row_tableau(constrain.a, constrain.b, current_row);
@@ -129,12 +129,12 @@ void Tableau<T>::create_initial_tableau(std::vector<typename LinearConstrainSyst
             }
 
             case LinearConstrainSystem<T>::ConstrainType::GE: {
-                // se il termine noto è negativo 
+                // if known term is negative 
                 if (constrain.b < 0){
-                    // creo un vettore con i coefficienti cambiati di segno di a
+                    // creating a vector with opposite coefficients of a
                     std::vector<T> a_neg(constrain.a.size());
                     std::transform(constrain.a.begin(), constrain.a.end(), a_neg.begin(), std::negate<T>()); 
-                    // considero il caso come de fosse LE
+                    // considering the case as if it was LE
                     add_LE_row_tableau(a_neg, constrain.b*(-1), current_row);    
                 } else {
                     add_GE_row_tableau(constrain.a, constrain.b, current_row);
@@ -144,9 +144,9 @@ void Tableau<T>::create_initial_tableau(std::vector<typename LinearConstrainSyst
             }
 
             case LinearConstrainSystem<T>::ConstrainType::EQ: {
-                // se il termine noto è negativo 
+                // if the known term is negative
                 if (constrain.b < 0){
-                    // creo un vettore con i coefficienti cambiati di segno di a
+                    // creating a vector with opposite coefficients of a
                     std::vector<T> a_neg(constrain.a.size());
                     std::transform(constrain.a.begin(), constrain.a.end(), a_neg.begin(), std::negate<T>()); 
 
@@ -163,74 +163,74 @@ void Tableau<T>::create_initial_tableau(std::vector<typename LinearConstrainSyst
 
 
 /**
- * @brief metodo per aggiungere un vincolo di tipo "minore o uguale" in una riga del Tableau
+ * @brief method to add a LE constrain into a Tableau row
  * 
- * @tparam T generico
- * @param a vettore dei coefficienti delle variabili decisionali del vincolo
- * @param b termine noto del vincolo
- * @param current_row indice di riga corrente del tableau
+ * @tparam T
+ * @param a vector of constrain's decisional variables coefficients
+ * @param b constrain's known term
+ * @param current_row current row index inside tableau
  */
 template<typename T>
 void Tableau<T>::add_LE_row_tableau(const std::vector<T>& a, const T& b, size_t current_row){
 
-    // se non mi trovo nella prima riga
+    // if not in the first row
     if(current_row>0){
-        // per tutte le colonne dedicate alle variabili aggiuntive (la parte sinistra del tableau)
+        // for every column reserved to additional variables
         for (size_t i = 0; i < get_decVars_index(); ++i) {
-            // nel caso in cui nella riga precedente ci sia un elemento -1
+            // if in previous row there is an element equal to -1
             if (tableau[current_row-1][i] == 1 && tableau[current_row-1][i+1] == -1) {
-                // aggiungo il coefficiente della variabile di slack
+                // adding coefficient of slack variable
                 tableau[current_row][i+2] = 1;
-                // inserisco la variabile in base
+                // adding base variable
                 base.emplace_back(i+2);
                 break;
-            // nel caso in cui nella riga precedente ci sia solo un elemento +1
+            // if in previous row there is an element equal to 1
             }else if(tableau[current_row-1][i] == 1) {
-                // aggiungo il coefficiente della variabile di slack                
+                // adding coefficient of slack variable                
                 tableau[current_row][i+1] = 1;
-                // inserisco la variabile in base                
+                // adding base variable                  
                 base.emplace_back(i+1);
                 break;
             }
         }
-    // se mi trovo nella prima riga
+    // if in the first row
     }else{
-        // aggiungo il coefficiente della variabile di slack
+        // adding coefficient of slack variable
         tableau[current_row][0] = 1;
-        // inserisco la variabile in base
+        //  adding base variable
         base.emplace_back(0);
     }
 
-    // inserisco i coefficienti del vettore a nella posizione corretta
+    // inserting coefficients of vector a in correct position
     for (size_t i = 0; i < num_variables; ++i)  {
         tableau[current_row][get_decVars_index() + i] = a[i];
     }
-    // aggiungo il termine noto 
+    // adding known term
     tableau[current_row].back() = b;
 }
 
 
 /**
- * @brief metodo per aggiungere un vincolo di tipo "maggiore o uguale" in una riga del Tableau
+ * @brief method to add a GE constrain into a tableau row
  * 
- * @tparam T generico
- * @param a vettore dei coefficienti delle variabili decisionali del vincolo
- * @param b termine noto del vincolo
- * @param current_row indice di riga corrente del tableau
+ * @tparam T
+ * @param a vector for constrain's decisional variables coefficients
+ * @param b constrain's known term
+ * @param current_row tableau's current row index
  */
 template<typename T>
 void Tableau<T>::add_GE_row_tableau(const std::vector<T>& a, const T& b, size_t current_row){
 
-    // se non mi trovo nella prima riga
+    // if not in first row
     if(current_row>0){
-        // per tutte le colonne dedicate alle variabili aggiuntive (la parte sinistra del tableau)
+        // for every column regarding additional variables
         for (size_t i = 0; i < get_decVars_index(); ++i) {
-            // nel caso in cui nella riga precedente ci sia un elemento -1
+            // if in the previous row there is an element equal to -1
             if (tableau[current_row-1][i] == 1 && tableau[current_row-1][i+1] == -1) {
-                tableau[current_row][i+2] = 1;  // aggiungo la variabile artificiale
-                tableau[current_row][i+3] = -1;  // aggiungo la variabile di surplus
-                base.emplace_back(i+2);    // aggiorno la base
-                // salvo la posizione della variabile artificiale 
+                tableau[current_row][i+2] = 1;  // adding artificial variable
+                tableau[current_row][i+3] = -1;  // adding surplus variable
+                base.emplace_back(i+2);    // updating base
+                // saving position of artificial variable
                 artificial_var_indices.emplace_back(std::make_pair(current_row, i+2));
                 break;
             }else if(tableau[current_row-1][i] == 1) {
@@ -241,39 +241,39 @@ void Tableau<T>::add_GE_row_tableau(const std::vector<T>& a, const T& b, size_t 
                 break;
             }
         }
-    // se mi trovo nella prima riga
+    // if in the first row
     }else{
         tableau[current_row][0] = 1;
         tableau[current_row][1] = -1;
         base.emplace_back(0);
         artificial_var_indices.emplace_back(std::make_pair(current_row, 0));
     }
-    // inserisco i coefficienti del vettore a nella posizione corretta
+    // inserting coefficients of vector a in correct place
     for (size_t i = 0; i < num_variables; ++i)  {
 
         tableau[current_row][get_decVars_index() + i] = a[i];
     } 
-    // aggiungo il termine noto  
+    // adding known term  
     tableau[current_row].back() = b; 
 }
 
 
 /**
- * @brief metodo per aggiungere un vincolo di tipo "maggiore o uguale" in una riga del Tableau
+ * @brief method to add a EQ constrain into a row of tableau
  * 
- * @tparam T generico
- * @param a vettore dei coefficienti delle variabili decisionali del vincolo
- * @param b termine noto del vincolo
- * @param current_row indice di riga corrente del tableau
+ * @tparam T
+ * @param a vector of constrain's decisional variable coefficients
+ * @param b constrain's known term 
+ * @param current_row current row index inside tableau
  */
 template<typename T>
 void Tableau<T>::add_EQ_row_tableau(const std::vector<T>& a, const T& b, size_t current_row){
 
-    // se non mi trovo nella prima riga
+    // if not in first row
     if(current_row>0){
-        // per tutte le colonne dedicate alle variabili aggiuntive (la parte sinistra del tableau)
+        // for every column reserved to additional variables
         for (size_t i = 0; i < get_decVars_index(); ++i) {
-            // nel caso in cui nella riga precedente ci sia un elemento -1
+            // if there is an element equal to -1 in previous row
             if (tableau[current_row-1][i] == 1 && tableau[current_row-1][i+1] == -1) {
                 tableau[current_row][i+2] = 1;
                 base.emplace_back(i+2);
@@ -286,52 +286,52 @@ void Tableau<T>::add_EQ_row_tableau(const std::vector<T>& a, const T& b, size_t 
                 break;
             }
         }
-    // se mi trovo nella prima riga
+    // if in first row
     }else{
         tableau[current_row][0] = 1;
         base.emplace_back(0);
                 artificial_var_indices.emplace_back(std::make_pair(current_row, 0));
     }
 
-    // inserisco i coefficienti del vettore a nella posizione corretta
+    // inserting coefficients of vector a in correct position
     for (size_t i = 0; i < num_variables; ++i)  {
 
         tableau[current_row][get_decVars_index() + i] = a[i];
     }
-    // aggiungo il termine noto  
+    // adding known term
     tableau[current_row].back() = b;
 }
 
 
 /**
- * @brief metodo per aggiungere la riga della funzione obiettivo nel Tableau col "Big-M method"
+ * @brief method to add objective function row with "Big-M" method
  * 
- * @tparam T generico
- * @param c vettore dei coefficienti della funzione obiettivo
- * @param type tipo di ottimizzazione
+ * @tparam T
+ * @param c vector of objective function coefficients
+ * @param type optimization type
  */
 template<typename T>
 void Tableau<T>::add_objFunc_tableau(const std::vector<T>& c, const typename LinearConstrainSystem<T>::OptimizationType type) {
 
-    // Indice di riga della funzione obiettivo
+    // index of objective function row
     size_t ObjFunc_row = num_constrains;
-    // creo una nuova riga nel Tableau            
+    // creating a new row inside tableau           
     tableau.emplace_back(get_total_columns(), 0);
 
     switch (type) {
 
-        // Caso di MINIMIZZAZIONE
+        // Minimization case
         case LinearConstrainSystem<T>::OptimizationType::MIN: {
-            // Aggiungo nella nuova riga i coefficienti della funzione obiettivo nella posizione corretta
+            // Adding to new row objective function coefficients in correct position
             for (size_t i = 0; i < num_variables; ++i)  {
 
                 tableau[ObjFunc_row][get_decVars_index() + i] = c[i];
             }
             break;
         }
-        // Caso di MASSIMIZZAZIONE
+        // Maximization case
         case LinearConstrainSystem<T>::OptimizationType::MAX: {
-            // Aggiungo nella nuova riga i coefficienti della funzione obiettivo cambiati di segno
+            // Adding to new row i objective function opposite coefficients 
             for (size_t i = 0; i < num_variables; ++i)  {
                 
                 tableau[ObjFunc_row][get_decVars_index() + i] = c[i]*(-1);
@@ -339,72 +339,72 @@ void Tableau<T>::add_objFunc_tableau(const std::vector<T>& c, const typename Lin
             break;
         }
     }
-    // Aggiungo il termine noto uguale a 0 della funzione obiettivo
+    // Adding known term as 0 for objective function
     tableau[ObjFunc_row].back()= 0;
 
-    // Fase del "Big-M method":
-    // aggiungo il valore M alle variabili artificiali nella riga della funziona obiettivo
+    // "Big-M method" phase:
+    // adding M value to artificial variables in objective function row
     for (const auto& indeces : artificial_var_indices) {
         tableau[ObjFunc_row][indeces.second] = BIG_M;
     }
     #ifdef PRINT
     print_tableau();
     #endif // PRINT
-    // e li elimino facendo le opportune combinazioni lineari sulla funziona obiettivo
+    // deleting those values performing adequate linear combinations to objective function
     for (const auto& indeces : artificial_var_indices) {
         T factor = tableau[ObjFunc_row][indeces.second];
         for (size_t col_index = 0; col_index < get_total_columns(); ++col_index) {
-            // eseguo la combinazione lineare delle righe per portare gli altri elemnti della colonna pivot a 0
+            // performing linear combinations on rows to make other elements on pivot columns be 0
             tableau[ObjFunc_row][col_index] -= factor * tableau[indeces.first][col_index];
         }        
     }
-    // da questo punto può partire l'algorimto del simplesso
+    // ow simplex algorithm can start
     #ifdef PRINT
     std::cout << "---Start Simplex---" << std::endl;
-    std::cout << "Tableau iniziale: " << std::endl;
+    std::cout << "Initial tableau: " << std::endl;
     print_tableau();
-    std::cout << "Base iniziale: " << std::endl;
+    std::cout << "Initial base: " << std::endl;
     print_base();
     #endif // PRINT
 }
 
 
 /**
- * @brief metodo che implementa la fase "pivot" dell'algoritmo del simplesso
+ * @brief method for pivot operation
  * 
- * @tparam T generico
- * @param pivot_row indice di riga della variabile uscente
- * @param pivot_column indice di colonna della variabile entrante
+ * @tparam T
+ * @param pivot_row index of base exiting variable row
+ * @param pivot_column index of base entering variable column
  */
 template <typename T>
 void Tableau<T>::pivot(int pivot_row, int pivot_column) {
 
-    // Aggiorno gli indici delle variabili di base
+    // adding indexes of base variables
     base[pivot_row] = pivot_column;
     #ifdef PRINT
     print_base();
     #endif // PRINT
-    // Numero di righe del tableau;
+    // number of rows in tableau
     int tot_rows = tableau.size();
-    // elemento pivot
+    // pivot element
     T pivot_element = tableau[pivot_row][pivot_column];
-    // Divido tutti gli elementi della riga pivot per l'elemento pivot
+    // dividing all elements in pivot row by pivot element
 
     for (auto& element : tableau[pivot_row]) {
 
         element /= pivot_element;
     }
 
-    // Sostituidco le righe che non sono la riga pivot, sottraendo ad esse un opportuno multiplo della riga pivot
+    // substituting all non-pivot rows subtracting to them an adequate multiple of pivot row
     for (int row_index = 0; row_index < tot_rows; ++row_index) {
-        // se non mi trovo sulla pivot row
+        // if not in pivot row
         if (row_index != pivot_row) {
 
             T factor = tableau[row_index][pivot_column];
 
             for (size_t col_index = 0; col_index < get_total_columns(); ++col_index) {
 
-                // eseguo la combinazione lineare delle rgihe per portare gli altri elemnti della pivot column a 0
+                // performing linear combination of row to make other elements in pivot column to be 0
                 tableau[row_index][col_index] -= factor * tableau[pivot_row][col_index];
             }
         }
@@ -416,90 +416,90 @@ void Tableau<T>::pivot(int pivot_row, int pivot_column) {
 
 
 /**
- * @brief metodo per individuare l'indice di colonna della variabile entrante
+ * @brief method to determine index of base-entering variable column 
  * 
- * @tparam T generico
- * @return int indice della colonna associata alla variabile entrante
+ * @tparam T
+ * @return 'int' index of base-entering variable columns
  */
 template <typename T>
 int Tableau<T>::find_pivot_column() {
 
-    // assegno inizialmente indice -1 per gestire i casi particolari
+    // initially assigning index as -1 to deal with particular cases
     int pivot_column = -1;
-    // pivot_value mi serve come elemento di confronto per trovare il minimo valore negativo nella riga della funzione obiettivo 
+    // pivot_value will be used for comparisons to find minimum negative value in objective function row
     T pivot_value = 0; 
-    // indice di riga della funzone obiettivo
+    // index of objective function row
     size_t ObjFunc_row = num_constrains;
 
-    // scorriamo tutti i coefficienti della riga della funzione obiettivo (escluso il suo termine noto) 
-    // cercando l'elemento più piccolo tra quelli negativi
+    // analyzing all coefficients of objective function row (apart from its known term) 
+    // searching for the minimum among its negative values
     for (size_t col_index = 0; col_index < get_total_columns() - 1; ++col_index) {
 
-        // se il coefficiente della funzione obiettivo è negativo, controlliamo se è il minimo trovato finora
+        // if objective function coefficient is negative, let's check if it is the minimum so far
         if ( tableau[ObjFunc_row][col_index] < 0 && tableau[ObjFunc_row][col_index] < pivot_value ){
 
-            // aggiorno l'inidce di pivot column
+            // updating index of pivot column
             pivot_column = col_index;
-            // aggiorno il minimo valore trovato finora
+            // updating minimum value found so far
             pivot_value = tableau[ObjFunc_row][col_index];
         }
     }
     #ifdef PRINT
-    std::cout<<"Pivot column entrante: "<< pivot_column<< std::endl;
+    std::cout<<"Pivot column entering: "<< pivot_column<< std::endl;
     #endif // PRINT
     return pivot_column;
 }
 
 
 /**
- * @brief metodo per individuare l'inidice della variabile in uscita dalla base
+ * @brief method to find index of base exiting variable
  * 
- * @tparam T generico
- * @param pivot_column indice della variabile entrante in base
- * @return int indice della riga associata alla variabile uscente
+ * @tparam T
+ * @param pivot_column index of base entering variable
+ * @return 'int' index of base exiting variable row
  */
 template <typename T>
 int Tableau<T>::find_pivot_row(int pivot_column) {
 
-    // Inizializzo l'indice della variabile di base scelta a -1 per gestire i casi particolari
+    // initially, base variable index is set to -1 to deal with particular cases
     int pivot_row = -1;
-    // imposto un valore molto alto per il rapporto tra coefficienti, che mi servirà per individuare il più piccolo tra i rapporti
+    // setting the highest possible value for ratio that will be used to identify the minimum among all ratios
     double min_ratio = std::numeric_limits<T>::max();
-    // riga della funzone obiettivo
+    // objective function row
     size_t ObjFunc_row = num_constrains;
 
-    // Per ogni riga tranne quella della funzione obiettivo
+    // for every row apart from objective function one
     for (size_t row_index = 0; row_index < ObjFunc_row; ++row_index)  {
 
-        // Se il coefficiente nella riga corrente del tableau è positivo
+        // if coefficient in current tableau row is positive
         if (tableau[row_index][pivot_column] > 0) {
 
-            // Calcolo il rapporto tra il termine noto e il coefficiente nella riga corrente del tableau
+            // calculating ratio between known term and coefficient in current tableau row
             double ratio = tableau[row_index].back() / tableau[row_index][pivot_column];
 
-            // Se il rapporto è minore del rapporto più piccolo trovato finora
+            // if ratio is less than minimum ratio found so far
             if (ratio < min_ratio) {
-                // aggiorno l'indice della variabile di base scelta 
+                // updating index of selected base variable 
                 pivot_row = row_index;
-                // aggiorno il rapporto più piccolo
+                // updating minimum ratio value
                 min_ratio = ratio;
             }
         }
     }
     #ifdef PRINT
-    std::cout << "Pivot row uscente: " << pivot_row << std::endl;
+    std::cout << "Pivot row exiting: " << pivot_row << std::endl;
     std::cout << std::endl;
     #endif // PRINT
-    // Restituisco l'indice della variabile di base scelta
+    // returing index of selected base variable
     return pivot_row;
 }
 
 #ifdef PRINT
 
 /**
- * @brief metodo per stampare gli elementi in base
+ * @brief method to print elements in base
  * 
- * @tparam T generico
+ * @tparam T 
  */
 template<typename T>
 void Tableau<T>::print_base() const {
@@ -517,9 +517,9 @@ void Tableau<T>::print_base() const {
 #ifdef PRINT
 
 /**
- * @brief metodo per stampare il Tableau
+ * @brief method to print Tableau
  * 
- * @tparam T generico
+ * @tparam T 
  */
 template<typename T>
 void Tableau<T>::print_tableau() const {

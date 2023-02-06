@@ -5,30 +5,30 @@
 #include <vector>
 
 
-#include "LinearConstrainSystem.hpp"
-#include "Tableau.hpp"
+#include "../include/LinearConstrainSystem.hpp"
+#include "../include/Tableau.hpp"
+
 
 
 int main() {
-    // creo una nuova istanza di LinearConstrainSystem<double>
+    // creating a new instance of LinearConstrainSystem<double>
     LinearConstrainSystem<double> lcs;
 
-    // aggiungo i seguenti vincoli al sistema:
-
+    // adding following constrains to system:
     lcs.add_constrain({ 2, 1 }, 8, LinearConstrainSystem<double>::ConstrainType::LE);
     lcs.add_constrain({ 1, 2 }, 9, LinearConstrainSystem<double>::ConstrainType::LE);
     lcs.add_constrain({ 1, 1 }, 5, LinearConstrainSystem<double>::ConstrainType::LE);
     
-    // controllo che il sistema sia ammissibile
+    // checking if the system is feasible
     lcs.is_feasible();
     
-    // vettore di coefficienti della funzione obiettivo
+    // vector for objective function coefficients
     std::vector<double> c = { -5, -7 };
 
-    // vettore per la soluzione ottima
+    // vector for optimal solution
     std::vector<double> solution;
 
-    // esegue l'ottimizzazione del sistema di vincoli con la funzione obiettivo c*x
+    // executing optimization of constrain system with objective function c*x
     LinearConstrainSystem<double>::SolutionType result = lcs.optimize(solution, c, LinearConstrainSystem<double>::OptimizationType::MIN);
 
     return 0;

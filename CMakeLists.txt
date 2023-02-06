@@ -2,19 +2,7 @@
 
 cmake_minimum_required(VERSION 3.17)
 
-# Per mingw...
-
-# set(CMAKE_C_COMPILER "C:/MinGW/bin/gcc.exe")
-# set(CMAKE_CXX_COMPILER "C:/MinGW/bin/g++.exe")
-
-# Se usi ninja, a terminale:
-
-# cmake -G Ninja .
-# ninja
-
-# Poi esegui i file come faresti di solito
-
-project(esame)
+project(SimplexAlg)
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 11)
@@ -29,15 +17,31 @@ add_executable(mainINFEASIBLE_print mainINFEASIBLE.cpp)
 add_executable(mainMIN mainMIN.cpp)
 add_executable(mainMIN_print mainMIN.cpp)
 
-add_executable(mainTest mainTest.cpp)
-add_executable(mainTest_print mainTest.cpp)
-
 add_executable(mainUNBOUND mainUNBOUND.cpp)
 add_executable(mainUNBOUND_print mainUNBOUND.cpp)
 
+# Compile libraries
+include_directories(${CMAKE_SOURCE_DIR}/include)
+link_directories(${CMAKE_SOURCE_DIR}/lib)
+add_library(core SHARED ${SOURCES})
 
-target_compile_definitions(esame_print PUBLIC PRINT)
+# # Compile example files
+file( GLOB EXAMPLES ./examples/*.cpp )
+foreach( EXAMPLE ${EXAMPLES} )
+    get_filename_component(EXAMPLE_NAME ${EXAMPLE} NAME_WE)
+    add_executable( ${EXAMPLE_NAME} ${EXAMPLE} )
+    target_link_libraries(${EXAMPLE_NAME} core)
+endforeach()
+
+target_compile_definitions(main_print PUBLIC PRINT)
 target_compile_definitions(mainINFEASIBLE_print PUBLIC PRINT)
 target_compile_definitions(mainMIN_print PUBLIC PRINT)
-target_compile_definitions(mainTest_print PUBLIC PRINT)
 target_compile_definitions(mainUNBOUND_print PUBLIC PRINT)
+
+
+
+
+
+
+
+
