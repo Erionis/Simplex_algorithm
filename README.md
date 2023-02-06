@@ -1,36 +1,36 @@
-# Esame di Programmazione Avanzata e Parallela 2022-2023
+# Advanced and Parallel Programming Exam 2022-2023
 
-Gruppo composto da: Vittorio Amoruso, Nicola Cortinovis, Erion Islamay e Nicola Zucchia
+Developers: Vittorio Amoruso, Nicola Cortinovis, Erion Islamay and Nicola Zucchia
 
-Implementazione sequenziale dell'algoritmo del Simplesso 
+Project: Sequential Implementation of Simplex Algorithm with tableau and Big-M Method.
 
-## Struttura della Repository
+Note: Big-M is set to 1e9. Please be aware that input data greater than 1e9 may cause numerical cancellation problems. 
+If it is the case we suggest scaling your data before running this program. 
 
-*  La cartella `examples` contiene 4 file sorgente per il testing dell'algoritmo del simplesso
+### Repository Structure
 
-    * `mainEQ.cpp`  (test per vincoli che presentano uguaglianze)
-    * `mainINFEASIBLE.cpp` (test per un problema insoddisfacibile)
-    * `mainMIN.cpp`  (test per un problema di minimizzazione)
-    * `mainUNBOUND.cpp` (test per un problema illimitato)
+* `LinearConstrainSystem.hpp` header containing the definition of the struct Linear Constrain System and its associated methods
 
-* La cartella `include` contiene i seguenti file header
+* `Tableau.hpp` header containing the defition of the struct Tableau and its associated methods
 
-    * `LinearConstrainSystem.hpp` (struttura della classe)
-    * `print_functions.hpp` (metodi per la stampa dei passaggi dell'algoritmo)
-    * `simplex_functions.hpp` (metodi utilizzati dall'algoritmo)
+* `examples` folder contains 4 source files for testing various cases of linear constrain systems
 
-* `CMakeLists.txt` file txt necessario per la compilazione tramite CMake
+    * `mainINFEASIBLE.cpp` (test for an infeasible constrain system)
+    * `mainMIN.cpp`  (test for a minimization problem)
+    * `mainUNBOUND.cpp` (test for an unbounded constrain system)
 
-* `main.cpp` file sorgente per il testing di un problema di massimizzazione
+* `CMakeLists.txt` txt file necessary to compile code with CMake
 
-## Prerequisiti
+* `main.cpp` source file for testing a standard maximization problem
 
-C++ | Ide a scelta
+## Documentation
+```bash
+doxygen docs/doxygen.config
+```
 
-MinGW
+## Compile
+```bash
+cmake . -G Ninja
+ninja
+```
 
-Cmake
-
-## How To build and execute
-
-![Screenshot](image.png)
