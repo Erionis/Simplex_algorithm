@@ -15,13 +15,14 @@ If it is the case we suggest scaling your data before running this program.
 
 * `examples` folder contains 4 source files for testing various cases of linear constrain systems
 
+    * `main.cpp` source file for testing a standard maximization problem
     * `mainINFEASIBLE.cpp` (test for an infeasible constrain system)
     * `mainMIN.cpp`  (test for a minimization problem)
     * `mainUNBOUND.cpp` (test for an unbounded constrain system)
 
 * `CMakeLists.txt` txt file necessary to compile code with CMake
 
-* `main.cpp` source file for testing a standard maximization problem
+
 
 ## Documentation
 ```bash
