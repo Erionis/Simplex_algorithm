@@ -9,16 +9,17 @@ If it is the case we suggest scaling your data before running this program.
 
 ### Repository Structure
 
-* `LinearConstrainSystem.hpp` header containing the definition of the struct Linear Constrain System and its associated methods
+* `include` folder containing header files to create instances of linear constrain systems and tableau to perform the Simplex Algorithm
 
-* `Tableau.hpp` header containing the defition of the struct Tableau and its associated methods
+    * `LinearConstrainSystem.hpp` header containing the definition of the struct Linear Constrain System and its associated methods
+    * `Tableau.hpp` header containing the defition of the struct Tableau and its associated methods
 
-* `examples` folder contains 4 source files for testing various cases of linear constrain systems
+* `examples` folder containing 4 source files for testing various cases of linear constrain systems
 
     * `main.cpp` source file for testing a standard maximization problem
-    * `mainINFEASIBLE.cpp` (test for an infeasible constrain system)
-    * `mainMIN.cpp`  (test for a minimization problem)
-    * `mainUNBOUND.cpp` (test for an unbounded constrain system)
+    * `mainINFEASIBLE.cpp` source file for testing for an infeasible constrain system
+    * `mainMIN.cpp`  source file for testing a minimization problem
+    * `mainUNBOUND.cpp` source file for testing an unbounded problem
 
 * `CMakeLists.txt` txt file necessary to compile code with CMake
 
