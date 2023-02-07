@@ -26,10 +26,12 @@ struct LinearConstrainSystem {
         MAX   //!< maximize obj function
     };
 
-    // struct representing a constrain
+    /**
+     * @brief struct representing a constrain
+    */
     struct Constrain {
         std::vector<T> a;   //!< constrain coefficients
-        T b;                //!< known term
+        T b;                //!< constant term
         ConstrainType type; //!< constrain type
         // empty constructor
         Constrain() {}
@@ -309,7 +311,7 @@ typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimi
         if (index != copy.tab.base.end()) {
             // tableau row index corresponding to base variable found
             size_t row = index - copy.tab.base.begin();
-            // taking last value of the row (i.e. the known term) and saving it in solution
+            // taking last value of the row (i.e. the constant term) and saving it in solution
             solution[i] = copy.tab.tableau[row].back();
         }
     }

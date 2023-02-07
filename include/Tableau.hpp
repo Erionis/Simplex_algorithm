@@ -14,7 +14,7 @@ struct LinearConstrainSystem;
 
 
 /**
- * @brief struct for Tableau and linked functions
+ * @brief class for Tableau and linked functions
  * 
  * @tparam T 
  */
@@ -120,7 +120,7 @@ void Tableau<T>::create_initial_tableau(std::vector<typename LinearConstrainSyst
         switch (constrain.type) {
 
             case LinearConstrainSystem<T>::ConstrainType::LE: {
-                // if known term is negative
+                // if constant term is negative
                 if (constrain.b < 0){
                     // creating a vector with opposite coefficients of a
                     std::vector<T> a_neg(constrain.a.size());
@@ -135,7 +135,7 @@ void Tableau<T>::create_initial_tableau(std::vector<typename LinearConstrainSyst
             }
 
             case LinearConstrainSystem<T>::ConstrainType::GE: {
-                // if known term is negative 
+                // if constant term is negative 
                 if (constrain.b < 0){
                     // creating a vector with opposite coefficients of a
                     std::vector<T> a_neg(constrain.a.size());
@@ -150,7 +150,7 @@ void Tableau<T>::create_initial_tableau(std::vector<typename LinearConstrainSyst
             }
 
             case LinearConstrainSystem<T>::ConstrainType::EQ: {
-                // if the known term is negative
+                // if the constant term is negative
                 if (constrain.b < 0){
                     // creating a vector with opposite coefficients of a
                     std::vector<T> a_neg(constrain.a.size());
@@ -173,7 +173,7 @@ void Tableau<T>::create_initial_tableau(std::vector<typename LinearConstrainSyst
  * 
  * @tparam T
  * @param a vector of constrain's decisional variables coefficients
- * @param b constrain's known term
+ * @param b constrain's constant term
  * @param current_row current row index inside tableau
  */
 template<typename T>
@@ -211,7 +211,7 @@ void Tableau<T>::add_LE_row_tableau(const std::vector<T>& a, const T& b, size_t 
     for (size_t i = 0; i < num_variables; ++i)  {
         tableau[current_row][get_decVars_index() + i] = a[i];
     }
-    // adding known term
+    // adding constant term
     tableau[current_row].back() = b;
 }
 
@@ -221,7 +221,7 @@ void Tableau<T>::add_LE_row_tableau(const std::vector<T>& a, const T& b, size_t 
  * 
  * @tparam T
  * @param a vector for constrain's decisional variables coefficients
- * @param b constrain's known term
+ * @param b constrain's constant term
  * @param current_row tableau's current row index
  */
 template<typename T>
@@ -259,7 +259,7 @@ void Tableau<T>::add_GE_row_tableau(const std::vector<T>& a, const T& b, size_t 
 
         tableau[current_row][get_decVars_index() + i] = a[i];
     } 
-    // adding known term  
+    // adding constant term  
     tableau[current_row].back() = b; 
 }
 
@@ -269,7 +269,7 @@ void Tableau<T>::add_GE_row_tableau(const std::vector<T>& a, const T& b, size_t 
  * 
  * @tparam T
  * @param a vector of constrain's decisional variable coefficients
- * @param b constrain's known term 
+ * @param b constrain's constant term 
  * @param current_row current row index inside tableau
  */
 template<typename T>
@@ -304,7 +304,7 @@ void Tableau<T>::add_EQ_row_tableau(const std::vector<T>& a, const T& b, size_t 
 
         tableau[current_row][get_decVars_index() + i] = a[i];
     }
-    // adding known term
+    // adding constant term
     tableau[current_row].back() = b;
 }
 
@@ -345,7 +345,7 @@ void Tableau<T>::add_objFunc_tableau(const std::vector<T>& c, const typename Lin
             break;
         }
     }
-    // Adding known term as 0 for objective function
+    // Adding constant term as 0 for objective function
     tableau[ObjFunc_row].back()= 0;
 
     // "Big-M method" phase:
@@ -436,7 +436,7 @@ int Tableau<T>::find_pivot_column() {
     // index of objective function row
     size_t ObjFunc_row = num_constrains;
 
-    // analyzing all coefficients of objective function row (apart from its known term) 
+    // analyzing all coefficients of objective function row (apart from its constant term) 
     // searching for the minimum among its negative values
     for (size_t col_index = 0; col_index < get_total_columns() - 1; ++col_index) {
 
@@ -479,7 +479,7 @@ int Tableau<T>::find_pivot_row(int pivot_column) {
         // if coefficient in current tableau row is positive
         if (tableau[row_index][pivot_column] > 0) {
 
-            // calculating ratio between known term and coefficient in current tableau row
+            // calculating ratio between constant term and coefficient in current tableau row
             double ratio = tableau[row_index].back() / tableau[row_index][pivot_column];
 
             // if ratio is less than minimum ratio found so far
