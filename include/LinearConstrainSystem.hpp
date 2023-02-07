@@ -57,7 +57,7 @@ struct LinearConstrainSystem {
      * @brief Add constrain a*x type b, e.g., a*x <= b
      * 
      * @param a constrain coefficients
-     * @param b known_term
+     * @param b known term
      * @param type constrain type
      */
     inline LinearConstrainSystem& add_constrain(const std::vector<T>& a, const T& b, const ConstrainType type){ 

@@ -95,7 +95,7 @@
 \DoxyCodeLine{120         \textcolor{keywordflow}{switch} (constrain.type) \{}
 \DoxyCodeLine{121 }
 \DoxyCodeLine{122             \textcolor{keywordflow}{case} \mbox{\hyperlink{structLinearConstrainSystem}{LinearConstrainSystem<T>::ConstrainType::LE}}: \{}
-\DoxyCodeLine{123                 \textcolor{comment}{// if known term is negative}}
+\DoxyCodeLine{123                 \textcolor{comment}{// if constant term is negative}}
 \DoxyCodeLine{124                 \textcolor{keywordflow}{if} (constrain.b < 0)\{}
 \DoxyCodeLine{125                     \textcolor{comment}{// creating a vector with opposite coefficients of a}}
 \DoxyCodeLine{126                     std::vector<T> a\_neg(constrain.a.size());}
@@ -110,7 +110,7 @@
 \DoxyCodeLine{135             \}}
 \DoxyCodeLine{136 }
 \DoxyCodeLine{137             \textcolor{keywordflow}{case} \mbox{\hyperlink{structLinearConstrainSystem}{LinearConstrainSystem<T>::ConstrainType::GE}}: \{}
-\DoxyCodeLine{138                 \textcolor{comment}{// if known term is negative }}
+\DoxyCodeLine{138                 \textcolor{comment}{// if constant term is negative }}
 \DoxyCodeLine{139                 \textcolor{keywordflow}{if} (constrain.b < 0)\{}
 \DoxyCodeLine{140                     \textcolor{comment}{// creating a vector with opposite coefficients of a}}
 \DoxyCodeLine{141                     std::vector<T> a\_neg(constrain.a.size());}
@@ -125,7 +125,7 @@
 \DoxyCodeLine{150             \}}
 \DoxyCodeLine{151 }
 \DoxyCodeLine{152             \textcolor{keywordflow}{case} \mbox{\hyperlink{structLinearConstrainSystem}{LinearConstrainSystem<T>::ConstrainType::EQ}}: \{}
-\DoxyCodeLine{153                 \textcolor{comment}{// if the known term is negative}}
+\DoxyCodeLine{153                 \textcolor{comment}{// if the constant term is negative}}
 \DoxyCodeLine{154                 \textcolor{keywordflow}{if} (constrain.b < 0)\{}
 \DoxyCodeLine{155                     \textcolor{comment}{// creating a vector with opposite coefficients of a}}
 \DoxyCodeLine{156                     std::vector<T> a\_neg(constrain.a.size());}
@@ -178,7 +178,7 @@
 \DoxyCodeLine{211     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < num\_variables; ++i)  \{}
 \DoxyCodeLine{212         tableau[current\_row][get\_decVars\_index() + i] = a[i];}
 \DoxyCodeLine{213     \}}
-\DoxyCodeLine{214     \textcolor{comment}{// adding known term}}
+\DoxyCodeLine{214     \textcolor{comment}{// adding constant term}}
 \DoxyCodeLine{215     tableau[current\_row].back() = b;}
 \DoxyCodeLine{216 \}}
 \DoxyCodeLine{217 }
@@ -218,7 +218,7 @@
 \DoxyCodeLine{259 }
 \DoxyCodeLine{260         tableau[current\_row][get\_decVars\_index() + i] = a[i];}
 \DoxyCodeLine{261     \} }
-\DoxyCodeLine{262     \textcolor{comment}{// adding known term  }}
+\DoxyCodeLine{262     \textcolor{comment}{// adding constant term  }}
 \DoxyCodeLine{263     tableau[current\_row].back() = b; }
 \DoxyCodeLine{264 \}}
 \DoxyCodeLine{265 }
@@ -255,7 +255,7 @@
 \DoxyCodeLine{304 }
 \DoxyCodeLine{305         tableau[current\_row][get\_decVars\_index() + i] = a[i];}
 \DoxyCodeLine{306     \}}
-\DoxyCodeLine{307     \textcolor{comment}{// adding known term}}
+\DoxyCodeLine{307     \textcolor{comment}{// adding constant term}}
 \DoxyCodeLine{308     tableau[current\_row].back() = b;}
 \DoxyCodeLine{309 \}}
 \DoxyCodeLine{310 }
@@ -289,7 +289,7 @@
 \DoxyCodeLine{345             \textcolor{keywordflow}{break};}
 \DoxyCodeLine{346         \}}
 \DoxyCodeLine{347     \}}
-\DoxyCodeLine{348     \textcolor{comment}{// Adding known term as 0 for objective function}}
+\DoxyCodeLine{348     \textcolor{comment}{// Adding constant term as 0 for objective function}}
 \DoxyCodeLine{349     tableau[ObjFunc\_row].back()= 0;}
 \DoxyCodeLine{350 }
 \DoxyCodeLine{351     \textcolor{comment}{// "{}Big-\/M method"{} phase:}}
@@ -367,7 +367,7 @@
 \DoxyCodeLine{436     \textcolor{comment}{// index of objective function row}}
 \DoxyCodeLine{437     \textcolor{keywordtype}{size\_t} ObjFunc\_row = num\_constrains;}
 \DoxyCodeLine{438 }
-\DoxyCodeLine{439     \textcolor{comment}{// analyzing all coefficients of objective function row (apart from its known term) }}
+\DoxyCodeLine{439     \textcolor{comment}{// analyzing all coefficients of objective function row (apart from its constant term) }}
 \DoxyCodeLine{440     \textcolor{comment}{// searching for the minimum among its negative values}}
 \DoxyCodeLine{441     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} col\_index = 0; col\_index < get\_total\_columns() -\/ 1; ++col\_index) \{}
 \DoxyCodeLine{442 }
@@ -403,7 +403,7 @@
 \DoxyCodeLine{479         \textcolor{comment}{// if coefficient in current tableau row is positive}}
 \DoxyCodeLine{480         \textcolor{keywordflow}{if} (tableau[row\_index][pivot\_column] > 0) \{}
 \DoxyCodeLine{481 }
-\DoxyCodeLine{482             \textcolor{comment}{// calculating ratio between known term and coefficient in current tableau row}}
+\DoxyCodeLine{482             \textcolor{comment}{// calculating ratio between constant term and coefficient in current tableau row}}
 \DoxyCodeLine{483             \textcolor{keywordtype}{double} ratio = tableau[row\_index].back() / tableau[row\_index][pivot\_column];}
 \DoxyCodeLine{484 }
 \DoxyCodeLine{485             \textcolor{comment}{// if ratio is less than minimum ratio found so far}}

@@ -11,4 +11,4 @@ This graph shows which files directly or indirectly include this file\+:
 struct \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System$<$ T $>$}}
 \begin{DoxyCompactList}\small\item\em Struct to represent a linear constrain system. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structLinearConstrainSystem_1_1Constrain}{Linear\+Constrain\+System$<$ T $>$\+::\+Constrain}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em struct representing a constrain \end{DoxyCompactList}\end{DoxyCompactItemize}
