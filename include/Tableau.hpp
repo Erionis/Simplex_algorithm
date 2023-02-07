@@ -11,6 +11,8 @@
 template<typename T>
 struct LinearConstrainSystem;
 
+
+
 /**
  * @brief struct for Tableau and linked functions
  * 
@@ -21,7 +23,7 @@ class Tableau {
     
     // members of the tableau for saving its data
 
-    std::vector<std::vector<T>> tableau;    
+    std::vector<std::vector<T>> tableau;    //!< tableau matrix
     std::vector<size_t> base;               //!< vector for base variable index
     size_t num_variables{0};                //!< number of variables
     size_t num_constrains{0};               //!< number of constrains
@@ -32,42 +34,24 @@ class Tableau {
     
     std::vector<std::pair<size_t, size_t>> artificial_var_indices;  //!< indexes (i,j) for position of artificial variables inside tableau
 
-    /**
-     * @brief empty constructor
-     */
+    // empty constructor
     Tableau() {}
-    
+    // copy constructor 
     Tableau(const Tableau<T>& orig);
 
     /**
      * @brief method to get number of columns in tableau
      */
     inline size_t get_total_columns() { return num_variables + slack_variables + surplus_variables + artificial_variables + 1; }
-
     /**
      * @brief method to get index of columns for decisional variables
     */
-
     inline size_t get_decVars_index() { return slack_variables + surplus_variables + artificial_variables; }
-
+    
     // method to add system constrains in Tableau
     void create_initial_tableau(std::vector<typename LinearConstrainSystem<T>::Constrain>& constrains);
     // method to add objective function row with "Big-M" method
     void add_objFunc_tableau(const std::vector<T>& c, const typename LinearConstrainSystem<T>::OptimizationType type);
-
-    #ifdef PRINT
-
-    /**
-     * @brief method to print the tableau
-    */
-    void print_tableau() const;
-
-    /**
-     * @brief method to print base values
-    */
-    void print_base() const;    
-
-    #endif // PRINT
     // method to add a row to tableau when the case is LE
     void add_LE_row_tableau(const std::vector<T>& a, const T& b, size_t current_row);
     // method to add a row to tableau when the case is GE
@@ -80,6 +64,17 @@ class Tableau {
     int find_pivot_row(int pivot_column);
     // method to perform pivot operation
     void pivot(int pivot_row, int pivot_column);
+
+    #ifdef PRINT
+    /**
+     * @brief method to print the tableau
+    */
+    void print_tableau() const;
+    /**
+     * @brief method to print base values
+    */
+    void print_base() const;    
+    #endif // PRINT
 
     friend struct LinearConstrainSystem<T>;
 };
@@ -361,6 +356,7 @@ void Tableau<T>::add_objFunc_tableau(const std::vector<T>& c, const typename Lin
     #ifdef PRINT
     print_tableau();
     #endif // PRINT
+
     // deleting those values performing adequate linear combinations to objective function
     for (const auto& indeces : artificial_var_indices) {
         T factor = tableau[ObjFunc_row][indeces.second];
@@ -369,7 +365,8 @@ void Tableau<T>::add_objFunc_tableau(const std::vector<T>& c, const typename Lin
             tableau[ObjFunc_row][col_index] -= factor * tableau[indeces.first][col_index];
         }        
     }
-    // ow simplex algorithm can start
+
+    // now simplex algorithm can start
     #ifdef PRINT
     std::cout << "---Start Simplex---" << std::endl;
     std::cout << "Initial tableau: " << std::endl;
@@ -402,7 +399,6 @@ void Tableau<T>::pivot(int pivot_row, int pivot_column) {
     // dividing all elements in pivot row by pivot element
 
     for (auto& element : tableau[pivot_row]) {
-
         element /= pivot_element;
     }
 
@@ -410,16 +406,14 @@ void Tableau<T>::pivot(int pivot_row, int pivot_column) {
     for (int row_index = 0; row_index < tot_rows; ++row_index) {
         // if not in pivot row
         if (row_index != pivot_row) {
-
             T factor = tableau[row_index][pivot_column];
-
             for (size_t col_index = 0; col_index < get_total_columns(); ++col_index) {
-
                 // performing linear combination of row to make other elements in pivot column to be 0
                 tableau[row_index][col_index] -= factor * tableau[pivot_row][col_index];
             }
         }
     }
+
     #ifdef PRINT
     print_tableau();
     #endif // PRINT

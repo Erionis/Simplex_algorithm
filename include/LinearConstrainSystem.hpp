@@ -3,6 +3,7 @@
 
 #include "Tableau.hpp"
 
+
 /**
  * @brief Struct to represent a linear constrain system
  * 
@@ -25,28 +26,16 @@ struct LinearConstrainSystem {
         MAX   //!< maximize obj function
     };
 
-    // derived type to save a constrain
+    // struct representing a constrain
     struct Constrain {
         std::vector<T> a;   //!< constrain coefficients
         T b;                //!< known term
         ConstrainType type; //!< constrain type
-        
-        /**
-         * @brief empty constructor
-        */
-    
+        // empty constructor
         Constrain() {}
-        
-        /**
-         * @brief initialization constructor
-        */
+        // initialization constructor
         Constrain(std::vector<T> a, T b, ConstrainType type) : a(a), b(b), type(type) {}
-        
-        /**
-         * @brief copy constructor
-         * 
-         * @param orig the constrain to be copied
-        */
+        // copy constructor
         Constrain(const Constrain& orig) : a(orig.a), b(orig.b), type(orig.type) {}
     };
 
@@ -94,6 +83,7 @@ struct LinearConstrainSystem {
     void update_tableau_info();
     // method to check if input constrain are valid
     void check_valid_constrains() const;
+
     /**
      * @brief method to check if input objective function is valid
      * 
@@ -111,7 +101,7 @@ struct LinearConstrainSystem {
 
 
 /**
- * @brief method to update input information inside tableau
+ * @brief method to update input informations inside tableau
  * 
  * @tparam T 
  */
@@ -146,7 +136,7 @@ void LinearConstrainSystem<T>::update_tableau_info() {
                 }
                 break;
             case ConstrainType::EQ:
-                // add an artificial variable
+
                 tab.artificial_variables++;
                 break;
         }
@@ -165,9 +155,7 @@ void LinearConstrainSystem<T>::check_valid_constrains() const {
     unsigned int expected_num_variables = constrains[0].a.size();
 
     for (auto const& constrain : constrains) {
-
         if (constrain.a.size() != expected_num_variables) {
-
             throw std::invalid_argument("All constrains must have the same number of variables");
         }
     }
@@ -207,7 +195,7 @@ bool LinearConstrainSystem<T>::is_feasible() {
     // creating initial tableau
     copy.tab.create_initial_tableau(copy.constrains);
     // creating dummy objective variable
-    std::vector<T> c(copy.tab.num_variables - 1,0);
+    std::vector<T> c(copy.tab.num_variables - 1, 0);
     c.emplace_back(1);
     // adding dummy objective variable to tableau
     copy.tab.add_objFunc_tableau(c, LinearConstrainSystem<T>::OptimizationType::MAX);
@@ -262,7 +250,10 @@ bool LinearConstrainSystem<T>::is_feasible() {
  * @return LinearConstrainSystem<T>::SolutionType 
  */
 template<typename T>
-typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimize(std::vector<T>& solution, const  std::vector<T>& c, const OptimizationType type) {
+typename LinearConstrainSystem<T>::SolutionType LinearConstrainSystem<T>::optimize(std::vector<T>& solution,
+                                                                                   const  std::vector<T>& c, 
+                                                                                   const OptimizationType type) {
+
     // variable that will be returned
     LinearConstrainSystem<T>::SolutionType sol_type; 
     // if user has not executed is_feasible then do it
@@ -344,7 +335,6 @@ template<typename T>
 void LinearConstrainSystem<T>::print_Lcs(const std::vector<T>& c, const OptimizationType type) const {
 
     std::cout<< "Optimization problem: "<< std::endl<< std::endl;
-
     std::cout << (type == OptimizationType::MIN ? "Minimize: " : "Maximize: ") << c[0] << "x1";
     for (size_t i = 1; i < c.size(); ++i) {
         if (c[i] >= 0) {
