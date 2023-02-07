@@ -1,0 +1,14 @@
+\hypertarget{LinearConstrainSystem_8hpp}{}\doxysection{include/\+Linear\+Constrain\+System.hpp File Reference}
+\label{LinearConstrainSystem_8hpp}\index{include/LinearConstrainSystem.hpp@{include/LinearConstrainSystem.hpp}}
+{\ttfamily \#include \char`\"{}Tableau.\+hpp\char`\"{}}\newline
+Include dependency graph for Linear\+Constrain\+System.\+hpp\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Struct to represent a linear constrain system. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structLinearConstrainSystem_1_1Constrain}{Linear\+Constrain\+System$<$ T $>$\+::\+Constrain}}
+\end{DoxyCompactItemize}

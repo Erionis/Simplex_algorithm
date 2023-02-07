@@ -1,0 +1,434 @@
+\hypertarget{classTableau}{}\doxysection{Tableau\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classTableau}\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+
+
+struct for \mbox{\hyperlink{classTableau}{Tableau}} and linked functions  
+
+
+
+
+{\ttfamily \#include $<$Tableau.\+hpp$>$}
+
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classTableau_a4b3df79541fe0ea0fbb9206bed0f3b7c}{Tableau}} ()
+\item 
+\mbox{\hyperlink{classTableau_a189f7ce55a4b926a779b7cfd729d906d}{Tableau}} (const \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$ \&orig)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classTableau_ac9d7856ca38d459c6a4a1b4d9e2ed3d5}{get\+\_\+total\+\_\+columns}} ()
+\begin{DoxyCompactList}\small\item\em method to get number of columns in tableau \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classTableau_a97c8c7313894130bf122d7f30121f587}{get\+\_\+dec\+Vars\+\_\+index}} ()
+\begin{DoxyCompactList}\small\item\em method to get index of columns for decisional variables \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTableau_a31635af9fbdb6cb6524ed339889d0cd9}{create\+\_\+initial\+\_\+tableau}} (std\+::vector$<$ typename \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\+::\+Constrain $>$ \&constrains)
+\begin{DoxyCompactList}\small\item\em method to add system constrains in \mbox{\hyperlink{classTableau}{Tableau}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTableau_a711bf3d7f5f204aa62637fb5d01a3b1d}{add\+\_\+obj\+Func\+\_\+tableau}} (const std\+::vector$<$ T $>$ \&c, const typename \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\+::\+Optimization\+Type type)
+\begin{DoxyCompactList}\small\item\em method to add objective function row with \char`\"{}\+Big-\/\+M\char`\"{} method \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTableau_a7d184636444b5b38c3b7446b99cdd8ff}{add\+\_\+\+LE\+\_\+row\+\_\+tableau}} (const std\+::vector$<$ T $>$ \&a, const T \&b, size\+\_\+t current\+\_\+row)
+\begin{DoxyCompactList}\small\item\em method to add a LE constrain into a \mbox{\hyperlink{classTableau}{Tableau}} row \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTableau_abbd316e38d3bc9edf204aa8c228d6a68}{add\+\_\+\+GE\+\_\+row\+\_\+tableau}} (const std\+::vector$<$ T $>$ \&a, const T \&b, size\+\_\+t current\+\_\+row)
+\begin{DoxyCompactList}\small\item\em method to add a GE constrain into a tableau row \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTableau_a242236b68f4f2ad725fc589ab14e938f}{add\+\_\+\+EQ\+\_\+row\+\_\+tableau}} (const std\+::vector$<$ T $>$ \&a, const T \&b, size\+\_\+t current\+\_\+row)
+\begin{DoxyCompactList}\small\item\em method to add a EQ constrain into a row of tableau \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classTableau_a831676b1f828ba8d291742e5a2310f9d}{find\+\_\+pivot\+\_\+column}} ()
+\begin{DoxyCompactList}\small\item\em method to determine index of base-\/entering variable column \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classTableau_a6cb602c41868f757643841ad843eb63a}{find\+\_\+pivot\+\_\+row}} (int pivot\+\_\+column)
+\begin{DoxyCompactList}\small\item\em method to find index of base exiting variable \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTableau_a8661b41ff9d43f435a1fcf55a2b8b119}{pivot}} (int pivot\+\_\+row, int pivot\+\_\+column)
+\begin{DoxyCompactList}\small\item\em method for pivot operation \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ std\+::vector$<$ T $>$ $>$ \mbox{\hyperlink{classTableau_a5f317c60030273db98a8c877ad2598e3}{tableau}}
+\begin{DoxyCompactList}\small\item\em tableau matrix \end{DoxyCompactList}\item 
+std\+::vector$<$ size\+\_\+t $>$ \mbox{\hyperlink{classTableau_a349fde89077eb9595fa07cdb44f1d74f}{base}}
+\begin{DoxyCompactList}\small\item\em vector for base variable index \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classTableau_a030ad3e88d0adf4650d91b0e599ceac7}{num\+\_\+variables}} \{0\}
+\begin{DoxyCompactList}\small\item\em number of variables \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classTableau_aaecf8ef8b646889e3e32cc8f2e2215d6}{num\+\_\+constrains}} \{0\}
+\begin{DoxyCompactList}\small\item\em number of constrains \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classTableau_a959a9622d29fe6c5d2776e019b868605}{slack\+\_\+variables}} \{0\}
+\begin{DoxyCompactList}\small\item\em number of slack variables \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classTableau_ab829b9c5f469a23f482f025471794bdd}{surplus\+\_\+variables}} \{0\}
+\begin{DoxyCompactList}\small\item\em number of surplus variables \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classTableau_a9313b4454c8abf8aa581e5fd56bd082b}{artificial\+\_\+variables}} \{0\}
+\begin{DoxyCompactList}\small\item\em number of artificial variables \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classTableau_a087e147ca778e03e04ebe8fd9ff8acee}{BIG\+\_\+M}} = 1e9
+\begin{DoxyCompactList}\small\item\em defining Big\+\_\+M with a very large value \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::pair$<$ size\+\_\+t, size\+\_\+t $>$ $>$ \mbox{\hyperlink{classTableau_a362468215fa8e11082a2ccaa9c7a3f17}{artificial\+\_\+var\+\_\+indices}}
+\begin{DoxyCompactList}\small\item\em indexes (i,j) for position of artificial variables inside tableau \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{classTableau_a4b3304be249fa58734272f7ed295c0f8}{Linear\+Constrain\+System$<$ T $>$}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class Tableau$<$ T $>$}
+struct for \mbox{\hyperlink{classTableau}{Tableau}} and linked functions 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classTableau_a4b3df79541fe0ea0fbb9206bed0f3b7c}\label{classTableau_a4b3df79541fe0ea0fbb9206bed0f3b7c}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!Tableau@{Tableau}}
+\index{Tableau@{Tableau}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Tableau()}{Tableau()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\mbox{\hyperlink{classTableau}{\+::\+Tableau}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classTableau_a189f7ce55a4b926a779b7cfd729d906d}\label{classTableau_a189f7ce55a4b926a779b7cfd729d906d}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!Tableau@{Tableau}}
+\index{Tableau@{Tableau}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Tableau()}{Tableau()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\mbox{\hyperlink{classTableau}{\+::\+Tableau}} (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$ \&}]{orig }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Copy constructor. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em orig} & original object to be copied \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classTableau_a242236b68f4f2ad725fc589ab14e938f}\label{classTableau_a242236b68f4f2ad725fc589ab14e938f}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!add\_EQ\_row\_tableau@{add\_EQ\_row\_tableau}}
+\index{add\_EQ\_row\_tableau@{add\_EQ\_row\_tableau}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{add\_EQ\_row\_tableau()}{add\_EQ\_row\_tableau()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::add\+\_\+\+EQ\+\_\+row\+\_\+tableau (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{a,  }\item[{const T \&}]{b,  }\item[{size\+\_\+t}]{current\+\_\+row }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+method to add a EQ constrain into a row of tableau 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em a} & vector of constrain\textquotesingle{}s decisional variable coefficients \\
+\hline
+{\em b} & constrain\textquotesingle{}s known term \\
+\hline
+{\em current\+\_\+row} & current row index inside tableau \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classTableau_abbd316e38d3bc9edf204aa8c228d6a68}\label{classTableau_abbd316e38d3bc9edf204aa8c228d6a68}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!add\_GE\_row\_tableau@{add\_GE\_row\_tableau}}
+\index{add\_GE\_row\_tableau@{add\_GE\_row\_tableau}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{add\_GE\_row\_tableau()}{add\_GE\_row\_tableau()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::add\+\_\+\+GE\+\_\+row\+\_\+tableau (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{a,  }\item[{const T \&}]{b,  }\item[{size\+\_\+t}]{current\+\_\+row }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+method to add a GE constrain into a tableau row 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em a} & vector for constrain\textquotesingle{}s decisional variables coefficients \\
+\hline
+{\em b} & constrain\textquotesingle{}s known term \\
+\hline
+{\em current\+\_\+row} & tableau\textquotesingle{}s current row index \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classTableau_a7d184636444b5b38c3b7446b99cdd8ff}\label{classTableau_a7d184636444b5b38c3b7446b99cdd8ff}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!add\_LE\_row\_tableau@{add\_LE\_row\_tableau}}
+\index{add\_LE\_row\_tableau@{add\_LE\_row\_tableau}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{add\_LE\_row\_tableau()}{add\_LE\_row\_tableau()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::add\+\_\+\+LE\+\_\+row\+\_\+tableau (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{a,  }\item[{const T \&}]{b,  }\item[{size\+\_\+t}]{current\+\_\+row }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+method to add a LE constrain into a \mbox{\hyperlink{classTableau}{Tableau}} row 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em a} & vector of constrain\textquotesingle{}s decisional variables coefficients \\
+\hline
+{\em b} & constrain\textquotesingle{}s known term \\
+\hline
+{\em current\+\_\+row} & current row index inside tableau \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classTableau_a711bf3d7f5f204aa62637fb5d01a3b1d}\label{classTableau_a711bf3d7f5f204aa62637fb5d01a3b1d}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!add\_objFunc\_tableau@{add\_objFunc\_tableau}}
+\index{add\_objFunc\_tableau@{add\_objFunc\_tableau}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{add\_objFunc\_tableau()}{add\_objFunc\_tableau()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::add\+\_\+obj\+Func\+\_\+tableau (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{c,  }\item[{const typename \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\+::\+Optimization\+Type}]{type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+method to add objective function row with \char`\"{}\+Big-\/\+M\char`\"{} method 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em c} & vector of objective function coefficients \\
+\hline
+{\em type} & optimization type \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classTableau_a31635af9fbdb6cb6524ed339889d0cd9}\label{classTableau_a31635af9fbdb6cb6524ed339889d0cd9}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!create\_initial\_tableau@{create\_initial\_tableau}}
+\index{create\_initial\_tableau@{create\_initial\_tableau}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{create\_initial\_tableau()}{create\_initial\_tableau()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::create\+\_\+initial\+\_\+tableau (\begin{DoxyParamCaption}\item[{std\+::vector$<$ typename \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\+::\+Constrain $>$ \&}]{constrains }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+method to add system constrains in \mbox{\hyperlink{classTableau}{Tableau}} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em constrains} & vector of Constrain objects to represent system constrains \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classTableau_a831676b1f828ba8d291742e5a2310f9d}\label{classTableau_a831676b1f828ba8d291742e5a2310f9d}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!find\_pivot\_column@{find\_pivot\_column}}
+\index{find\_pivot\_column@{find\_pivot\_column}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{find\_pivot\_column()}{find\_pivot\_column()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::find\+\_\+pivot\+\_\+column\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+method to determine index of base-\/entering variable column 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+\begin{DoxyReturn}{Returns}
+\textquotesingle{}int\textquotesingle{} index of base-\/entering variable columns 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classTableau_a6cb602c41868f757643841ad843eb63a}\label{classTableau_a6cb602c41868f757643841ad843eb63a}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!find\_pivot\_row@{find\_pivot\_row}}
+\index{find\_pivot\_row@{find\_pivot\_row}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{find\_pivot\_row()}{find\_pivot\_row()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::find\+\_\+pivot\+\_\+row (\begin{DoxyParamCaption}\item[{int}]{pivot\+\_\+column }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+method to find index of base exiting variable 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em pivot\+\_\+column} & index of base entering variable \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\textquotesingle{}int\textquotesingle{} index of base exiting variable row 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classTableau_a97c8c7313894130bf122d7f30121f587}\label{classTableau_a97c8c7313894130bf122d7f30121f587}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!get\_decVars\_index@{get\_decVars\_index}}
+\index{get\_decVars\_index@{get\_decVars\_index}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{get\_decVars\_index()}{get\_decVars\_index()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+size\+\_\+t \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::get\+\_\+dec\+Vars\+\_\+index (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+
+
+method to get index of columns for decisional variables 
+
+\mbox{\Hypertarget{classTableau_ac9d7856ca38d459c6a4a1b4d9e2ed3d5}\label{classTableau_ac9d7856ca38d459c6a4a1b4d9e2ed3d5}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!get\_total\_columns@{get\_total\_columns}}
+\index{get\_total\_columns@{get\_total\_columns}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{get\_total\_columns()}{get\_total\_columns()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+size\+\_\+t \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::get\+\_\+total\+\_\+columns (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+
+
+method to get number of columns in tableau 
+
+\mbox{\Hypertarget{classTableau_a8661b41ff9d43f435a1fcf55a2b8b119}\label{classTableau_a8661b41ff9d43f435a1fcf55a2b8b119}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!pivot@{pivot}}
+\index{pivot@{pivot}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{pivot()}{pivot()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::pivot (\begin{DoxyParamCaption}\item[{int}]{pivot\+\_\+row,  }\item[{int}]{pivot\+\_\+column }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+method for pivot operation 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em pivot\+\_\+row} & index of base exiting variable row \\
+\hline
+{\em pivot\+\_\+column} & index of base entering variable column \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classTableau_a4b3304be249fa58734272f7ed295c0f8}\label{classTableau_a4b3304be249fa58734272f7ed295c0f8}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}
+\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{LinearConstrainSystem$<$ T $>$}{LinearConstrainSystem< T >}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+friend struct \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classTableau_a362468215fa8e11082a2ccaa9c7a3f17}\label{classTableau_a362468215fa8e11082a2ccaa9c7a3f17}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!artificial\_var\_indices@{artificial\_var\_indices}}
+\index{artificial\_var\_indices@{artificial\_var\_indices}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{artificial\_var\_indices}{artificial\_var\_indices}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::vector$<$std\+::pair$<$size\+\_\+t, size\+\_\+t$>$ $>$ \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::artificial\+\_\+var\+\_\+indices\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+indexes (i,j) for position of artificial variables inside tableau 
+
+\mbox{\Hypertarget{classTableau_a9313b4454c8abf8aa581e5fd56bd082b}\label{classTableau_a9313b4454c8abf8aa581e5fd56bd082b}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!artificial\_variables@{artificial\_variables}}
+\index{artificial\_variables@{artificial\_variables}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{artificial\_variables}{artificial\_variables}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+size\+\_\+t \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::artificial\+\_\+variables \{0\}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+number of artificial variables 
+
+\mbox{\Hypertarget{classTableau_a349fde89077eb9595fa07cdb44f1d74f}\label{classTableau_a349fde89077eb9595fa07cdb44f1d74f}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!base@{base}}
+\index{base@{base}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{base}{base}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::vector$<$size\+\_\+t$>$ \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::base\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+vector for base variable index 
+
+\mbox{\Hypertarget{classTableau_a087e147ca778e03e04ebe8fd9ff8acee}\label{classTableau_a087e147ca778e03e04ebe8fd9ff8acee}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!BIG\_M@{BIG\_M}}
+\index{BIG\_M@{BIG\_M}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{BIG\_M}{BIG\_M}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+double \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::\+BIG\+\_\+M = 1e9\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+defining Big\+\_\+M with a very large value 
+
+\mbox{\Hypertarget{classTableau_aaecf8ef8b646889e3e32cc8f2e2215d6}\label{classTableau_aaecf8ef8b646889e3e32cc8f2e2215d6}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!num\_constrains@{num\_constrains}}
+\index{num\_constrains@{num\_constrains}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{num\_constrains}{num\_constrains}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+size\+\_\+t \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::num\+\_\+constrains \{0\}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+number of constrains 
+
+\mbox{\Hypertarget{classTableau_a030ad3e88d0adf4650d91b0e599ceac7}\label{classTableau_a030ad3e88d0adf4650d91b0e599ceac7}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!num\_variables@{num\_variables}}
+\index{num\_variables@{num\_variables}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{num\_variables}{num\_variables}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+size\+\_\+t \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::num\+\_\+variables \{0\}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+number of variables 
+
+\mbox{\Hypertarget{classTableau_a959a9622d29fe6c5d2776e019b868605}\label{classTableau_a959a9622d29fe6c5d2776e019b868605}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!slack\_variables@{slack\_variables}}
+\index{slack\_variables@{slack\_variables}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{slack\_variables}{slack\_variables}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+size\+\_\+t \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::slack\+\_\+variables \{0\}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+number of slack variables 
+
+\mbox{\Hypertarget{classTableau_ab829b9c5f469a23f482f025471794bdd}\label{classTableau_ab829b9c5f469a23f482f025471794bdd}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!surplus\_variables@{surplus\_variables}}
+\index{surplus\_variables@{surplus\_variables}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{surplus\_variables}{surplus\_variables}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+size\+\_\+t \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::surplus\+\_\+variables \{0\}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+number of surplus variables 
+
+\mbox{\Hypertarget{classTableau_a5f317c60030273db98a8c877ad2598e3}\label{classTableau_a5f317c60030273db98a8c877ad2598e3}} 
+\index{Tableau$<$ T $>$@{Tableau$<$ T $>$}!tableau@{tableau}}
+\index{tableau@{tableau}!Tableau$<$ T $>$@{Tableau$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{tableau}{tableau}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::vector$<$std\+::vector$<$T$>$ $>$ \mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$\+::tableau\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+tableau matrix 
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{Tableau_8hpp}{Tableau.\+hpp}}\end{DoxyCompactItemize}

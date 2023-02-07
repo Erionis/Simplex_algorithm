@@ -1,0 +1,376 @@
+\hypertarget{structLinearConstrainSystem}{}\doxysection{Linear\+Constrain\+System\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Struct Template Reference}
+\label{structLinearConstrainSystem}\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}
+
+
+Struct to represent a linear constrain system.  
+
+
+
+
+{\ttfamily \#include $<$Linear\+Constrain\+System.\+hpp$>$}
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structLinearConstrainSystem_1_1Constrain}{Constrain}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{structLinearConstrainSystem_a7783b22afe07ee62ec2a45512c3e78de}{Solution\+Type}} \{ \mbox{\hyperlink{structLinearConstrainSystem_a7783b22afe07ee62ec2a45512c3e78deae9ca756434d3d6ef133049409ca5a942}{BOUNDED}}
+, \mbox{\hyperlink{structLinearConstrainSystem_a7783b22afe07ee62ec2a45512c3e78deab8f57afe49b8c154517eec56efe5730b}{UNBOUNDED}}
+ \}
+\item 
+enum class \mbox{\hyperlink{structLinearConstrainSystem_a38be9564fc54a4a1ae5baecdd0fdada8}{Constrain\+Type}} \{ \mbox{\hyperlink{structLinearConstrainSystem_a38be9564fc54a4a1ae5baecdd0fdada8a2dcbad7477fd40561e8b8198f173bd47}{EQ}}
+, \mbox{\hyperlink{structLinearConstrainSystem_a38be9564fc54a4a1ae5baecdd0fdada8acfe6055d2e0503be378bb63449ec7ba6}{LE}}
+, \mbox{\hyperlink{structLinearConstrainSystem_a38be9564fc54a4a1ae5baecdd0fdada8af803729628adf4199f224c2a225038e9}{GE}}
+ \}
+\item 
+enum class \mbox{\hyperlink{structLinearConstrainSystem_a236eedde2c3cabdcb0da0ab529553043}{Optimization\+Type}} \{ \mbox{\hyperlink{structLinearConstrainSystem_a236eedde2c3cabdcb0da0ab529553043ace31e2a082d17e038fcc6e3006166653}{MIN}}
+, \mbox{\hyperlink{structLinearConstrainSystem_a236eedde2c3cabdcb0da0ab529553043a26a4b44a837bf97b972628509912b4a5}{MAX}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structLinearConstrainSystem_a1b505d000d169cb4d9f33f23def44959}{Linear\+Constrain\+System}} ()
+\begin{DoxyCompactList}\small\item\em empty constructor \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structLinearConstrainSystem_a5cebc8155b71796cf79a69a42ffb0dfd}{Linear\+Constrain\+System}} (const \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}} \&orig)
+\begin{DoxyCompactList}\small\item\em copy constructor \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}} \& \mbox{\hyperlink{structLinearConstrainSystem_a1ab0e8dabb59016ef555a8bcf19cc977}{add\+\_\+constrain}} (const std\+::vector$<$ T $>$ \&a, const T \&b, const \mbox{\hyperlink{structLinearConstrainSystem_a38be9564fc54a4a1ae5baecdd0fdada8}{Constrain\+Type}} type)
+\begin{DoxyCompactList}\small\item\em Add constrain a$\ast$x type b, e.\+g., a$\ast$x \texorpdfstring{$<$}{<}= b. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structLinearConstrainSystem_a0e1a6719a7a8d96393da82182ae529d3}{is\+\_\+feasible}} ()
+\begin{DoxyCompactList}\small\item\em method to establish if the constrain system is feasible \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structLinearConstrainSystem_a7783b22afe07ee62ec2a45512c3e78de}{Solution\+Type}} \mbox{\hyperlink{structLinearConstrainSystem_a23534dab9b52fb072e80ac7e906b2568}{optimize}} (std\+::vector$<$ T $>$ \&solution, const std\+::vector$<$ T $>$ \&c, const \mbox{\hyperlink{structLinearConstrainSystem_a236eedde2c3cabdcb0da0ab529553043}{Optimization\+Type}} type)
+\begin{DoxyCompactList}\small\item\em method to optimize c$\ast$x executing pivot method on tableau \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structLinearConstrainSystem_aa85b0ac8d4b907a763efa4067a032955}{print\+\_\+result}} (\mbox{\hyperlink{structLinearConstrainSystem_a7783b22afe07ee62ec2a45512c3e78de}{Solution\+Type}} type, std\+::vector$<$ T $>$ \&solution) const
+\begin{DoxyCompactList}\small\item\em method to print optimal solution found for the optimization problem \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structLinearConstrainSystem_a16399e836932ef4707c9cfc04bd0ee43}{print\+\_\+\+Lcs}} (const std\+::vector$<$ T $>$ \&c, const \mbox{\hyperlink{structLinearConstrainSystem_a236eedde2c3cabdcb0da0ab529553043}{Optimization\+Type}} type) const
+\begin{DoxyCompactList}\small\item\em method to print input optimization problem \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{structLinearConstrainSystem_ae77a34a9ece7022b5da02ebb5307622b}{update\+\_\+tableau\+\_\+info}} ()
+\begin{DoxyCompactList}\small\item\em method to update input informations inside tableau \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structLinearConstrainSystem_a200c2bc86a41f3beb40fe790b90a326d}{check\+\_\+valid\+\_\+constrains}} () const
+\begin{DoxyCompactList}\small\item\em method to check if input contrains are valid \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structLinearConstrainSystem_a47fcaa4c7287ebdfc9e78451af9d3f88}{check\+\_\+valid\+\_\+obj\+Func}} (const std\+::vector$<$ T $>$ \&c, const \mbox{\hyperlink{structLinearConstrainSystem_a236eedde2c3cabdcb0da0ab529553043}{Optimization\+Type}} type) const
+\begin{DoxyCompactList}\small\item\em method to check if input objective function is valid \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \mbox{\hyperlink{structLinearConstrainSystem_1_1Constrain}{Constrain}} $>$ \mbox{\hyperlink{structLinearConstrainSystem_af62d850c29d994bee039475e943fca4c}{constrains}}
+\begin{DoxyCompactList}\small\item\em vector containing objects of type \mbox{\hyperlink{structLinearConstrainSystem_1_1Constrain}{Constrain}} \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classTableau}{Tableau}}$<$ T $>$ \mbox{\hyperlink{structLinearConstrainSystem_adebe0aff6cb8a0331f883c28af9a0048}{tab}}
+\begin{DoxyCompactList}\small\item\em object of the struct \mbox{\hyperlink{classTableau}{Tableau}} \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structLinearConstrainSystem_a63f1deb9d99dad852af81330a3f310d6}{feasibility\+\_\+test}} \{false\}
+\begin{DoxyCompactList}\small\item\em flag to keep track whether the user has already executed the is\+\_\+feasible method for a constrain system \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+struct Linear\+Constrain\+System$<$ T $>$}
+Struct to represent a linear constrain system. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & is the parametric type \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{structLinearConstrainSystem_a38be9564fc54a4a1ae5baecdd0fdada8}\label{structLinearConstrainSystem_a38be9564fc54a4a1ae5baecdd0fdada8}} 
+\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!ConstrainType@{ConstrainType}}
+\index{ConstrainType@{ConstrainType}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{ConstrainType}{ConstrainType}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+enum class \mbox{\hyperlink{structLinearConstrainSystem_a38be9564fc54a4a1ae5baecdd0fdada8}{Linear\+Constrain\+System\+::\+Constrain\+Type}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{EQ@{EQ}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!EQ@{EQ}}}\mbox{\Hypertarget{structLinearConstrainSystem_a38be9564fc54a4a1ae5baecdd0fdada8a2dcbad7477fd40561e8b8198f173bd47}\label{structLinearConstrainSystem_a38be9564fc54a4a1ae5baecdd0fdada8a2dcbad7477fd40561e8b8198f173bd47}} 
+EQ&== \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LE@{LE}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!LE@{LE}}}\mbox{\Hypertarget{structLinearConstrainSystem_a38be9564fc54a4a1ae5baecdd0fdada8acfe6055d2e0503be378bb63449ec7ba6}\label{structLinearConstrainSystem_a38be9564fc54a4a1ae5baecdd0fdada8acfe6055d2e0503be378bb63449ec7ba6}} 
+LE&\texorpdfstring{$<$}{<}= \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{GE@{GE}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!GE@{GE}}}\mbox{\Hypertarget{structLinearConstrainSystem_a38be9564fc54a4a1ae5baecdd0fdada8af803729628adf4199f224c2a225038e9}\label{structLinearConstrainSystem_a38be9564fc54a4a1ae5baecdd0fdada8af803729628adf4199f224c2a225038e9}} 
+GE&\texorpdfstring{$>$}{>}= \\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{structLinearConstrainSystem_a236eedde2c3cabdcb0da0ab529553043}\label{structLinearConstrainSystem_a236eedde2c3cabdcb0da0ab529553043}} 
+\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!OptimizationType@{OptimizationType}}
+\index{OptimizationType@{OptimizationType}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{OptimizationType}{OptimizationType}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+enum class \mbox{\hyperlink{structLinearConstrainSystem_a236eedde2c3cabdcb0da0ab529553043}{Linear\+Constrain\+System\+::\+Optimization\+Type}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MIN@{MIN}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!MIN@{MIN}}}\mbox{\Hypertarget{structLinearConstrainSystem_a236eedde2c3cabdcb0da0ab529553043ace31e2a082d17e038fcc6e3006166653}\label{structLinearConstrainSystem_a236eedde2c3cabdcb0da0ab529553043ace31e2a082d17e038fcc6e3006166653}} 
+MIN&minimize obj function \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MAX@{MAX}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!MAX@{MAX}}}\mbox{\Hypertarget{structLinearConstrainSystem_a236eedde2c3cabdcb0da0ab529553043a26a4b44a837bf97b972628509912b4a5}\label{structLinearConstrainSystem_a236eedde2c3cabdcb0da0ab529553043a26a4b44a837bf97b972628509912b4a5}} 
+MAX&maximize obj function \\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{structLinearConstrainSystem_a7783b22afe07ee62ec2a45512c3e78de}\label{structLinearConstrainSystem_a7783b22afe07ee62ec2a45512c3e78de}} 
+\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!SolutionType@{SolutionType}}
+\index{SolutionType@{SolutionType}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{SolutionType}{SolutionType}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+enum class \mbox{\hyperlink{structLinearConstrainSystem_a7783b22afe07ee62ec2a45512c3e78de}{Linear\+Constrain\+System\+::\+Solution\+Type}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BOUNDED@{BOUNDED}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!BOUNDED@{BOUNDED}}}\mbox{\Hypertarget{structLinearConstrainSystem_a7783b22afe07ee62ec2a45512c3e78deae9ca756434d3d6ef133049409ca5a942}\label{structLinearConstrainSystem_a7783b22afe07ee62ec2a45512c3e78deae9ca756434d3d6ef133049409ca5a942}} 
+BOUNDED&optimal solution found \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UNBOUNDED@{UNBOUNDED}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!UNBOUNDED@{UNBOUNDED}}}\mbox{\Hypertarget{structLinearConstrainSystem_a7783b22afe07ee62ec2a45512c3e78deab8f57afe49b8c154517eec56efe5730b}\label{structLinearConstrainSystem_a7783b22afe07ee62ec2a45512c3e78deab8f57afe49b8c154517eec56efe5730b}} 
+UNBOUNDED&the set of solutions is not bounded \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structLinearConstrainSystem_a1b505d000d169cb4d9f33f23def44959}\label{structLinearConstrainSystem_a1b505d000d169cb4d9f33f23def44959}} 
+\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!LinearConstrainSystem@{LinearConstrainSystem}}
+\index{LinearConstrainSystem@{LinearConstrainSystem}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{LinearConstrainSystem()}{LinearConstrainSystem()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\mbox{\hyperlink{structLinearConstrainSystem}{\+::\+Linear\+Constrain\+System}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+empty constructor 
+
+\mbox{\Hypertarget{structLinearConstrainSystem_a5cebc8155b71796cf79a69a42ffb0dfd}\label{structLinearConstrainSystem_a5cebc8155b71796cf79a69a42ffb0dfd}} 
+\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!LinearConstrainSystem@{LinearConstrainSystem}}
+\index{LinearConstrainSystem@{LinearConstrainSystem}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{LinearConstrainSystem()}{LinearConstrainSystem()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\mbox{\hyperlink{structLinearConstrainSystem}{\+::\+Linear\+Constrain\+System}} (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$ \&}]{orig }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+copy constructor 
+
+
+\begin{DoxyParams}{Parameters}
+{\em orig} & the \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}} to be copied \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structLinearConstrainSystem_a1ab0e8dabb59016ef555a8bcf19cc977}\label{structLinearConstrainSystem_a1ab0e8dabb59016ef555a8bcf19cc977}} 
+\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!add\_constrain@{add\_constrain}}
+\index{add\_constrain@{add\_constrain}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{add\_constrain()}{add\_constrain()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}} \& \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\+::add\+\_\+constrain (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{a,  }\item[{const T \&}]{b,  }\item[{const \mbox{\hyperlink{structLinearConstrainSystem_a38be9564fc54a4a1ae5baecdd0fdada8}{Constrain\+Type}}}]{type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Add constrain a$\ast$x type b, e.\+g., a$\ast$x \texorpdfstring{$<$}{<}= b. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & constrain coefficients \\
+\hline
+{\em b} & known\+\_\+term \\
+\hline
+{\em type} & constrain type \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structLinearConstrainSystem_a200c2bc86a41f3beb40fe790b90a326d}\label{structLinearConstrainSystem_a200c2bc86a41f3beb40fe790b90a326d}} 
+\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!check\_valid\_constrains@{check\_valid\_constrains}}
+\index{check\_valid\_constrains@{check\_valid\_constrains}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{check\_valid\_constrains()}{check\_valid\_constrains()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\+::check\+\_\+valid\+\_\+constrains\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+method to check if input contrains are valid 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+\mbox{\Hypertarget{structLinearConstrainSystem_a47fcaa4c7287ebdfc9e78451af9d3f88}\label{structLinearConstrainSystem_a47fcaa4c7287ebdfc9e78451af9d3f88}} 
+\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!check\_valid\_objFunc@{check\_valid\_objFunc}}
+\index{check\_valid\_objFunc@{check\_valid\_objFunc}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{check\_valid\_objFunc()}{check\_valid\_objFunc()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\+::check\+\_\+valid\+\_\+obj\+Func (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{c,  }\item[{const \mbox{\hyperlink{structLinearConstrainSystem_a236eedde2c3cabdcb0da0ab529553043}{Optimization\+Type}}}]{type }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+
+
+method to check if input objective function is valid 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & vector containing objective function coefficients \\
+\hline
+{\em type} & optimization type \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structLinearConstrainSystem_a0e1a6719a7a8d96393da82182ae529d3}\label{structLinearConstrainSystem_a0e1a6719a7a8d96393da82182ae529d3}} 
+\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!is\_feasible@{is\_feasible}}
+\index{is\_feasible@{is\_feasible}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{is\_feasible()}{is\_feasible()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\+::is\+\_\+feasible}
+
+
+
+method to establish if the constrain system is feasible 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+\begin{DoxyReturn}{Returns}
+true if the system is feasible 
+
+false if the system is infeasible 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structLinearConstrainSystem_a23534dab9b52fb072e80ac7e906b2568}\label{structLinearConstrainSystem_a23534dab9b52fb072e80ac7e906b2568}} 
+\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!optimize@{optimize}}
+\index{optimize@{optimize}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{optimize()}{optimize()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\mbox{\hyperlink{structLinearConstrainSystem_a7783b22afe07ee62ec2a45512c3e78de}{\+::\+Solution\+Type}} \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\+::optimize (\begin{DoxyParamCaption}\item[{std\+::vector$<$ T $>$ \&}]{solution,  }\item[{const std\+::vector$<$ T $>$ \&}]{c,  }\item[{const \mbox{\hyperlink{structLinearConstrainSystem_a236eedde2c3cabdcb0da0ab529553043}{Optimization\+Type}}}]{type }\end{DoxyParamCaption})}
+
+
+
+method to optimize c$\ast$x executing pivot method on tableau 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em solution} & vector containing solution \\
+\hline
+{\em c} & vector containing objective function coefficients \\
+\hline
+{\em type} & optimization type \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{structLinearConstrainSystem_a7783b22afe07ee62ec2a45512c3e78de}{Linear\+Constrain\+System$<$\+T$>$\+::\+Solution\+Type}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structLinearConstrainSystem_a16399e836932ef4707c9cfc04bd0ee43}\label{structLinearConstrainSystem_a16399e836932ef4707c9cfc04bd0ee43}} 
+\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!print\_Lcs@{print\_Lcs}}
+\index{print\_Lcs@{print\_Lcs}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{print\_Lcs()}{print\_Lcs()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\+::print\+\_\+\+Lcs (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{c,  }\item[{const \mbox{\hyperlink{structLinearConstrainSystem_a236eedde2c3cabdcb0da0ab529553043}{Optimization\+Type}}}]{type }\end{DoxyParamCaption}) const}
+
+
+
+method to print input optimization problem 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em c} & coefficients of objective function vector \\
+\hline
+{\em type} & optimization type \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structLinearConstrainSystem_aa85b0ac8d4b907a763efa4067a032955}\label{structLinearConstrainSystem_aa85b0ac8d4b907a763efa4067a032955}} 
+\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!print\_result@{print\_result}}
+\index{print\_result@{print\_result}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{print\_result()}{print\_result()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\+::print\+\_\+result (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structLinearConstrainSystem_a7783b22afe07ee62ec2a45512c3e78de}{Solution\+Type}}}]{type,  }\item[{std\+::vector$<$ T $>$ \&}]{solution }\end{DoxyParamCaption}) const}
+
+
+
+method to print optimal solution found for the optimization problem 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em type} & optimization type \\
+\hline
+{\em solution} & vector containing solution \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structLinearConstrainSystem_ae77a34a9ece7022b5da02ebb5307622b}\label{structLinearConstrainSystem_ae77a34a9ece7022b5da02ebb5307622b}} 
+\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!update\_tableau\_info@{update\_tableau\_info}}
+\index{update\_tableau\_info@{update\_tableau\_info}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{update\_tableau\_info()}{update\_tableau\_info()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\+::update\+\_\+tableau\+\_\+info\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+method to update input informations inside tableau 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structLinearConstrainSystem_af62d850c29d994bee039475e943fca4c}\label{structLinearConstrainSystem_af62d850c29d994bee039475e943fca4c}} 
+\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!constrains@{constrains}}
+\index{constrains@{constrains}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{constrains}{constrains}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::vector$<$\mbox{\hyperlink{structLinearConstrainSystem_1_1Constrain}{Constrain}}$>$ \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\+::constrains\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+vector containing objects of type \mbox{\hyperlink{structLinearConstrainSystem_1_1Constrain}{Constrain}} 
+
+\mbox{\Hypertarget{structLinearConstrainSystem_a63f1deb9d99dad852af81330a3f310d6}\label{structLinearConstrainSystem_a63f1deb9d99dad852af81330a3f310d6}} 
+\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!feasibility\_test@{feasibility\_test}}
+\index{feasibility\_test@{feasibility\_test}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{feasibility\_test}{feasibility\_test}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\+::feasibility\+\_\+test \{false\}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+flag to keep track whether the user has already executed the is\+\_\+feasible method for a constrain system 
+
+\mbox{\Hypertarget{structLinearConstrainSystem_adebe0aff6cb8a0331f883c28af9a0048}\label{structLinearConstrainSystem_adebe0aff6cb8a0331f883c28af9a0048}} 
+\index{LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}!tab@{tab}}
+\index{tab@{tab}!LinearConstrainSystem$<$ T $>$@{LinearConstrainSystem$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{tab}{tab}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classTableau}{Tableau}}$<$T$>$ \mbox{\hyperlink{structLinearConstrainSystem}{Linear\+Constrain\+System}}$<$ T $>$\+::tab\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+object of the struct \mbox{\hyperlink{classTableau}{Tableau}} 
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{LinearConstrainSystem_8hpp}{Linear\+Constrain\+System.\+hpp}}\end{DoxyCompactItemize}

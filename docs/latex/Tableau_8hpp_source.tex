@@ -1,0 +1,459 @@
+\hypertarget{Tableau_8hpp_source}{}\doxysection{Tableau.\+hpp}
+\label{Tableau_8hpp_source}\index{include/Tableau.hpp@{include/Tableau.hpp}}
+\mbox{\hyperlink{Tableau_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef \_\_TABLEAU\_HPP\_\_}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define \_\_TABLEAU\_HPP\_\_}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <limits>}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{12 \textcolor{keyword}{struct }\mbox{\hyperlink{structLinearConstrainSystem}{LinearConstrainSystem}};}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 }
+\DoxyCodeLine{21 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{22 \textcolor{keyword}{class }\mbox{\hyperlink{classTableau}{Tableau}} \{}
+\DoxyCodeLine{23     }
+\DoxyCodeLine{24     \textcolor{comment}{// members of the tableau for saving its data}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26     std::vector<std::vector<T>> \mbox{\hyperlink{classTableau_a5f317c60030273db98a8c877ad2598e3}{tableau}};    }
+\DoxyCodeLine{27     std::vector<size\_t> \mbox{\hyperlink{classTableau_a349fde89077eb9595fa07cdb44f1d74f}{base}};               }
+\DoxyCodeLine{28     \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classTableau_a030ad3e88d0adf4650d91b0e599ceac7}{num\_variables}}\{0\};                }
+\DoxyCodeLine{29     \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classTableau_aaecf8ef8b646889e3e32cc8f2e2215d6}{num\_constrains}}\{0\};               }
+\DoxyCodeLine{30     \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classTableau_a959a9622d29fe6c5d2776e019b868605}{slack\_variables}}\{0\};              }
+\DoxyCodeLine{31     \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classTableau_ab829b9c5f469a23f482f025471794bdd}{surplus\_variables}}\{0\};            }
+\DoxyCodeLine{32     \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classTableau_a9313b4454c8abf8aa581e5fd56bd082b}{artificial\_variables}}\{0\};         }
+\DoxyCodeLine{33     \textcolor{keywordtype}{double} \mbox{\hyperlink{classTableau_a087e147ca778e03e04ebe8fd9ff8acee}{BIG\_M}} = 1e9;                     }
+\DoxyCodeLine{34     }
+\DoxyCodeLine{35     std::vector<std::pair<size\_t, size\_t>> \mbox{\hyperlink{classTableau_a362468215fa8e11082a2ccaa9c7a3f17}{artificial\_var\_indices}};  }
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37     \textcolor{comment}{// empty constructor}}
+\DoxyCodeLine{38     \mbox{\hyperlink{classTableau_a4b3df79541fe0ea0fbb9206bed0f3b7c}{Tableau}}() \{\}}
+\DoxyCodeLine{39     \textcolor{comment}{// copy constructor }}
+\DoxyCodeLine{40     \mbox{\hyperlink{classTableau_a4b3df79541fe0ea0fbb9206bed0f3b7c}{Tableau}}(\textcolor{keyword}{const} \mbox{\hyperlink{classTableau}{Tableau<T>}}\& orig);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{45     \textcolor{keyword}{inline} \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classTableau_ac9d7856ca38d459c6a4a1b4d9e2ed3d5}{get\_total\_columns}}() \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classTableau_a030ad3e88d0adf4650d91b0e599ceac7}{num\_variables}} + \mbox{\hyperlink{classTableau_a959a9622d29fe6c5d2776e019b868605}{slack\_variables}} + \mbox{\hyperlink{classTableau_ab829b9c5f469a23f482f025471794bdd}{surplus\_variables}} + \mbox{\hyperlink{classTableau_a9313b4454c8abf8aa581e5fd56bd082b}{artificial\_variables}} + 1; \}}
+\DoxyCodeLine{49     \textcolor{keyword}{inline} \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classTableau_a97c8c7313894130bf122d7f30121f587}{get\_decVars\_index}}() \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classTableau_a959a9622d29fe6c5d2776e019b868605}{slack\_variables}} + \mbox{\hyperlink{classTableau_ab829b9c5f469a23f482f025471794bdd}{surplus\_variables}} + \mbox{\hyperlink{classTableau_a9313b4454c8abf8aa581e5fd56bd082b}{artificial\_variables}}; \}}
+\DoxyCodeLine{50     }
+\DoxyCodeLine{51     \textcolor{comment}{// method to add system constrains in Tableau}}
+\DoxyCodeLine{52     \textcolor{keywordtype}{void} \mbox{\hyperlink{classTableau_a31635af9fbdb6cb6524ed339889d0cd9}{create\_initial\_tableau}}(std::vector<\textcolor{keyword}{typename} \mbox{\hyperlink{structLinearConstrainSystem_1_1Constrain}{LinearConstrainSystem<T>::Constrain}}>\& constrains);}
+\DoxyCodeLine{53     \textcolor{comment}{// method to add objective function row with "{}Big-\/M"{} method}}
+\DoxyCodeLine{54     \textcolor{keywordtype}{void} \mbox{\hyperlink{classTableau_a711bf3d7f5f204aa62637fb5d01a3b1d}{add\_objFunc\_tableau}}(\textcolor{keyword}{const} std::vector<T>\& c, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structLinearConstrainSystem_a236eedde2c3cabdcb0da0ab529553043}{LinearConstrainSystem<T>::OptimizationType}} type);}
+\DoxyCodeLine{55     \textcolor{comment}{// method to add a row to tableau when the case is LE}}
+\DoxyCodeLine{56     \textcolor{keywordtype}{void} \mbox{\hyperlink{classTableau_a7d184636444b5b38c3b7446b99cdd8ff}{add\_LE\_row\_tableau}}(\textcolor{keyword}{const} std::vector<T>\& a, \textcolor{keyword}{const} T\& b, \textcolor{keywordtype}{size\_t} current\_row);}
+\DoxyCodeLine{57     \textcolor{comment}{// method to add a row to tableau when the case is GE}}
+\DoxyCodeLine{58     \textcolor{keywordtype}{void} \mbox{\hyperlink{classTableau_abbd316e38d3bc9edf204aa8c228d6a68}{add\_GE\_row\_tableau}}(\textcolor{keyword}{const} std::vector<T>\& a, \textcolor{keyword}{const} T\& b, \textcolor{keywordtype}{size\_t} current\_row);  }
+\DoxyCodeLine{59     \textcolor{comment}{// method to add a row to tableau when the case is EQ}}
+\DoxyCodeLine{60     \textcolor{keywordtype}{void} \mbox{\hyperlink{classTableau_a242236b68f4f2ad725fc589ab14e938f}{add\_EQ\_row\_tableau}}(\textcolor{keyword}{const} std::vector<T>\& a, \textcolor{keyword}{const} T\& b, \textcolor{keywordtype}{size\_t} current\_row);      }
+\DoxyCodeLine{61     \textcolor{comment}{// method to identify base entering variable}}
+\DoxyCodeLine{62     \textcolor{keywordtype}{int} \mbox{\hyperlink{classTableau_a831676b1f828ba8d291742e5a2310f9d}{find\_pivot\_column}}(); }
+\DoxyCodeLine{63     \textcolor{comment}{// method to identify base exiting variable}}
+\DoxyCodeLine{64     \textcolor{keywordtype}{int} \mbox{\hyperlink{classTableau_a6cb602c41868f757643841ad843eb63a}{find\_pivot\_row}}(\textcolor{keywordtype}{int} pivot\_column);}
+\DoxyCodeLine{65     \textcolor{comment}{// method to perform pivot operation}}
+\DoxyCodeLine{66     \textcolor{keywordtype}{void} \mbox{\hyperlink{classTableau_a8661b41ff9d43f435a1fcf55a2b8b119}{pivot}}(\textcolor{keywordtype}{int} pivot\_row, \textcolor{keywordtype}{int} pivot\_column);}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{preprocessor}{    \#ifdef PRINT}}
+\DoxyCodeLine{72     \textcolor{keywordtype}{void} print\_tableau() \textcolor{keyword}{const};}
+\DoxyCodeLine{76     \textcolor{keywordtype}{void} print\_base() \textcolor{keyword}{const};    }
+\DoxyCodeLine{77 \textcolor{preprocessor}{    \#endif }\textcolor{comment}{// PRINT}}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79     \textcolor{keyword}{friend} \textcolor{keyword}{struct }\mbox{\hyperlink{structLinearConstrainSystem}{LinearConstrainSystem}}<T>;}
+\DoxyCodeLine{80 \};}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 }
+\DoxyCodeLine{89 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{90 \mbox{\hyperlink{classTableau_a4b3df79541fe0ea0fbb9206bed0f3b7c}{Tableau<T>::Tableau}}(\textcolor{keyword}{const} \mbox{\hyperlink{classTableau}{Tableau<T>}}\& orig) \{}
+\DoxyCodeLine{91     tableau = orig.\mbox{\hyperlink{classTableau_a5f317c60030273db98a8c877ad2598e3}{tableau}};}
+\DoxyCodeLine{92     base = orig.\mbox{\hyperlink{classTableau_a349fde89077eb9595fa07cdb44f1d74f}{base}};}
+\DoxyCodeLine{93     artificial\_var\_indices = orig.\mbox{\hyperlink{classTableau_a362468215fa8e11082a2ccaa9c7a3f17}{artificial\_var\_indices}};}
+\DoxyCodeLine{94     num\_variables = orig.\mbox{\hyperlink{classTableau_a030ad3e88d0adf4650d91b0e599ceac7}{num\_variables}};}
+\DoxyCodeLine{95     num\_constrains = orig.\mbox{\hyperlink{classTableau_aaecf8ef8b646889e3e32cc8f2e2215d6}{num\_constrains}};}
+\DoxyCodeLine{96     slack\_variables = orig.\mbox{\hyperlink{classTableau_a959a9622d29fe6c5d2776e019b868605}{slack\_variables}};}
+\DoxyCodeLine{97     surplus\_variables = orig.\mbox{\hyperlink{classTableau_ab829b9c5f469a23f482f025471794bdd}{surplus\_variables}};}
+\DoxyCodeLine{98     artificial\_variables = orig.\mbox{\hyperlink{classTableau_a9313b4454c8abf8aa581e5fd56bd082b}{artificial\_variables}};}
+\DoxyCodeLine{99     BIG\_M = orig.\mbox{\hyperlink{classTableau_a087e147ca778e03e04ebe8fd9ff8acee}{BIG\_M}};}
+\DoxyCodeLine{100 \}}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 }
+\DoxyCodeLine{109 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{110 \textcolor{keywordtype}{void} \mbox{\hyperlink{classTableau_a31635af9fbdb6cb6524ed339889d0cd9}{Tableau<T>::create\_initial\_tableau}}(std::vector<\textcolor{keyword}{typename} \mbox{\hyperlink{structLinearConstrainSystem_1_1Constrain}{LinearConstrainSystem<T>::Constrain}}>\& \mbox{\hyperlink{structLinearConstrainSystem_af62d850c29d994bee039475e943fca4c}{constrains}}) \{}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112     \textcolor{comment}{// for every constrain in Constrain vector}}
+\DoxyCodeLine{113     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} \textcolor{keyword}{const} \&constrain: \mbox{\hyperlink{structLinearConstrainSystem_af62d850c29d994bee039475e943fca4c}{constrains}})\{}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115         \textcolor{comment}{// creating corresponding row in tableau}}
+\DoxyCodeLine{116         tableau.emplace\_back(get\_total\_columns(), 0);}
+\DoxyCodeLine{117         \textcolor{comment}{// counter to save current row}}
+\DoxyCodeLine{118         \textcolor{keywordtype}{size\_t} current\_row = tableau.size() -\/ 1;    }
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120         \textcolor{keywordflow}{switch} (constrain.type) \{}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122             \textcolor{keywordflow}{case} \mbox{\hyperlink{structLinearConstrainSystem}{LinearConstrainSystem<T>::ConstrainType::LE}}: \{}
+\DoxyCodeLine{123                 \textcolor{comment}{// if known term is negative}}
+\DoxyCodeLine{124                 \textcolor{keywordflow}{if} (constrain.b < 0)\{}
+\DoxyCodeLine{125                     \textcolor{comment}{// creating a vector with opposite coefficients of a}}
+\DoxyCodeLine{126                     std::vector<T> a\_neg(constrain.a.size());}
+\DoxyCodeLine{127                     std::transform(constrain.a.begin(), constrain.a.end(), a\_neg.begin(), std::negate<T>()); }
+\DoxyCodeLine{128                     \textcolor{comment}{// considering the case as if it was GE}}
+\DoxyCodeLine{129                     add\_GE\_row\_tableau(a\_neg, constrain.b*(-\/1), current\_row);    }
+\DoxyCodeLine{130                 \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{131                     add\_LE\_row\_tableau(constrain.a, constrain.b, current\_row);}
+\DoxyCodeLine{132                 \}}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{135             \}}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137             \textcolor{keywordflow}{case} \mbox{\hyperlink{structLinearConstrainSystem}{LinearConstrainSystem<T>::ConstrainType::GE}}: \{}
+\DoxyCodeLine{138                 \textcolor{comment}{// if known term is negative }}
+\DoxyCodeLine{139                 \textcolor{keywordflow}{if} (constrain.b < 0)\{}
+\DoxyCodeLine{140                     \textcolor{comment}{// creating a vector with opposite coefficients of a}}
+\DoxyCodeLine{141                     std::vector<T> a\_neg(constrain.a.size());}
+\DoxyCodeLine{142                     std::transform(constrain.a.begin(), constrain.a.end(), a\_neg.begin(), std::negate<T>()); }
+\DoxyCodeLine{143                     \textcolor{comment}{// considering the case as if it was LE}}
+\DoxyCodeLine{144                     add\_LE\_row\_tableau(a\_neg, constrain.b*(-\/1), current\_row);    }
+\DoxyCodeLine{145                 \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{146                     add\_GE\_row\_tableau(constrain.a, constrain.b, current\_row);}
+\DoxyCodeLine{147                 \}}
+\DoxyCodeLine{148                 }
+\DoxyCodeLine{149                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{150             \}}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152             \textcolor{keywordflow}{case} \mbox{\hyperlink{structLinearConstrainSystem}{LinearConstrainSystem<T>::ConstrainType::EQ}}: \{}
+\DoxyCodeLine{153                 \textcolor{comment}{// if the known term is negative}}
+\DoxyCodeLine{154                 \textcolor{keywordflow}{if} (constrain.b < 0)\{}
+\DoxyCodeLine{155                     \textcolor{comment}{// creating a vector with opposite coefficients of a}}
+\DoxyCodeLine{156                     std::vector<T> a\_neg(constrain.a.size());}
+\DoxyCodeLine{157                     std::transform(constrain.a.begin(), constrain.a.end(), a\_neg.begin(), std::negate<T>()); }
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159                     add\_EQ\_row\_tableau(a\_neg, constrain.b*(-\/1), current\_row);    }
+\DoxyCodeLine{160                 \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{161                     add\_EQ\_row\_tableau(constrain.a, constrain.b, current\_row);}
+\DoxyCodeLine{162                 \}}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{165             \}}
+\DoxyCodeLine{166         \}        }
+\DoxyCodeLine{167     \}}
+\DoxyCodeLine{168 \}}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170 }
+\DoxyCodeLine{179 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{180 \textcolor{keywordtype}{void} \mbox{\hyperlink{classTableau_a7d184636444b5b38c3b7446b99cdd8ff}{Tableau<T>::add\_LE\_row\_tableau}}(\textcolor{keyword}{const} std::vector<T>\& a, \textcolor{keyword}{const} T\& b, \textcolor{keywordtype}{size\_t} current\_row)\{}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182     \textcolor{comment}{// if not in the first row}}
+\DoxyCodeLine{183     \textcolor{keywordflow}{if}(current\_row>0)\{}
+\DoxyCodeLine{184         \textcolor{comment}{// for every column reserved to additional variables}}
+\DoxyCodeLine{185         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < get\_decVars\_index(); ++i) \{}
+\DoxyCodeLine{186             \textcolor{comment}{// if in previous row there is an element equal to -\/1}}
+\DoxyCodeLine{187             \textcolor{keywordflow}{if} (tableau[current\_row-\/1][i] == 1 \&\& tableau[current\_row-\/1][i+1] == -\/1) \{}
+\DoxyCodeLine{188                 \textcolor{comment}{// adding coefficient of slack variable}}
+\DoxyCodeLine{189                 tableau[current\_row][i+2] = 1;}
+\DoxyCodeLine{190                 \textcolor{comment}{// adding base variable}}
+\DoxyCodeLine{191                 base.emplace\_back(i+2);}
+\DoxyCodeLine{192                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{193             \textcolor{comment}{// if in previous row there is an element equal to 1}}
+\DoxyCodeLine{194             \}\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(tableau[current\_row-\/1][i] == 1) \{}
+\DoxyCodeLine{195                 \textcolor{comment}{// adding coefficient of slack variable                }}
+\DoxyCodeLine{196                 tableau[current\_row][i+1] = 1;}
+\DoxyCodeLine{197                 \textcolor{comment}{// adding base variable                  }}
+\DoxyCodeLine{198                 base.emplace\_back(i+1);}
+\DoxyCodeLine{199                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{200             \}}
+\DoxyCodeLine{201         \}}
+\DoxyCodeLine{202     \textcolor{comment}{// if in the first row}}
+\DoxyCodeLine{203     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{204         \textcolor{comment}{// adding coefficient of slack variable}}
+\DoxyCodeLine{205         tableau[current\_row][0] = 1;}
+\DoxyCodeLine{206         \textcolor{comment}{//  adding base variable}}
+\DoxyCodeLine{207         base.emplace\_back(0);}
+\DoxyCodeLine{208     \}}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210     \textcolor{comment}{// inserting coefficients of vector a in correct position}}
+\DoxyCodeLine{211     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < num\_variables; ++i)  \{}
+\DoxyCodeLine{212         tableau[current\_row][get\_decVars\_index() + i] = a[i];}
+\DoxyCodeLine{213     \}}
+\DoxyCodeLine{214     \textcolor{comment}{// adding known term}}
+\DoxyCodeLine{215     tableau[current\_row].back() = b;}
+\DoxyCodeLine{216 \}}
+\DoxyCodeLine{217 }
+\DoxyCodeLine{218 }
+\DoxyCodeLine{227 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{228 \textcolor{keywordtype}{void} \mbox{\hyperlink{classTableau_abbd316e38d3bc9edf204aa8c228d6a68}{Tableau<T>::add\_GE\_row\_tableau}}(\textcolor{keyword}{const} std::vector<T>\& a, \textcolor{keyword}{const} T\& b, \textcolor{keywordtype}{size\_t} current\_row)\{}
+\DoxyCodeLine{229 }
+\DoxyCodeLine{230     \textcolor{comment}{// if not in first row}}
+\DoxyCodeLine{231     \textcolor{keywordflow}{if}(current\_row>0)\{}
+\DoxyCodeLine{232         \textcolor{comment}{// for every column regarding additional variables}}
+\DoxyCodeLine{233         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < get\_decVars\_index(); ++i) \{}
+\DoxyCodeLine{234             \textcolor{comment}{// if in the previous row there is an element equal to -\/1}}
+\DoxyCodeLine{235             \textcolor{keywordflow}{if} (tableau[current\_row-\/1][i] == 1 \&\& tableau[current\_row-\/1][i+1] == -\/1) \{}
+\DoxyCodeLine{236                 tableau[current\_row][i+2] = 1;  \textcolor{comment}{// adding artificial variable}}
+\DoxyCodeLine{237                 tableau[current\_row][i+3] = -\/1;  \textcolor{comment}{// adding surplus variable}}
+\DoxyCodeLine{238                 base.emplace\_back(i+2);    \textcolor{comment}{// updating base}}
+\DoxyCodeLine{239                 \textcolor{comment}{// saving position of artificial variable}}
+\DoxyCodeLine{240                 artificial\_var\_indices.emplace\_back(std::make\_pair(current\_row, i+2));}
+\DoxyCodeLine{241                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{242             \}\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(tableau[current\_row-\/1][i] == 1) \{}
+\DoxyCodeLine{243                 tableau[current\_row][i+1] = 1;}
+\DoxyCodeLine{244                 tableau[current\_row][i+2] = -\/1;}
+\DoxyCodeLine{245                 base.emplace\_back(i+1);}
+\DoxyCodeLine{246                 artificial\_var\_indices.emplace\_back(std::make\_pair(current\_row, i+1));}
+\DoxyCodeLine{247                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{248             \}}
+\DoxyCodeLine{249         \}}
+\DoxyCodeLine{250     \textcolor{comment}{// if in the first row}}
+\DoxyCodeLine{251     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{252         tableau[current\_row][0] = 1;}
+\DoxyCodeLine{253         tableau[current\_row][1] = -\/1;}
+\DoxyCodeLine{254         base.emplace\_back(0);}
+\DoxyCodeLine{255         artificial\_var\_indices.emplace\_back(std::make\_pair(current\_row, 0));}
+\DoxyCodeLine{256     \}}
+\DoxyCodeLine{257     \textcolor{comment}{// inserting coefficients of vector a in correct place}}
+\DoxyCodeLine{258     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < num\_variables; ++i)  \{}
+\DoxyCodeLine{259 }
+\DoxyCodeLine{260         tableau[current\_row][get\_decVars\_index() + i] = a[i];}
+\DoxyCodeLine{261     \} }
+\DoxyCodeLine{262     \textcolor{comment}{// adding known term  }}
+\DoxyCodeLine{263     tableau[current\_row].back() = b; }
+\DoxyCodeLine{264 \}}
+\DoxyCodeLine{265 }
+\DoxyCodeLine{266 }
+\DoxyCodeLine{275 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{276 \textcolor{keywordtype}{void} \mbox{\hyperlink{classTableau_a242236b68f4f2ad725fc589ab14e938f}{Tableau<T>::add\_EQ\_row\_tableau}}(\textcolor{keyword}{const} std::vector<T>\& a, \textcolor{keyword}{const} T\& b, \textcolor{keywordtype}{size\_t} current\_row)\{}
+\DoxyCodeLine{277 }
+\DoxyCodeLine{278     \textcolor{comment}{// if not in first row}}
+\DoxyCodeLine{279     \textcolor{keywordflow}{if}(current\_row>0)\{}
+\DoxyCodeLine{280         \textcolor{comment}{// for every column reserved to additional variables}}
+\DoxyCodeLine{281         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < get\_decVars\_index(); ++i) \{}
+\DoxyCodeLine{282             \textcolor{comment}{// if there is an element equal to -\/1 in previous row}}
+\DoxyCodeLine{283             \textcolor{keywordflow}{if} (tableau[current\_row-\/1][i] == 1 \&\& tableau[current\_row-\/1][i+1] == -\/1) \{}
+\DoxyCodeLine{284                 tableau[current\_row][i+2] = 1;}
+\DoxyCodeLine{285                 base.emplace\_back(i+2);}
+\DoxyCodeLine{286                 artificial\_var\_indices.emplace\_back(std::make\_pair(current\_row, i+2));}
+\DoxyCodeLine{287                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{288             \}\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(tableau[current\_row-\/1][i] == 1) \{}
+\DoxyCodeLine{289                 tableau[current\_row][i+1] = 1;}
+\DoxyCodeLine{290                 base.emplace\_back(i+1);}
+\DoxyCodeLine{291                 artificial\_var\_indices.emplace\_back(std::make\_pair(current\_row, i+1));}
+\DoxyCodeLine{292                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{293             \}}
+\DoxyCodeLine{294         \}}
+\DoxyCodeLine{295     \textcolor{comment}{// if in first row}}
+\DoxyCodeLine{296     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{297         tableau[current\_row][0] = 1;}
+\DoxyCodeLine{298         base.emplace\_back(0);}
+\DoxyCodeLine{299                 artificial\_var\_indices.emplace\_back(std::make\_pair(current\_row, 0));}
+\DoxyCodeLine{300     \}}
+\DoxyCodeLine{301 }
+\DoxyCodeLine{302     \textcolor{comment}{// inserting coefficients of vector a in correct position}}
+\DoxyCodeLine{303     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < num\_variables; ++i)  \{}
+\DoxyCodeLine{304 }
+\DoxyCodeLine{305         tableau[current\_row][get\_decVars\_index() + i] = a[i];}
+\DoxyCodeLine{306     \}}
+\DoxyCodeLine{307     \textcolor{comment}{// adding known term}}
+\DoxyCodeLine{308     tableau[current\_row].back() = b;}
+\DoxyCodeLine{309 \}}
+\DoxyCodeLine{310 }
+\DoxyCodeLine{311 }
+\DoxyCodeLine{319 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{320 \textcolor{keywordtype}{void} \mbox{\hyperlink{classTableau_a711bf3d7f5f204aa62637fb5d01a3b1d}{Tableau<T>::add\_objFunc\_tableau}}(\textcolor{keyword}{const} std::vector<T>\& c, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structLinearConstrainSystem_a236eedde2c3cabdcb0da0ab529553043}{LinearConstrainSystem<T>::OptimizationType}} type) \{}
+\DoxyCodeLine{321 }
+\DoxyCodeLine{322     \textcolor{comment}{// index of objective function row}}
+\DoxyCodeLine{323     \textcolor{keywordtype}{size\_t} ObjFunc\_row = num\_constrains;}
+\DoxyCodeLine{324     \textcolor{comment}{// creating a new row inside tableau           }}
+\DoxyCodeLine{325     tableau.emplace\_back(get\_total\_columns(), 0);}
+\DoxyCodeLine{326 }
+\DoxyCodeLine{327     \textcolor{keywordflow}{switch} (type) \{}
+\DoxyCodeLine{328 }
+\DoxyCodeLine{329         \textcolor{comment}{// Minimization case}}
+\DoxyCodeLine{330         \textcolor{keywordflow}{case} \mbox{\hyperlink{structLinearConstrainSystem}{LinearConstrainSystem<T>::OptimizationType::MIN}}: \{}
+\DoxyCodeLine{331             \textcolor{comment}{// Adding to new row objective function coefficients in correct position}}
+\DoxyCodeLine{332             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < num\_variables; ++i)  \{}
+\DoxyCodeLine{333 }
+\DoxyCodeLine{334                 tableau[ObjFunc\_row][get\_decVars\_index() + i] = c[i];}
+\DoxyCodeLine{335             \}}
+\DoxyCodeLine{336             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{337         \}}
+\DoxyCodeLine{338         \textcolor{comment}{// Maximization case}}
+\DoxyCodeLine{339         \textcolor{keywordflow}{case} \mbox{\hyperlink{structLinearConstrainSystem}{LinearConstrainSystem<T>::OptimizationType::MAX}}: \{}
+\DoxyCodeLine{340             \textcolor{comment}{// Adding to new row i objective function opposite coefficients }}
+\DoxyCodeLine{341             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < num\_variables; ++i)  \{}
+\DoxyCodeLine{342                 }
+\DoxyCodeLine{343                 tableau[ObjFunc\_row][get\_decVars\_index() + i] = c[i]*(-\/1);}
+\DoxyCodeLine{344             \}}
+\DoxyCodeLine{345             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{346         \}}
+\DoxyCodeLine{347     \}}
+\DoxyCodeLine{348     \textcolor{comment}{// Adding known term as 0 for objective function}}
+\DoxyCodeLine{349     tableau[ObjFunc\_row].back()= 0;}
+\DoxyCodeLine{350 }
+\DoxyCodeLine{351     \textcolor{comment}{// "{}Big-\/M method"{} phase:}}
+\DoxyCodeLine{352     \textcolor{comment}{// adding M value to artificial variables in objective function row}}
+\DoxyCodeLine{353     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& indeces : artificial\_var\_indices) \{}
+\DoxyCodeLine{354         tableau[ObjFunc\_row][indeces.second] = BIG\_M;}
+\DoxyCodeLine{355     \}}
+\DoxyCodeLine{356 \textcolor{preprocessor}{    \#ifdef PRINT}}
+\DoxyCodeLine{357     print\_tableau();}
+\DoxyCodeLine{358 \textcolor{preprocessor}{    \#endif }\textcolor{comment}{// PRINT}}
+\DoxyCodeLine{359 }
+\DoxyCodeLine{360     \textcolor{comment}{// deleting those values performing adequate linear combinations to objective function}}
+\DoxyCodeLine{361     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& indeces : artificial\_var\_indices) \{}
+\DoxyCodeLine{362         T factor = tableau[ObjFunc\_row][indeces.second];}
+\DoxyCodeLine{363         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} col\_index = 0; col\_index < get\_total\_columns(); ++col\_index) \{}
+\DoxyCodeLine{364             \textcolor{comment}{// performing linear combinations on rows to make other elements on pivot columns be 0}}
+\DoxyCodeLine{365             tableau[ObjFunc\_row][col\_index] -\/= factor * tableau[indeces.first][col\_index];}
+\DoxyCodeLine{366         \}        }
+\DoxyCodeLine{367     \}}
+\DoxyCodeLine{368 }
+\DoxyCodeLine{369     \textcolor{comment}{// now simplex algorithm can start}}
+\DoxyCodeLine{370 \textcolor{preprocessor}{    \#ifdef PRINT}}
+\DoxyCodeLine{371     std::cout << \textcolor{stringliteral}{"{}-\/-\/-\/Start Simplex-\/-\/-\/"{}} << std::endl;}
+\DoxyCodeLine{372     std::cout << \textcolor{stringliteral}{"{}Initial tableau: "{}} << std::endl;}
+\DoxyCodeLine{373     print\_tableau();}
+\DoxyCodeLine{374     std::cout << \textcolor{stringliteral}{"{}Initial base: "{}} << std::endl;}
+\DoxyCodeLine{375     print\_base();}
+\DoxyCodeLine{376 \textcolor{preprocessor}{    \#endif }\textcolor{comment}{// PRINT}}
+\DoxyCodeLine{377 \}}
+\DoxyCodeLine{378 }
+\DoxyCodeLine{379 }
+\DoxyCodeLine{387 \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{388 \textcolor{keywordtype}{void} \mbox{\hyperlink{classTableau_a8661b41ff9d43f435a1fcf55a2b8b119}{Tableau<T>::pivot}}(\textcolor{keywordtype}{int} pivot\_row, \textcolor{keywordtype}{int} pivot\_column) \{}
+\DoxyCodeLine{389 }
+\DoxyCodeLine{390     \textcolor{comment}{// adding indexes of base variables}}
+\DoxyCodeLine{391     base[pivot\_row] = pivot\_column;}
+\DoxyCodeLine{392 \textcolor{preprocessor}{    \#ifdef PRINT}}
+\DoxyCodeLine{393     print\_base();}
+\DoxyCodeLine{394 \textcolor{preprocessor}{    \#endif }\textcolor{comment}{// PRINT}}
+\DoxyCodeLine{395     \textcolor{comment}{// number of rows in tableau}}
+\DoxyCodeLine{396     \textcolor{keywordtype}{int} tot\_rows = tableau.size();}
+\DoxyCodeLine{397     \textcolor{comment}{// pivot element}}
+\DoxyCodeLine{398     T pivot\_element = tableau[pivot\_row][pivot\_column];}
+\DoxyCodeLine{399     \textcolor{comment}{// dividing all elements in pivot row by pivot element}}
+\DoxyCodeLine{400 }
+\DoxyCodeLine{401     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}\& element : tableau[pivot\_row]) \{}
+\DoxyCodeLine{402         element /= pivot\_element;}
+\DoxyCodeLine{403     \}}
+\DoxyCodeLine{404 }
+\DoxyCodeLine{405     \textcolor{comment}{// substituting all non-\/pivot rows subtracting to them an adequate multiple of pivot row}}
+\DoxyCodeLine{406     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} row\_index = 0; row\_index < tot\_rows; ++row\_index) \{}
+\DoxyCodeLine{407         \textcolor{comment}{// if not in pivot row}}
+\DoxyCodeLine{408         \textcolor{keywordflow}{if} (row\_index != pivot\_row) \{}
+\DoxyCodeLine{409             T factor = tableau[row\_index][pivot\_column];}
+\DoxyCodeLine{410             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} col\_index = 0; col\_index < get\_total\_columns(); ++col\_index) \{}
+\DoxyCodeLine{411                 \textcolor{comment}{// performing linear combination of row to make other elements in pivot column to be 0}}
+\DoxyCodeLine{412                 tableau[row\_index][col\_index] -\/= factor * tableau[pivot\_row][col\_index];}
+\DoxyCodeLine{413             \}}
+\DoxyCodeLine{414         \}}
+\DoxyCodeLine{415     \}}
+\DoxyCodeLine{416 }
+\DoxyCodeLine{417 \textcolor{preprocessor}{    \#ifdef PRINT}}
+\DoxyCodeLine{418     print\_tableau();}
+\DoxyCodeLine{419 \textcolor{preprocessor}{    \#endif }\textcolor{comment}{// PRINT}}
+\DoxyCodeLine{420 \}}
+\DoxyCodeLine{421 }
+\DoxyCodeLine{422 }
+\DoxyCodeLine{429 \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{430 \textcolor{keywordtype}{int} \mbox{\hyperlink{classTableau_a831676b1f828ba8d291742e5a2310f9d}{Tableau<T>::find\_pivot\_column}}() \{}
+\DoxyCodeLine{431 }
+\DoxyCodeLine{432     \textcolor{comment}{// initially assigning index as -\/1 to deal with particular cases}}
+\DoxyCodeLine{433     \textcolor{keywordtype}{int} pivot\_column = -\/1;}
+\DoxyCodeLine{434     \textcolor{comment}{// pivot\_value will be used for comparisons to find minimum negative value in objective function row}}
+\DoxyCodeLine{435     T pivot\_value = 0; }
+\DoxyCodeLine{436     \textcolor{comment}{// index of objective function row}}
+\DoxyCodeLine{437     \textcolor{keywordtype}{size\_t} ObjFunc\_row = num\_constrains;}
+\DoxyCodeLine{438 }
+\DoxyCodeLine{439     \textcolor{comment}{// analyzing all coefficients of objective function row (apart from its known term) }}
+\DoxyCodeLine{440     \textcolor{comment}{// searching for the minimum among its negative values}}
+\DoxyCodeLine{441     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} col\_index = 0; col\_index < get\_total\_columns() -\/ 1; ++col\_index) \{}
+\DoxyCodeLine{442 }
+\DoxyCodeLine{443         \textcolor{comment}{// if objective function coefficient is negative, let's check if it is the minimum so far}}
+\DoxyCodeLine{444         \textcolor{keywordflow}{if} ( tableau[ObjFunc\_row][col\_index] < 0 \&\& tableau[ObjFunc\_row][col\_index] < pivot\_value )\{}
+\DoxyCodeLine{445 }
+\DoxyCodeLine{446             \textcolor{comment}{// updating index of pivot column}}
+\DoxyCodeLine{447             pivot\_column = col\_index;}
+\DoxyCodeLine{448             \textcolor{comment}{// updating minimum value found so far}}
+\DoxyCodeLine{449             pivot\_value = tableau[ObjFunc\_row][col\_index];}
+\DoxyCodeLine{450         \}}
+\DoxyCodeLine{451     \}}
+\DoxyCodeLine{452 \textcolor{preprocessor}{    \#ifdef PRINT}}
+\DoxyCodeLine{453     std::cout<<\textcolor{stringliteral}{"{}Pivot column entering: "{}}<< pivot\_column<< std::endl;}
+\DoxyCodeLine{454 \textcolor{preprocessor}{    \#endif }\textcolor{comment}{// PRINT}}
+\DoxyCodeLine{455     \textcolor{keywordflow}{return} pivot\_column;}
+\DoxyCodeLine{456 \}}
+\DoxyCodeLine{457 }
+\DoxyCodeLine{458 }
+\DoxyCodeLine{466 \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{467 \textcolor{keywordtype}{int} \mbox{\hyperlink{classTableau_a6cb602c41868f757643841ad843eb63a}{Tableau<T>::find\_pivot\_row}}(\textcolor{keywordtype}{int} pivot\_column) \{}
+\DoxyCodeLine{468 }
+\DoxyCodeLine{469     \textcolor{comment}{// initially, base variable index is set to -\/1 to deal with particular cases}}
+\DoxyCodeLine{470     \textcolor{keywordtype}{int} pivot\_row = -\/1;}
+\DoxyCodeLine{471     \textcolor{comment}{// setting the highest possible value for ratio that will be used to identify the minimum among all ratios}}
+\DoxyCodeLine{472     \textcolor{keywordtype}{double} min\_ratio = std::numeric\_limits<T>::max();}
+\DoxyCodeLine{473     \textcolor{comment}{// objective function row}}
+\DoxyCodeLine{474     \textcolor{keywordtype}{size\_t} ObjFunc\_row = num\_constrains;}
+\DoxyCodeLine{475 }
+\DoxyCodeLine{476     \textcolor{comment}{// for every row apart from objective function one}}
+\DoxyCodeLine{477     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} row\_index = 0; row\_index < ObjFunc\_row; ++row\_index)  \{}
+\DoxyCodeLine{478 }
+\DoxyCodeLine{479         \textcolor{comment}{// if coefficient in current tableau row is positive}}
+\DoxyCodeLine{480         \textcolor{keywordflow}{if} (tableau[row\_index][pivot\_column] > 0) \{}
+\DoxyCodeLine{481 }
+\DoxyCodeLine{482             \textcolor{comment}{// calculating ratio between known term and coefficient in current tableau row}}
+\DoxyCodeLine{483             \textcolor{keywordtype}{double} ratio = tableau[row\_index].back() / tableau[row\_index][pivot\_column];}
+\DoxyCodeLine{484 }
+\DoxyCodeLine{485             \textcolor{comment}{// if ratio is less than minimum ratio found so far}}
+\DoxyCodeLine{486             \textcolor{keywordflow}{if} (ratio < min\_ratio) \{}
+\DoxyCodeLine{487                 \textcolor{comment}{// updating index of selected base variable }}
+\DoxyCodeLine{488                 pivot\_row = row\_index;}
+\DoxyCodeLine{489                 \textcolor{comment}{// updating minimum ratio value}}
+\DoxyCodeLine{490                 min\_ratio = ratio;}
+\DoxyCodeLine{491             \}}
+\DoxyCodeLine{492         \}}
+\DoxyCodeLine{493     \}}
+\DoxyCodeLine{494 \textcolor{preprocessor}{    \#ifdef PRINT}}
+\DoxyCodeLine{495     std::cout << \textcolor{stringliteral}{"{}Pivot row exiting: "{}} << pivot\_row << std::endl;}
+\DoxyCodeLine{496     std::cout << std::endl;}
+\DoxyCodeLine{497 \textcolor{preprocessor}{    \#endif }\textcolor{comment}{// PRINT}}
+\DoxyCodeLine{498     \textcolor{comment}{// returing index of selected base variable}}
+\DoxyCodeLine{499     \textcolor{keywordflow}{return} pivot\_row;}
+\DoxyCodeLine{500 \}}
+\DoxyCodeLine{501 }
+\DoxyCodeLine{502 \textcolor{preprocessor}{\#ifdef PRINT}}
+\DoxyCodeLine{503 }
+\DoxyCodeLine{509 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{510 \textcolor{keywordtype}{void} \mbox{\hyperlink{classTableau}{Tableau<T>::print\_base}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{511 }
+\DoxyCodeLine{512     std::cout << \textcolor{stringliteral}{"{}Base: "{}};}
+\DoxyCodeLine{513     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& index : base) \{}
+\DoxyCodeLine{514         std::cout << index << \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{515     \}}
+\DoxyCodeLine{516     std::cout << std::endl;    }
+\DoxyCodeLine{517     std::cout << std::endl;  }
+\DoxyCodeLine{518 \}}
+\DoxyCodeLine{519 }
+\DoxyCodeLine{520 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// PRINT}}
+\DoxyCodeLine{521 }
+\DoxyCodeLine{522 \textcolor{preprocessor}{\#ifdef PRINT}}
+\DoxyCodeLine{523 }
+\DoxyCodeLine{529 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{530 \textcolor{keywordtype}{void} \mbox{\hyperlink{classTableau}{Tableau<T>::print\_tableau}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{531 }
+\DoxyCodeLine{532     std::cout << std::endl;}
+\DoxyCodeLine{533     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& row : tableau) \{}
+\DoxyCodeLine{534         \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& element : row) \{}
+\DoxyCodeLine{535             std::cout << element << \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{536         \}}
+\DoxyCodeLine{537         std::cout << std::endl;}
+\DoxyCodeLine{538     \}}
+\DoxyCodeLine{539     std::cout << std::endl;    }
+\DoxyCodeLine{540 \}}
+\DoxyCodeLine{541 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// PRINT}}
+\DoxyCodeLine{542 }
+\DoxyCodeLine{543 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// \_\_TABLEAU\_HPP\_\_}}
+
+\end{DoxyCode}

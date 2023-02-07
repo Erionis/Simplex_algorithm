@@ -25,7 +25,7 @@ If it is the case we suggest scaling your data before running this program.
 
 ## Documentation
 ```bash
-doxygen docs/doxygen.config
+doxygen
 ```
 
 ## Compile
